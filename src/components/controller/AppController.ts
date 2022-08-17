@@ -52,16 +52,19 @@ export class AppController {
       // num ?
       // this.book.show(Number(num)) :
       // this.book.show();
+      //
       // this.appView.showFooter();
     } else if (page === 'audio') {
       // num ?
       // this.audio.showGame(Number(num)) :
-      // this.sptint.showSettings();
+      // this.audio.showSettings();
+      //
       // this.appView.hideFooter();
     } else if (page === 'sprint') {
       // num ?
       // this.sprint.showGame(Number(num)) :
-      // this.sptint.showSettings();
+      // this.sprint.showSettings();
+      //
       // this.appView.hideFooter();
     } else if (page === 'stats') {
       // this.stats.show();
