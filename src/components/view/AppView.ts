@@ -28,25 +28,28 @@ export class AppView {
   hideFooter() {}
 
   renderHeader() {
-    return `<header class = "header">
-    <nav class="indigo darken-4" role="navigation">
-    <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo">English train<i class="material-icons">train</i></a>
+    return `<header >
+    <ul id="dropdown1" class="dropdown-content">
+    <li><a href="#!">Dictionary</a></li>
+    <li><a href="#!">Games</a></li>
+    <li class="divider"></li>
+    <li><a href="#!">Statistics</a></li>
+  </ul>
+  <nav class = "teal darken-4 nav-lang">
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo">English train<i class="material-icons">train</i></a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Navbar Link</a></li>
+        <li><a href="sass.html">Login</a></li>
+        <!-- Dropdown Trigger -->
+        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Menu<i class="material-icons right">arrow_drop_down</i></a></li>
       </ul>
-
-      <ul id="nav-mobile" class="sidenav">
-        <li><a href="#">Navbar Link</a></li>
-      </ul>
-      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
   </nav>
   </header>`;
   }
 
   renderFooter() {
-    return `  <footer class="page-footer teal">
+    return `  <footer class="page-footer teal darken-4">
     <div class="container">
       <div class="row">
         <div class="col l6 s12">

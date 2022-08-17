@@ -1,6 +1,8 @@
 // @import 'abstracts/constants';
+@import './base/common.scss';
 @import '../../node_modules/materialize-css/dist/css/materialize.min.css';
 @import 'base/fonts';
+@import './base/header.scss';
 @import './base/main.scss';
 // @import 'base/base';
 // @import 'base/pagination';
