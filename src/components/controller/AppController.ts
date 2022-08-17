@@ -15,7 +15,7 @@ export class AppController {
     this.appView = new AppView(this.mainDiv);
     this.appModel = new AppModel();
 
-    this.main = new MainController(this.mainDiv, this);
+    this.main = new MainController(this.mainDiv);
   }
 
   start() {
