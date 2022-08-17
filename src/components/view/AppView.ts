@@ -1,4 +1,4 @@
-import { AppState } from '../types';
+// import { AppState } from '../types';
 import { createElement } from './helpers/renderHelpers';
 
 export class AppView {
@@ -8,9 +8,8 @@ export class AppView {
     this.mainDiv = mainDiv;
   }
 
-  render(stateObj: AppState) {
-    // const { isAuthorised } = stateObj;
-    console.log(stateObj); // чтобы Линт не ругался на неиспользованные параметры
+  render(page: string) {
+    console.log(page);
 
     // const header = this.renderHeader();
     const header = createElement('div', 'header');
@@ -24,6 +23,7 @@ export class AppView {
   }
 
   hideFooter() {}
+  showFooter() {}
 
   renderHeader() {
     return `<header >

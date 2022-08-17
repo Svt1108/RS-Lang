@@ -1,3 +1,3 @@
-export type AppState = {
-  isAuthorised: boolean;
-};
+// export type AppState = {
+//   isAuthorised: boolean;
+// };
