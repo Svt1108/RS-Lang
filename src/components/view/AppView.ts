@@ -19,7 +19,7 @@ export class AppView {
     const footer = createElement('div', 'footer');
     footer.innerHTML = this.renderFooter();
 
-    // почему эта строка не отображается???
+    // зачем нужна эта строка?
     this.mainDiv.innerHTML = `<h1>AppView Render: Header, Main, Footer</h1><h3>Last PAGE = ${lastPage} </h3><h3>if lastPage = game -> hide Footer</h3>`;
 
     document.body.append(header, this.mainDiv, footer);
@@ -31,7 +31,7 @@ export class AppView {
     return `<header class = "header">
     <nav class="indigo darken-4" role="navigation">
     <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo">Logo</a>
+      <a id="logo-container" href="#" class="brand-logo">English train<i class="material-icons">train</i></a>
       <ul class="right hide-on-med-and-down">
         <li><a href="#">Navbar Link</a></li>
       </ul>
