@@ -13,5 +13,4 @@ export class MainController {
   show() {
     this.view.render();
   }
-  hide() {}
 }

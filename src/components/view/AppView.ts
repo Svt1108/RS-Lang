@@ -9,7 +9,8 @@ export class AppView {
   }
 
   render(stateObj: AppState) {
-    const { lastPage } = stateObj;
+    // const { isAuthorised } = stateObj;
+    console.log(stateObj); // чтобы Линт не ругался на неиспользованные параметры
 
     // const header = this.renderHeader();
     const header = createElement('div', 'header');
@@ -18,9 +19,6 @@ export class AppView {
 
     const footer = createElement('div', 'footer');
     footer.innerHTML = this.renderFooter();
-
-    // зачем нужна эта строка?
-    this.mainDiv.innerHTML = `<h1>AppView Render: Header, Main, Footer</h1><h3>Last PAGE = ${lastPage} </h3><h3>if lastPage = game -> hide Footer</h3>`;
 
     document.body.append(header, this.mainDiv, footer);
   }
