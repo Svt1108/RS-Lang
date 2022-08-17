@@ -21,6 +21,7 @@ module.exports = {
     es2021: true,
     node: true,
     jest: true,
+    jquery: true,
   },
   rules: {
     'no-console': 'off',
@@ -30,7 +31,8 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/lines-between-class-members': 'off',
     'prefer-const': 'warn',
-    'max-lines-per-function': ['warn', 40],
+    'max-lines-per-function': ['warn', 100],
+    // 'func-names': ['error', 'never'],
   },
   settings: {
     'import/resolver': {
