@@ -29,7 +29,7 @@ export class AppController {
     // simple - ['auth', undefined, undefined]
     // game - ['sprint', '3', undefined]
     // book - ['book', '2', '19']
-    this.appView.render(route); // for footer display
+    this.appView.render(route);
 
     this.renderNewPage([route, difficulty, page]);
     this.enableRouting();
