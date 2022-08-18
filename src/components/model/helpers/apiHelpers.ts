@@ -31,3 +31,44 @@ export const getWord = async (id: string) => {
     const WORD = await RES.json();
     return WORD;
 };
+
+export const createUser = async (data: {[key: string]: string}) => {
+    const URL = `${HOST}${PATH.users}`;
+    const RES = await fetch(URL, {
+      method: METHOD.create,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    });
+    const newUser = await RES.json();
+    return newUser;
+};
+
+export const getLoginUser = async (user: {[key: string]: string}) => {
+   const URL = `${HOST}${PATH.signin}`;
+    const RES = await fetch(URL, {
+      method: METHOD.create,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user),
+    });
+    const loginUser = await RES.json();
+    console.log(loginUser);
+};
+
+export const getUser = async (id: string, token: string) => {
+    const URL = `${HOST}${PATH.users}/${id}`;
+    const RES = await fetch(URL, {
+      method: METHOD.get,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    });
+    const USER = await RES.json();
+    console.log(USER);
+};
