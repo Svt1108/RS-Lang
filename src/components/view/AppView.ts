@@ -7,7 +7,7 @@ export class AppView {
   footer;
 
   constructor(main: HTMLElement) {
-    this.header = createElement('header', 'header');
+    this.header = createElement('footer', 'header');
     this.main = main;
     this.footer = createElement('footer', 'footer');
   }
