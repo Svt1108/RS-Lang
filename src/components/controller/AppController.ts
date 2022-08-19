@@ -83,5 +83,6 @@ export class AppController {
       // this.error.show();
       this.appView.showFooter();
     }
+    M.AutoInit();
   }
 }
