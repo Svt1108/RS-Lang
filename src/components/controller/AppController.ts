@@ -49,7 +49,7 @@ export class AppController {
     if (route === 'main' || route === '') {
       this.main.show();
       this.appView.showFooter();
-    } else if (route === 'auth') {
+    } else if (route === 'login') {
       // this.auth.show();
       this.appView.showFooter();
     } else if (route === 'book') {

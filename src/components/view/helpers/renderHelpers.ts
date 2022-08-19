@@ -23,7 +23,7 @@ export const renderHeader = () => `<div class = "header-lang">
     <li><a href="#book">Учебник</a></li>
     <li><a href="#stats">Статистика</a></li>
     <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Игры<i class="material-icons right">arrow_drop_down</i></a></li>
-    <li><a href="#auth">Login</a></li>
+    <li><a href="#login">Login</a></li>
   </ul>
 </div>
 </nav>
