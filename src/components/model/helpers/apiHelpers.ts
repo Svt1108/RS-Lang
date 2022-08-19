@@ -3,34 +3,34 @@ import { Assets, Method, ObjType, Path, Word } from "../../types";
 const HOST = 'https://rslang-english-learnwords.herokuapp.com'
 
 export const getWords = async (page = 0, group = 0): Promise<Word[]> => {
-  const URL = `${HOST}${Path.words}?page=${page}&group=${group}`;
-  const RES: Response = await fetch(URL);
-  const WORDS_ARR: Word[] = await RES.json();
-  return WORDS_ARR;
+  const url = `${HOST}${Path.words}?page=${page}&group=${group}`;
+  const res: Response = await fetch(url);
+  const wordsArr: Word[] = await res.json();
+  return wordsArr;
 };
 
 export const getWord = async (id: string): Promise<Word> => {
-  const URL = `${HOST}${Path.words}/${id}`;
-  const RES: Response = await fetch(URL);
-  const WORD: Word = await RES.json();
-  return WORD;
+  const url = `${HOST}${Path.words}/${id}`;
+  const res: Response = await fetch(url);
+  const word: Word = await res.json();
+  return word;
 };
 
 export const getAssets = async (id: string): Promise<Assets> => {
-  const URL_WORDS = `${HOST}${Path.words}/${id}`;
-  const RES: Response = await fetch(URL_WORDS);
-  const WORD: Word = await RES.json();
+  const url = `${HOST}${Path.words}/${id}`;
+  const res: Response = await fetch(url);
+  const word: Word = await res.json();
   return {
-    image: `${HOST}/${WORD.image}`,
-    audio: `${HOST}/${WORD.audio}`,
-    audioMeaning: `${HOST}/${WORD.audioMeaning}`,
-    audioExample: `${HOST}/${WORD.audioExample}`,
+    image: `${HOST}/${word.image}`,
+    audio: `${HOST}/${word.audio}`,
+    audioMeaning: `${HOST}/${word.audioMeaning}`,
+    audioExample: `${HOST}/${word.audioExample}`,
   }
 };
 
 export const createUser = async (name: string, email: string, password: string): Promise<ObjType> => {
-  const URL = `${HOST}${Path.users}`;
-  const RES: Response = await fetch(URL, {
+  const url = `${HOST}${Path.users}`;
+  const res: Response = await fetch(url, {
     method: Method.create,
     headers: {
       'Accept': 'application/json',
@@ -42,13 +42,13 @@ export const createUser = async (name: string, email: string, password: string):
       'password': password,
     }),
   });
-  const NEW_USER: ObjType = await RES.json();
-  return NEW_USER;
+  const newUser: ObjType = await res.json();
+  return newUser;
 };
 
 export const getLoginUser = async (name: string, email: string, password: string): Promise<ObjType> => {
-  const URL = `${HOST}${Path.signin}`;
-  const RES: Response = await fetch(URL, {
+  const url = `${HOST}${Path.signin}`;
+  const res: Response = await fetch(url, {
     method: Method.create,
     headers: {
       'Accept': 'application/json',
@@ -60,19 +60,19 @@ export const getLoginUser = async (name: string, email: string, password: string
       'password': password,
     }),
   });
-  const LOGIN_USER: ObjType = await RES.json();
-  return LOGIN_USER;
+  const loginUser: ObjType = await res.json();
+  return loginUser;
 };
 
 export const getUser = async (id: string, token: string): Promise<ObjType> => {
-  const URL = `${HOST}${Path.users}/${id}`;
-  const RES: Response = await fetch(URL, {
+  const url = `${HOST}${Path.users}/${id}`;
+  const res: Response = await fetch(url, {
     method: Method.get,
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     },
   });
-  const USER: ObjType = await RES.json();
-  return USER;
+  const user: ObjType = await res.json();
+  return user;
 };
