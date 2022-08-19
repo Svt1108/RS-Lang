@@ -25,26 +25,26 @@ export class AppController {
   }
 
   public start() {
-    const [route, difficulty, page] = window.location.hash.slice(1).split('#');
-    // simple - ['auth', undefined, undefined]
+    const [route, level, page] = window.location.hash.slice(1).split('#');
+    // simple - ['stats', undefined, undefined]
     // game - ['sprint', '3', undefined]
     // book - ['book', '2', '19']
     this.appView.render(route);
 
-    this.renderNewPage([route, difficulty, page]);
+    this.renderNewPage([route, level, page]);
     this.enableRouting();
   }
 
   private enableRouting() {
     window.addEventListener('hashchange', () => {
-      const [route, difficulty, page] = window.location.hash.slice(1).split('#');
-      this.renderNewPage([route, difficulty, page]);
+      const [route, level, page] = window.location.hash.slice(1).split('#');
+      this.renderNewPage([route, level, page]);
     });
   }
 
-  private renderNewPage([route, difficulty = '', page = '']: string[]) {
+  private renderNewPage([route, level = '', page = '']: string[]) {
     this.mainDiv.innerHTML = '';
-    console.log('del log from AppController', difficulty, page);
+    console.log('del log from AppController', route, level, page);
 
     if (route === 'main' || route === '') {
       this.main.show();
@@ -53,35 +53,35 @@ export class AppController {
       // this.auth.show();
       this.appView.showFooter();
     } else if (route === 'book') {
-      // difficulty ?
-      // this.book.show(Number(difficulty), Number(page)) :
+      // level ?
+      // this.book.show(Number(level), Number(page)) :
       // this.book.show();
       //
-      // this.appView.showFooter();
+      this.appView.showFooter();
     } else if (route === 'audio') {
-      // difficulty ?
-      // this.audio.show(Number(difficulty)) :
+      // level ?
+      // this.audio.show(Number(level)) :
       // this.audio.show();
       //
-      // this.appView.hideFooter();
+      this.appView.hideFooter();
     } else if (route === 'sprint') {
-      // difficulty ?
-      // this.sprint.show(Number(difficulty)) :
+      // level ?
+      // this.sprint.show(Number(level)) :
       // this.sprint.show();
       //
-      // this.appView.hideFooter();
+      this.appView.hideFooter();
     } else if (route === 'drag') {
-      // difficulty ?
-      // this.drag.showGame(Number(difficulty)) :
+      // level ?
+      // this.drag.showGame(Number(level)) :
       // this.drag.showSettings();
       //
-      // this.appView.hideFooter();
+      this.appView.hideFooter();
     } else if (route === 'stats') {
       // this.stats.show();
-      // this.appView.showFooter();
+      this.appView.showFooter();
     } else {
       // this.error.show();
-      // this.appView.showFooter();
+      this.appView.showFooter();
     }
   }
 }

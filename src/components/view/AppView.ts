@@ -12,9 +12,7 @@ export class AppView {
     this.footer = createElement('footer', 'footer');
   }
 
-  render(route: string) {
-    console.log('Remove log from AppView, ROUTE: ', route);
-
+  public render(route: string) {
     this.header.innerHTML = renderHeader();
     this.footer.innerHTML = renderFooter();
 
@@ -26,10 +24,10 @@ export class AppView {
     document.body.append(this.header, this.main, this.footer);
   }
 
-  hideFooter() {
+  public hideFooter() {
     this.footer.style.display = 'none';
   }
-  showFooter() {
+  public showFooter() {
     this.footer.style.display = 'block';
   }
 }
