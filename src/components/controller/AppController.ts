@@ -20,58 +20,69 @@ export class AppController {
     // this.book = new BookController(this.mainDiv);
     // this.audio = new AudioGameController(this.mainDiv);
     // this.sprint = new SprintGameController(this.mainDiv);
+    // this.drag = new DragAndDropController(this.mainDiv);
     // this.stats = new StatsController(this.mainDiv);
   }
 
   public start() {
-    const [page, num] = window.location.hash.slice(1).split('#'); // [page, num] // [ '', undefined ]
-    this.appView.render(page); // for footer display
+    const [route, level, page] = window.location.hash.slice(1).split('#');
+    // simple - ['stats', undefined, undefined]
+    // game - ['sprint', '3', undefined]
+    // book - ['book', '2', '19']
+    this.appView.render(route);
 
-    this.renderNewPage([page, num]);
+    this.renderNewPage([route, level, page]);
     this.enableRouting();
   }
 
   private enableRouting() {
     window.addEventListener('hashchange', () => {
-      const [page, num] = window.location.hash.slice(1).split('#');
-      this.renderNewPage([page, num]);
+      const [route, level, page] = window.location.hash.slice(1).split('#');
+      this.renderNewPage([route, level, page]);
     });
   }
 
-  private renderNewPage([page, num = '']: string[]) {
+  private renderNewPage([route, level = '', page = '']: string[]) {
     this.mainDiv.innerHTML = '';
-    console.log('del log from AppController', num);
+    console.log('del log from AppController', route, level, page);
 
-    if (page === 'main' || page === '') {
+    if (route === 'main' || route === '') {
       this.main.show();
       this.appView.showFooter();
-    } else if (page === 'auth') {
+    } else if (route === 'auth') {
       // this.auth.show();
       this.appView.showFooter();
-    } else if (page === 'book') {
-      // num ?
-      // this.book.show(Number(num)) :
+    } else if (route === 'book') {
+      // level ?
+      // this.book.show(Number(level), Number(page)) :
       // this.book.show();
       //
-      // this.appView.showFooter();
-    } else if (page === 'audio') {
-      // num ?
-      // this.audio.showGame(Number(num)) :
-      // this.audio.showSettings();
+      this.appView.showFooter();
+    } else if (route === 'audio') {
+      // level ?
+      // this.audio.show(Number(level)) :
+      // this.audio.show();
       //
-      // this.appView.hideFooter();
-    } else if (page === 'sprint') {
-      // num ?
-      // this.sprint.showGame(Number(num)) :
-      // this.sprint.showSettings();
+      this.appView.hideFooter();
+    } else if (route === 'sprint') {
+      // level ?
+      // this.sprint.show(Number(level)) :
+      // this.sprint.show();
       //
-      // this.appView.hideFooter();
-    } else if (page === 'stats') {
+      this.appView.hideFooter();
+    } else if (route === 'drag') {
+      // level ?
+      // this.drag.showGame(Number(level)) :
+      // this.drag.showSettings();
+      //
+      this.appView.hideFooter();
+    } else if (route === 'stats') {
       // this.stats.show();
-      // this.appView.showFooter();
+      this.appView.showFooter();
     } else {
       // this.error.show();
-      // this.appView.showFooter();
+      this.appView.showFooter();
     }
+    M.AutoInit();
   }
 }
