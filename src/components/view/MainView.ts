@@ -101,8 +101,5 @@ export class MainView {
     </div>
     <div class="parallax"><img src="assets/images/castle.jpg" alt="castle" class = "img-parallax"></div>
   </div>`;
-    // const x = this.renderX
-    // const y = this.renderY
-    // this.mainDiv.append(x, y);
   }
 }
