@@ -1,6 +1,5 @@
-// import { createElement } from './helpers/renderHelpers';
-
 import { Word } from '../types';
+import { createElement } from './helpers/renderHelpers';
 
 export class BookView {
   mainDiv;
@@ -11,99 +10,51 @@ export class BookView {
 
   render(res: Word[]) {
     console.log(res);
-    this.mainDiv.innerHTML = `<div id="index-banner" class="parallax-container valign-wrapper top-img-lang">
-    <div class="section no-pad-bot">
-      <div class="container">
-        <br><br>
-        <h2 class="header center white-text h1-lang">English train</h2>
-        <div class="row center">
-          <h5 class="header light h5-lang">Твой друг в мире английского языка</h5>
-        </div>
-        <br><br>
 
+    const bookWrap = createElement('div', 'book-wrap');
+    this.mainDiv.appendChild(bookWrap);
+    const title = createElement('div', 'parallax-container valign-wrapper title-lang');
+    title.innerHTML = `    <div class="section no-pad-bot">
+    <div class="container">
+        <h5 class="header center white-text h5-lang">Учебник</h5>
       </div>
     </div>
-       <div class="parallax"><img src="assets/images/violet-1.jpg" alt="violet" class = "img-parallax"></div>
-  </div>
+ 
+     <div class="parallax"><img src="assets/images/violet-1.jpg" alt="violet" class = "img-parallax"></div>`;
 
+    bookWrap.appendChild(title);
 
-  <div class="container">
-    <div class="section">
+    const section = createElement('div', 'section');
+    bookWrap.appendChild(section);
 
-      <!--   Icon Section   -->
-      <div class="row">
-      <div class="col s12 center">
-        <h3><i class="mdi-content-send brown-text"></i></h3>
-        <h4>О приложении</h4>
-        <p class="left-align light main-text-lang">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus. Aliquam eleifend sollicitudin diam, eu mattis nisl maximus sed. Nulla imperdiet semper molestie. Morbi massa odio, condimentum sed ipsum ac, gravida ultrices erat. Nullam eget dignissim mauris, non tristique erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
-      </div>
-      <div class="row center">
-      <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light grey lighten-3 z-depth-3 btn-lang">Поехали!</a>
-    </div>
-    </div>
+    const row = createElement('div', 'row');
+    section.appendChild(row);
 
-    </div>
-  </div>
+    const levels = createElement('div', 'col s12 m2');
+    row.appendChild(levels);
 
+    this.renderLevels(levels);
 
-  <div class="parallax-container valign-wrapper">
-    <div class="section no-pad-bot">
-      <div class="container">
-        <div class="row center">
-          <h5 class="header light h5-lang">Твой друг в мире английского языка</h5>
-        </div>
-      </div>
-    </div>
-    <div class="parallax"><img src="assets/images/violet-2.jpg" alt="violet" class = "img-parallax"></div>
-  </div>
+    const cards = createElement('div', 'col s12 m8 cards');
+    row.appendChild(cards);
 
-  <div class="container">
-    <div class="section">
+    const games = createElement('div', 'col s12 m2');
+    row.appendChild(games);
 
-      <div class="row">
-      <h4 class="center">О нас</h4>
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">directions_bike</i></h2>
-            <h5 class="center">Александр</h5>
+    const pagination = createElement('div', 'pagination');
+    bookWrap.appendChild(pagination);
 
-            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
-          </div>
-        </div>
+    const bottom = createElement('div', 'parallax-container valign-wrapper bottom-lang');
+    bottom.innerHTML = `
+     <div class="parallax"><img src="assets/images/violet-3.jpg" alt="violet" class = "img-parallax"></div>`;
 
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">nature_people</i></h2>
-            <h5 class="center">Алла</h5>
+    bookWrap.appendChild(bottom);
 
-            <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
-          </div>
-        </div>
-
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">rowing</i></h2>
-            <h5 class="center">Светлана</h5>
-
-            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-
-  <div class="parallax-container valign-wrapper">
-    <div class="section no-pad-bot">
-      <div class="container">
-        <div class="row center">
-          <h5 class="header light h5-lang">Твой друг в мире английского языка</h5>
-        </div>
-      </div>
-    </div>
-    <div class="parallax"><img src="assets/images/violet-3.jpg" alt="violet" class = "img-parallax"></div>
-  </div>`;
     M.AutoInit();
+  }
+
+  renderLevels(levels: HTMLElement) {
+    const level1 = createElement('div', 'btn-large waves-effect waves-light grey lighten-3 z-depth-3 btn-lang');
+    levels.appendChild(level1);
   }
 }

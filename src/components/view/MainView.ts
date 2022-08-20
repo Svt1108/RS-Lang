@@ -12,7 +12,7 @@ export class MainView {
     <div class="section no-pad-bot">
       <div class="container">
         <br><br>
-        <h2 class="header center white-text h1-lang">English train</h2>
+        <h2 class="header center white-text h2-lang">English train</h2>
         <div class="row center">
           <h5 class="header light h5-lang">Твой друг в мире английского языка</h5>
         </div>
