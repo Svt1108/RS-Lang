@@ -43,45 +43,45 @@ export class AppController {
     });
   }
 
-  private renderNewPage([route, level = '', page = '']: string[]) {
+  private async renderNewPage([route, level = '', page = '']: string[]) {
     this.mainDiv.innerHTML = '';
     console.log('del log from AppController', route, level, page);
 
     if (route === Route.main || route === '') {
-      this.main.show();
+      await this.main.show();
       this.appView.showFooter();
     } else if (route === Route.login) {
-      // this.auth.show();
+      // await this.auth.show();
       this.appView.showFooter();
     } else if (route === Route.book) {
       // level ?
-      // this.book.show(Number(level), Number(page)) :
-      // this.book.show();
+      // await this.book.show(Number(level), Number(page)) :
+      // await this.book.show();
       //
       this.appView.showFooter();
     } else if (route === Route.audio) {
       // level ?
-      // this.audio.show(Number(level)) :
-      // this.audio.show();
+      // await this.audio.show(Number(level), Number(page)) :
+      // await this.audio.show();
       //
       this.appView.hideFooter();
     } else if (route === Route.sprint) {
       // level ?
-      // this.sprint.show(Number(level)) :
-      // this.sprint.show();
+      // await this.sprint.show(Number(level), Number(page)) :
+      // await this.sprint.show();
       //
       this.appView.hideFooter();
     } else if (route === Route.drag) {
       // level ?
-      // this.drag.showGame(Number(level)) :
-      // this.drag.showSettings();
+      // await this.drag.show(Number(level), Number(page)) :
+      // await this.drag.show();
       //
       this.appView.hideFooter();
     } else if (route === Route.stats) {
-      // this.stats.show();
+      // await this.stats.show();
       this.appView.showFooter();
     } else {
-      // this.error.show();
+      // await this.error.show();
       this.appView.showFooter();
     }
     M.AutoInit();
