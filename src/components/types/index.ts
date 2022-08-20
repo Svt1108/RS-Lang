@@ -17,11 +17,18 @@ export interface Word {
   textMeaningTranslate: string
   wordTranslate: string
 }
+
 export interface Assets {
   image: string,
   audio: string,
   audioMeaning: string,
   audioExample: string,
+}
+
+export interface User {
+  name: string, 
+  email: string, 
+  password: string
 }
 
 export type ObjType = {
@@ -45,3 +52,8 @@ export enum Method {
   delete = 'DELETE',
   engineStatus = 'PATCH',
 };
+
+export interface UserWord {
+  difficulty: string,
+  optional: {testFieldString: string, testFieldBoolean: boolean}
+}
