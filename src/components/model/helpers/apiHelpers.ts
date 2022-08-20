@@ -92,8 +92,6 @@ export const getAllUserWord = async (userId: string, token: string) => {
     },
   });
   const userWords = await url.json();
-  console.log(userWords);
-  
   return userWords;
 };
 
@@ -106,8 +104,6 @@ export const getUserWord = async (userId: string, wordId: string, token: string)
     },
   });
   const userWord = await url.json();
-  console.log(userWord);
-  
   return userWord;
 };
 
@@ -122,8 +118,6 @@ export const updateUserWord = async (userId: string, wordId: string, token: stri
     body: JSON.stringify(word)
   });
   const userWord = await url.json();
-  console.log(userWord);
-  
   return userWord;
 };
 
