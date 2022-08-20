@@ -46,7 +46,7 @@ export class AppController {
   }
 
   private async renderNewPage([route, level = '', page = '']: string[]) {
-    // this.mainDiv.innerHTML = '';
+    this.mainDiv.innerHTML = '';
     console.log('del log from AppController', route, level, page);
 
     if (route === Route.main || route === '') {

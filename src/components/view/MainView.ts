@@ -8,7 +8,6 @@ export class MainView {
   }
 
   render() {
-    this.mainDiv.innerHTML = '';
     this.mainDiv.innerHTML = `<div id="index-banner" class="parallax-container valign-wrapper top-img-lang">
     <div class="section no-pad-bot">
       <div class="container">
