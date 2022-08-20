@@ -1,6 +1,7 @@
 import { AppView } from '../view/AppView';
 import { AppModel } from '../model/AppModel';
 import { MainController } from './MainController';
+import { BookController } from './BookController';
 import { createElement } from '../view/helpers/renderHelpers';
 
 export class AppController {
@@ -8,6 +9,7 @@ export class AppController {
   appView;
   appModel;
   main;
+  book;
 
   constructor() {
     this.mainDiv = createElement('main');
@@ -17,7 +19,7 @@ export class AppController {
 
     this.main = new MainController(this.mainDiv);
     // this.auth = new AuthController(this.mainDiv);
-    // this.book = new BookController(this.mainDiv);
+    this.book = new BookController(this.mainDiv);
     // this.audio = new AudioGameController(this.mainDiv);
     // this.sprint = new SprintGameController(this.mainDiv);
     // this.drag = new DragAndDropController(this.mainDiv);
@@ -53,10 +55,8 @@ export class AppController {
       // this.auth.show();
       this.appView.showFooter();
     } else if (route === 'book') {
-      // level ?
-      // this.book.show(Number(level), Number(page)) :
-      // this.book.show();
-      //
+      if (level) this.book.show(Number(level), Number(page));
+      else this.book.show();
       this.appView.showFooter();
     } else if (route === 'audio') {
       // level ?
