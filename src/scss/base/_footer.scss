@@ -1,7 +1,28 @@
-.page-footer-lang {
-    background-color: #00241e;
+.footer {
+    background-color: none;
+    height: 4rem;
 }
 
+// .page-footer {
+//     padding-top: 0;
+// }
+.footer {
+    height: 4rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    position: absolute;
+    // bottom: 58px;
+    bottom: 0;
+    z-index: 100;
+    width: 100%;
+    padding: 0.5rem 0;
+    color: white;
+}
+
+// .page-footer-lang {
+//     height: 4rem;
+// }
 .page-footer__logo {
     width: 6rem;
     height: 3rem;
@@ -17,9 +38,10 @@
     align-items: center;
     gap: 1rem;
     flex-direction: row;
+    padding-top: 0.5rem;
     .page-footer__github {
-        width: 3rem;
-        height: 3rem;
+        width: 2rem;
+        height: 2rem;
         background-image: url(../assets/svg/github-icon.svg);
         background-size: contain;
         background-repeat: no-repeat;

@@ -17,8 +17,8 @@ export const renderHeader = () => `<div class = "header-lang">
 </ul>
 <nav class = "nav-lang">
 <div class="nav-wrapper">
-  <a href="#!" class="brand-logo logo-lang"></a>
-  <ul class="right hide-on-med-and-down">
+  <a href="#!" class="brand-logo logo-lang hide-on-med-and-down"></a>
+  <ul class="right">
     <li><a href="#main">На главную</a></li>
     <li><a href="#book">Учебник</a></li>
     <li><a href="#stats">Статистика</a></li>
@@ -29,9 +29,9 @@ export const renderHeader = () => `<div class = "header-lang">
 </nav>
 </div>`;
 
-export const renderFooter = () => `<div class="page-footer page-footer-lang">
-<span id="contacts"></span>
-<div class="footer-copyright">
+export const renderFooter = () => `
+<!--- <div class="page-footer page-footer-lang">  --->
+<!--- <div class="footer-copyright page-footer page-footer-lang"> --->
     <div class="container">
         <a href="https://rs.school/js/" class="grey-text text-lighten-4 left">
             <div class="page-footer__logo"></div>
@@ -51,5 +51,5 @@ export const renderFooter = () => `<div class="page-footer page-footer-lang">
     <p>Svetlana Pozina, 2022</p>
         </div>
     </div>
-</div>
+    <!---</div> --->
 </div>`;

@@ -19,18 +19,25 @@ p {
     font-size: 2rem;
 }
 
-
 .parallax-container .section {
     width: 100%;
 }
-
 
 .top-img-lang {
     min-height: 410px;
 }
 
+.parallax {
+    overflow: hidden;
+}
+
 .img-parallax {
-    width: 100%;
+    display: block;
+    max-width: 100rem;
+    min-width: 100%;
+    // min-width: 100vw;
+    // max-height: 100vh;
+    //  overflow: hidden;
 }
 
 .main-text-lang {
