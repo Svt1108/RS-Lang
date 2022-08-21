@@ -26,32 +26,38 @@ class Card {
     const cardContent = createElement('div', 'card-content');
     card.appendChild(cardContent);
 
-    const word = createElement('p', 'grey-text text-darken-2', `${this.data.word}`);
+    const word = createElement('p', 'grey-text text-darken-2 word', `${this.data.word}`);
     cardContent.appendChild(word);
 
     const transcription = createElement('p', 'grey-text text-darken-2', `${this.data.transcription}`);
     cardContent.appendChild(transcription);
 
-    const wordTranslate = createElement('p', 'grey-text text-darken-2', `${this.data.wordTranslate}`);
+    const wordTranslate = createElement('p', 'grey-text text-darken-2 wordTranslate', `${this.data.wordTranslate}`);
     cardContent.appendChild(wordTranslate);
 
     const divider = document.createElement('div');
     divider.classList.add('divider');
     cardContent.appendChild(divider);
 
-    const meaning = createElement('p', 'grey-text text-darken-2', `Значение:`);
+    const meaning = createElement('p', 'grey-text text-darken-2 meaning', `Значение:`);
     cardContent.appendChild(meaning);
 
-    const textMeaning = createElement('p', 'grey-text text-darken-2', `${this.data.textMeaning}`);
+    const textMeaning = createElement('p', 'grey-text text-darken-2');
+    textMeaning.innerHTML = this.data.textMeaning;
     cardContent.appendChild(textMeaning);
 
     const textMeaningTranslate = createElement('p', 'grey-text text-darken-2', `${this.data.textMeaningTranslate}`);
     cardContent.appendChild(textMeaningTranslate);
 
-    const example = createElement('p', 'grey-text text-darken-2', `Пример:`);
+    const divider1 = document.createElement('div');
+    divider1.classList.add('divider');
+    cardContent.appendChild(divider1);
+
+    const example = createElement('p', 'grey-text text-darken-2 example', `Пример:`);
     cardContent.appendChild(example);
 
-    const textExample = createElement('p', 'grey-text text-darken-2', `${this.data.textExample}`);
+    const textExample = createElement('p', 'grey-text text-darken-2');
+    textExample.innerHTML = this.data.textExample;
     cardContent.appendChild(textExample);
 
     const textExampleTranslate = createElement('p', 'grey-text text-darken-2', `${this.data.textExampleTranslate}`);
