@@ -1,0 +1,33 @@
+.card-image {
+    width: 27rem;
+    height: 18rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: top;
+    z-index: 5;
+}
+
+.card .card-content {
+    padding: 1rem;
+    width: 26rem;
+}
+
+.card-content p {
+    line-height: 1.4rem;
+    padding: 0.3rem;
+}
+
+.word {
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+.wordTranslate {
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.meaning,
+.example {
+    font-weight: 700;
+}
