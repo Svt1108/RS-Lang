@@ -1,5 +1,6 @@
 // import { AppState } from '../types';
-import { createElement, renderHeader, renderFooter } from './helpers/renderHelpers';
+import { createElement } from './helpers/renderHelpers';
+import { renderHeader, renderFooter } from './helpers/appRenderHelpers';
 
 export class AppView {
   header;

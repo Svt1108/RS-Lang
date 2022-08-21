@@ -49,8 +49,6 @@ export class BookView {
      <div class="parallax"><img src="assets/images/violet-3.jpg" alt="violet" class = "img-parallax" id = "img-3"></div>`;
 
     bookWrap.appendChild(bottom);
-
-    M.AutoInit();
   }
 
   renderLevels(levels: HTMLElement) {

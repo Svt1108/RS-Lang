@@ -3,6 +3,7 @@ import { AppModel } from '../model/AppModel';
 import { MainController } from './MainController';
 import { BookController } from './BookController';
 import { createElement } from '../view/helpers/renderHelpers';
+import { Route } from '../types/appRoutes';
 
 export class AppController {
   mainDiv;
@@ -44,43 +45,46 @@ export class AppController {
     });
   }
 
-  private renderNewPage([route, level = '', page = '']: string[]) {
+  private async renderNewPage([route, level = '', page = '']: string[]) {
     this.mainDiv.innerHTML = '';
     console.log('del log from AppController', route, level, page);
 
-    if (route === 'main' || route === '') {
-      this.main.show();
+    if (route === Route.main || route === '') {
+      await this.main.show();
       this.appView.showFooter();
-    } else if (route === 'auth') {
-      // this.auth.show();
+    } else if (route === Route.login) {
+      // await this.auth.show();
       this.appView.showFooter();
-    } else if (route === 'book') {
-      if (level) this.book.show(Number(level), Number(page));
-      else this.book.show();
+    } else if (route === Route.book) {
+      if (level) {
+        await this.book.show(Number(level), Number(page));
+      } else {
+        await this.book.show();
+      }
       this.appView.showFooter();
-    } else if (route === 'audio') {
+    } else if (route === Route.audio) {
       // level ?
-      // this.audio.show(Number(level)) :
-      // this.audio.show();
+      // await this.audio.show(Number(level), Number(page)) :
+      // await this.audio.show();
       //
       this.appView.hideFooter();
-    } else if (route === 'sprint') {
+    } else if (route === Route.sprint) {
       // level ?
-      // this.sprint.show(Number(level)) :
-      // this.sprint.show();
+      // await this.sprint.show(Number(level), Number(page)) :
+      // await this.sprint.show();
       //
       this.appView.hideFooter();
-    } else if (route === 'drag') {
+    } else if (route === Route.drag) {
       // level ?
-      // this.drag.showGame(Number(level)) :
-      // this.drag.showSettings();
+      // await this.drag.show(Number(level), Number(page)) :
+      // await this.drag.show();
       //
       this.appView.hideFooter();
-    } else if (route === 'stats') {
-      // this.stats.show();
+    } else if (route === Route.stats) {
+      // await this.stats.show();
       this.appView.showFooter();
     } else {
-      // this.error.show();
+      // await this.error.show();
       this.appView.showFooter();
     }
     M.AutoInit();
