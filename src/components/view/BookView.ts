@@ -10,6 +10,7 @@ export class BookView {
 
   render(res: Word[]) {
     console.log(res);
+    this.mainDiv.innerHTML = '';
 
     const bookWrap = createElement('div', 'book-wrap', '', 'book-wrap');
     this.mainDiv.appendChild(bookWrap);
