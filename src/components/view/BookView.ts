@@ -1,5 +1,5 @@
 import { Word } from '../types';
-import Card from './CardView';
+import Card from './helpers/CardView';
 import { createElement } from './helpers/renderHelpers';
 
 export class BookView {
@@ -22,7 +22,7 @@ export class BookView {
       </div>
     </div>
  
-     <div class="parallax"><img src="assets/images/violet-1.jpg" alt="violet" class = "img-parallax" id = "img-1"></div>`;
+     <div class="parallax semi-transparent"><img src="assets/images/violet-1.jpg" alt="violet" class = "img-parallax" id = "img-1"></div>`;
 
     bookWrap.appendChild(title);
 
@@ -148,6 +148,7 @@ export class BookView {
     if (level === 6) color = 'white';
 
     picture1.src = `assets/images/${color}-1.jpg`;
+    // picture1.style.opacity = `0.6`;
     picture3.src = `assets/images/${color}-3.jpg`;
     bookWrap.style.backgroundImage = `url(../assets/images/${color}-2.jpg)`;
   }
@@ -157,7 +158,41 @@ export class BookView {
     for (let i = 0; i < res.length; i += 1) {
       const card = new Card(cards, res[i]);
 
-      card.onDifficult = () => {};
+      card.onVolume = () => {
+        // card.audio.addEventListener('canplaythrough', () => card.audio.play());
+        if (card.audio.paused === false) {
+          card.audio.pause();
+          card.audio.currentTime = 0;
+          card.volume.classList.remove('volume-active');
+          return;
+        }
+        if (card.audioMeaning.paused === false) {
+          card.audioMeaning.pause();
+          card.audioMeaning.currentTime = 0;
+          card.volume.classList.remove('volume-active');
+          return;
+        }
+        if (card.audioExample.paused === false) {
+          card.audioExample.pause();
+          card.audioExample.currentTime = 0;
+          card.volume.classList.remove('volume-active');
+          return;
+        }
+
+        card.volume.classList.add('volume-active');
+        card.audio.play();
+        card.audio.onended = () => card.audioMeaning.play();
+        card.audioMeaning.onended = () => card.audioExample.play();
+        card.audioExample.onended = () => card.volume.classList.remove('volume-active');
+
+        // card.audio.addEventListener('canplaythrough', () => card.audio.play());
+        // card.audio.onended = () => {
+        //   card.audioMeaning.addEventListener('canplaythrough', () => card.audioMeaning.play());
+        // };
+        // card.audioMeaning.onended = () => {
+        //   card.audioExample.addEventListener('canplaythrough', () => card.audioExample.play());
+        // };
+      };
     }
   }
 }
