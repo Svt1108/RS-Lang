@@ -22,7 +22,7 @@ export class BookView {
       </div>
     </div>
  
-     <div class="parallax semi-transparent"><img src="assets/images/violet-1.jpg" alt="violet" class = "img-parallax" id = "img-1"></div>`;
+     <div class="parallax"><img src="assets/images/violet-1.jpg" alt="violet" class = "img-parallax" id = "img-1"></div>`;
 
     bookWrap.appendChild(title);
 
