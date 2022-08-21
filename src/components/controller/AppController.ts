@@ -21,7 +21,7 @@ export class AppController {
     this.appModel = new AppModel();
 
     this.main = new MainController(this.mainDiv);
-    // this.auth = new AuthController(this.mainDiv);
+    // this.login = new LoginController(this.mainDiv);
     this.book = new BookController(this.mainDiv);
     // this.audio = new AudioGameController(this.mainDiv);
     // this.sprint = new SprintGameController(this.mainDiv);
@@ -55,7 +55,7 @@ export class AppController {
       await this.main.show();
       this.appView.showFooter();
     } else if (route === Route.login) {
-      // await this.auth.show();
+      // await this.login.show();
       this.appView.showFooter();
     } else if (route === Route.book) {
       if (level) {
