@@ -11,6 +11,8 @@ export class AppController {
   appModel;
   main;
   book;
+  header?: HTMLElement | null;
+  loader = createElement('div', 'progress');
 
   constructor() {
     this.mainDiv = createElement('main');
@@ -19,7 +21,7 @@ export class AppController {
     this.appModel = new AppModel();
 
     this.main = new MainController(this.mainDiv);
-    // this.auth = new AuthController(this.mainDiv);
+    // this.login = new LoginController(this.mainDiv);
     this.book = new BookController(this.mainDiv);
     // this.audio = new AudioGameController(this.mainDiv);
     // this.sprint = new SprintGameController(this.mainDiv);
@@ -29,10 +31,10 @@ export class AppController {
 
   public start() {
     const [route, level, page] = window.location.hash.slice(1).split('#');
-    // simple - ['stats', undefined, undefined]
-    // game - ['sprint', '3', undefined]
-    // book - ['book', '2', '19']
     this.appView.render(route);
+
+    this.header = document.querySelector('.header-lang');
+    this.loader.innerHTML = '<div class="indeterminate"></div>';
 
     this.renderNewPage([route, level, page]);
     this.enableRouting();
@@ -46,14 +48,14 @@ export class AppController {
   }
 
   private async renderNewPage([route, level = '', page = '']: string[]) {
-    this.mainDiv.innerHTML = '';
-    console.log('del log from AppController', route, level, page);
+    this.header?.append(this.loader);
+    console.log('ROUTE:', route, 'LEVEL:', level, 'PAGE:', page);
 
     if (route === Route.main || route === '') {
       await this.main.show();
       this.appView.showFooter();
     } else if (route === Route.login) {
-      // await this.auth.show();
+      // await this.login.show();
       this.appView.showFooter();
     } else if (route === Route.book) {
       if (level) {
@@ -87,6 +89,7 @@ export class AppController {
       // await this.error.show();
       this.appView.showFooter();
     }
+    this.loader.remove();
     M.AutoInit();
   }
 }
