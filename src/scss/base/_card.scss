@@ -1,13 +1,26 @@
-.vertical-card {
+// .vertical-card {
+//     display: flex;
+//     flex-direction: row;
+//     width: 100%;
+//     align-items: center;
+// }
+.word-img-wrap {
     display: flex;
-    flex-direction: row;
-    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.word-wrap {
+    width: 14rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
 .card-image {
-    width: 15rem;
-    height: 14rem;
+    width: 12rem;
+    height: 12rem;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
@@ -16,6 +29,7 @@
 
 .card .card-content {
     padding: 1rem;
+    width: 26rem;
 }
 
 .p-lang {
@@ -25,13 +39,14 @@
 
 .word {
     font-weight: 700;
-    font-size: 1.8rem;
-    padding-bottom: 0.1rem;
+    font-size: 2rem;
+    padding-bottom: 0.8rem;
 }
 
 .word-translate {
     font-weight: 600;
     font-size: 1.3rem;
+    padding-top: 0.5rem;
 }
 
 .meaning,
@@ -57,8 +72,8 @@
     margin: 0.2rem 0;
 }
 
-.word-wrap {
-    display: flex;
-    align-items: center;
-    padding-bottom: 0.5rem;
-}
+// .word-wrap {
+//     display: flex;
+//     align-items: center;
+//     padding-bottom: 0.5rem;
+// }

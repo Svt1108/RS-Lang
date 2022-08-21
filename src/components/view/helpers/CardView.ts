@@ -20,28 +20,23 @@ class Card {
     //  const HOST = 'https://rslang-english-learnwords.herokuapp.com';
     this.data = data;
 
-    const card = createElement('div', 'card vertical-card z-depth-2');
+    const card = createElement('div', 'card z-depth-2');
     content.appendChild(card);
 
-    const cardImage = createElement('div', 'card-image');
-    cardImage.style.backgroundImage = `url(${HOST}/${this.data.image})`;
-    card.appendChild(cardImage);
-
-    const cardContent = createElement('div', 'card-content');
-    card.appendChild(cardContent);
+    const wordImgWrap = createElement('div', 'word-img-wrap');
+    card.appendChild(wordImgWrap);
 
     const wordWrap = createElement('div', 'word-wrap');
-    cardContent.appendChild(wordWrap);
+    wordImgWrap.appendChild(wordWrap);
+
+    // const wordWrap = createElement('div', 'word-wrap');
+    // cardContent.appendChild(wordWrap);
 
     const word = createElement('p', 'grey-text text-darken-2 word', `${this.data.word}`);
     wordWrap.appendChild(word);
 
-    const wordTranslate = createElement('p', 'grey-text text-darken-2 word-translate');
-    wordTranslate.innerHTML = `&nbsp;&nbsp;-&nbsp;&nbsp;${this.data.wordTranslate}`;
-    wordWrap.appendChild(wordTranslate);
-
     const transcription = createElement('p', 'grey-text text-darken-2 p-lang', `${this.data.transcription}`);
-    cardContent.appendChild(transcription);
+    wordWrap.appendChild(transcription);
 
     this.volume = createElement('i', 'tiny material-icons volume-up', `volume_up`);
     transcription.appendChild(this.volume);
@@ -58,13 +53,24 @@ class Card {
     this.audioExample.src = `${HOST}/${this.data.audioExample}`;
     this.volume.appendChild(this.audioExample);
 
+    const wordTranslate = createElement('p', 'grey-text text-darken-2 word-translate');
+    wordTranslate.innerHTML = `${this.data.wordTranslate}`;
+    wordWrap.appendChild(wordTranslate);
+
+    const cardImage = createElement('div', 'card-image');
+    cardImage.style.backgroundImage = `url(${HOST}/${this.data.image})`;
+    wordImgWrap.appendChild(cardImage);
+
     // audio.play();
+
+    const cardContent = createElement('div', 'card-content');
+    card.appendChild(cardContent);
 
     const divider = createElement('div', 'divider divider-lang');
     cardContent.appendChild(divider);
 
-    // const meaning = createElement('p', 'grey-text text-darken-2 meaning', `Значение:`);
-    // cardContent.appendChild(meaning);
+    const meaning = createElement('p', 'grey-text text-darken-2 meaning p-lang', `Значение:`);
+    cardContent.appendChild(meaning);
 
     const textMeaning = createElement('p', 'grey-text text-darken-2 p-lang');
     textMeaning.innerHTML = this.data.textMeaning;
@@ -80,8 +86,8 @@ class Card {
     const divider1 = createElement('div', 'divider divider-lang');
     cardContent.appendChild(divider1);
 
-    // const example = createElement('p', 'grey-text text-darken-2 example', `Пример:`);
-    // cardContent.appendChild(example);
+    const example = createElement('p', 'grey-text text-darken-2 example p-lang', `Пример:`);
+    cardContent.appendChild(example);
 
     const textExample = createElement('p', 'grey-text text-darken-2 p-lang');
     textExample.innerHTML = this.data.textExample;
