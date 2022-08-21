@@ -1,4 +1,5 @@
 import { Word } from '../types';
+import Card from './CardView';
 import { createElement } from './helpers/renderHelpers';
 
 export class BookView {
@@ -32,8 +33,11 @@ export class BookView {
     row.appendChild(levels);
     this.renderLevels(levels);
 
-    const cards = createElement('div', 'col s12 m8 cards');
-    row.appendChild(cards);
+    const cardsWrap = createElement('div', 'col s12 m8');
+    row.appendChild(cardsWrap);
+
+    const cards = createElement('div', 'cards');
+    cardsWrap.appendChild(cards);
     this.renderCards(cards, res);
 
     const games = createElement('div', 'col s12 m2 games');
@@ -147,5 +151,10 @@ export class BookView {
 
   renderCards(cards: HTMLElement, res: Word[]) {
     console.log(res);
+    for (let i = 0; i < res.length; i += 1) {
+      const card = new Card(cards, res[i]);
+
+      card.onDifficult = () => {};
+    }
   }
 }
