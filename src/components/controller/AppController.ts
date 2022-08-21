@@ -90,6 +90,7 @@ export class AppController {
       this.appView.showFooter();
     }
     this.loader.remove();
+    document.documentElement.scrollTop = 0;
     M.AutoInit();
   }
 }
