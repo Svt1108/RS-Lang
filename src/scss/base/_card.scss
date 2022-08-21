@@ -1,7 +1,14 @@
+.vertical-card {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+}
+
 .card-image {
-    width: 27rem;
-    height: 18rem;
-    background-size: contain;
+    width: 15rem;
+    height: 14rem;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
     z-index: 5;
@@ -9,21 +16,21 @@
 
 .card .card-content {
     padding: 1rem;
-    width: 26rem;
 }
 
-.card-content p {
-    line-height: 1.4rem;
-    padding: 0.3rem;
+.p-lang {
+    line-height: 1.3rem;
+    padding: 0.2rem;
 }
 
 .word {
     font-weight: 700;
     font-size: 1.8rem;
+    padding-bottom: 0.1rem;
 }
 
-.wordTranslate {
-    font-weight: 700;
+.word-translate {
+    font-weight: 600;
     font-size: 1.3rem;
 }
 
@@ -44,4 +51,14 @@
 .volume-active {
     color: black;
     transform: scale(1.4);
+}
+
+.divider-lang {
+    margin: 0.2rem 0;
+}
+
+.word-wrap {
+    display: flex;
+    align-items: center;
+    padding-bottom: 0.5rem;
 }
