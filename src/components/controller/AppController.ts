@@ -4,6 +4,7 @@ import { MainController } from './MainController';
 import { BookController } from './BookController';
 import { createElement } from '../view/helpers/renderHelpers';
 import { Route } from '../types/appRoutes';
+import { LoginController } from './LoginController';
 
 export class AppController {
   mainDiv;
@@ -13,6 +14,7 @@ export class AppController {
   book;
   header?: HTMLElement | null;
   loader = createElement('div', 'progress');
+  login;
 
   constructor() {
     this.mainDiv = createElement('main');
@@ -21,7 +23,7 @@ export class AppController {
     this.appModel = new AppModel();
 
     this.main = new MainController(this.mainDiv);
-    // this.login = new LoginController(this.mainDiv);
+    this.login = new LoginController(this.mainDiv);
     this.book = new BookController(this.mainDiv);
     // this.audio = new AudioGameController(this.mainDiv);
     // this.sprint = new SprintGameController(this.mainDiv);
@@ -49,13 +51,13 @@ export class AppController {
 
   private async renderNewPage([route, level = '', page = '']: string[]) {
     this.header?.append(this.loader);
-    console.log('ROUTE:', route, 'LEVEL:', level, 'PAGE:', page);
+    // console.log('ROUTE:', route, 'LEVEL:', level, 'PAGE:', page);
 
     if (route === Route.main || route === '') {
       await this.main.show();
       this.appView.showFooter();
-    } else if (route === Route.login) {
-      // await this.login.show();
+    } else if (route === Route.login || route === Route.register) {
+      await this.login.show(route);
       this.appView.showFooter();
     } else if (route === Route.book) {
       if (level) {
