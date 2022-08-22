@@ -121,7 +121,7 @@ export const updateUserWord = async (userId: string, wordId: string, token: stri
   return userWord;
 };
 
-export const deleteUserWord = async (userId: string, wordId: string, token: string): Promise<void> => {
+export const deleteUserWord = async (userId: string, wordId: string, token: string) => {
   await fetch(`${HOST}${Path.users}/${userId}${Path.words}/${wordId}`, {
     method: Method.delete,
     headers: {
