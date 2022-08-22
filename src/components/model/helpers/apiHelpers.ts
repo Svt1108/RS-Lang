@@ -2,7 +2,7 @@ import { Assets, Method, ObjType, Path, User, UserWord, Word } from '../../types
 
 export const HOST = 'https://rslang-english-learnwords.herokuapp.com';
 
-export const getWords = async (page = 0, level = 0): Promise<Word[]> => {
+export const getWords = async (level = 0, page = 0): Promise<Word[]> => {
   const url = `${HOST}${Path.words}?page=${page}&group=${level}`;
   const res: Response = await fetch(url);
   const wordsArr: Word[] = await res.json();
