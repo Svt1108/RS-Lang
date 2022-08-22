@@ -56,10 +56,11 @@
 .level-btn {
     font-size: 1rem;
     background-color: white;
-    // font-weight: 500;
+    font-weight: 500;
     width: 90%;
     height: 2.5rem;
     min-width: fit-content;
+    max-width: 10rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,3 +114,7 @@
 .btn-collection {
     background-image: url(../assets/svg/collection1.svg);
 }
+
+// .semi-transparent {
+//     opacity: 0.6;
+// }
