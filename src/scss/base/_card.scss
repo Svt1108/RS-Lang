@@ -1,10 +1,31 @@
+// .vertical-card {
+//     display: flex;
+//     flex-direction: row;
+//     width: 100%;
+//     align-items: center;
+// }
+.word-img-wrap {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.word-wrap {
+    width: 14rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .card-image {
-    width: 27rem;
-    height: 18rem;
-    background-size: contain;
+    width: 12rem;
+    height: 12rem;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
     z-index: 5;
+    border-bottom-left-radius: 3px;
 }
 
 .card .card-content {
@@ -12,22 +33,49 @@
     width: 26rem;
 }
 
-.card-content p {
-    line-height: 1.4rem;
-    padding: 0.3rem;
+.p-lang {
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    padding: 0.2rem;
 }
 
 .word {
     font-weight: 700;
-    font-size: 1.8rem;
+    font-size: 2rem;
+    padding-bottom: 0.8rem;
 }
 
-.wordTranslate {
-    font-weight: 700;
+.word-translate {
+    font-weight: 600;
     font-size: 1.3rem;
+    padding-top: 0.5rem;
 }
 
 .meaning,
 .example {
     font-weight: 700;
 }
+
+.volume-up {
+    cursor: pointer;
+    margin-left: 0.5rem;
+    &:hover {
+        color: black;
+        transform: scale(1.1);
+    }
+}
+
+.volume-active {
+    color: black;
+    transform: scale(1.4);
+}
+
+.divider-lang {
+    margin: 0.2rem 0;
+}
+
+// .word-wrap {
+//     display: flex;
+//     align-items: center;
+//     padding-bottom: 0.5rem;
+// }
