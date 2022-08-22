@@ -2,22 +2,22 @@ import { Assets, Method, ObjType, Path, User, UserWord, Word } from "../../types
 
 const HOST = 'https://rslang-english-learnwords.herokuapp.com'
 
-export const getWords = async (page = 0, group = 0): Promise<Word[]> => {
-  const url = `${HOST}${Path.words}?page=${page}&group=${group}`;
+export const getWords = async (page = 0, level = 0): Promise<Word[]> => {
+  const url = `${HOST}${Path.words}?page=${page}&group=${level}`;
   const res: Response = await fetch(url);
   const wordsArr: Word[] = await res.json();
   return wordsArr;
 };
 
-export const getWord = async (id: string): Promise<Word> => {
-  const url = `${HOST}${Path.words}/${id}`;
+export const getWord = async (wordId: string): Promise<Word> => {
+  const url = `${HOST}${Path.words}/${wordId}`;
   const res: Response = await fetch(url);
   const word: Word = await res.json();
   return word;
 };
 
-export const getAssets = async (id: string): Promise<Assets> => {
-  const url = `${HOST}${Path.words}/${id}`;
+export const getAssets = async (wordId: string): Promise<Assets> => {
+  const url = `${HOST}${Path.words}/${wordId}`;
   const res: Response = await fetch(url);
   const word: Word = await res.json();
   return {
@@ -56,8 +56,8 @@ export const getLoginUser = async (user: User): Promise<ObjType> => {
   return loginUser;
 };
 
-export const getUser = async (id: string, token: string): Promise<ObjType> => {
-  const url = `${HOST}${Path.users}/${id}`;
+export const getUser = async (userId: string, token: string): Promise<ObjType> => {
+  const url = `${HOST}${Path.users}/${userId}`;
   const res: Response = await fetch(url, {
     method: Method.get,
     headers: {
@@ -83,7 +83,7 @@ export const createUserWord = async (userId: string, wordId: string, token: stri
   return userWord;
 };
 
-export const getAllUserWord = async (userId: string, token: string) => {
+export const getAllUserWords = async (userId: string, token: string) => {
   const url = await fetch(`${HOST}${Path.users}/${userId}${Path.words}`, {
     method: Method.get,
     headers: {
@@ -121,7 +121,7 @@ export const updateUserWord = async (userId: string, wordId: string, token: stri
   return userWord;
 };
 
-export const deleteUserWord = async (userId: string, wordId: string, token: string) => {
+export const deleteUserWord = async (userId: string, wordId: string, token: string): Promise<void> => {
   await fetch(`${HOST}${Path.users}/${userId}${Path.words}/${wordId}`, {
     method: Method.delete,
     headers: {
@@ -129,4 +129,28 @@ export const deleteUserWord = async (userId: string, wordId: string, token: stri
       'Accept': 'application/json',
     },
   });
+};
+
+export const getUserStatistic = async (userId: string, token: string) => {
+  const url = await fetch(`${HOST}${Path.users}/${userId}${Path.statistics}`, {
+    method: Method.get,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+    },
+  });
+  const userStatistic = await url.json();
+  return userStatistic;
+};
+
+export const updateUserStatistic = async (userId: string, token: string) => {
+  const url = await fetch(`${HOST}${Path.users}/${userId}${Path.statistics}`, {
+    method: Method.update,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json',
+    },
+  });
+  const userStatistic = await url.json();
+  return userStatistic;
 };
