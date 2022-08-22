@@ -4,9 +4,12 @@ import { createElement } from './helpers/renderHelpers';
 
 export class BookView {
   mainDiv;
+  pageNumber: number;
+  pageNumberView?: HTMLElement;
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
+    this.pageNumber = 3;
   }
 
   render(res: Word[]) {
@@ -49,6 +52,7 @@ export class BookView {
 
     const pagination = createElement('div', 'pagination');
     bookWrap.appendChild(pagination);
+    this.renderPagination(pagination);
 
     const bottom = createElement('div', 'parallax-container valign-wrapper bottom-lang');
     bottom.innerHTML = `
@@ -134,6 +138,9 @@ export class BookView {
   }
 
   switchImages(level: number) {
+    /**      level в хэш         * */
+    window.location.hash = 'book#4#5';
+
     let color = '';
     const picture1 = document.getElementById('img-1') as HTMLImageElement;
     const picture3 = document.getElementById('img-3') as HTMLImageElement;
@@ -151,6 +158,71 @@ export class BookView {
     // picture1.style.opacity = `0.6`;
     picture3.src = `assets/images/${color}-3.jpg`;
     bookWrap.style.backgroundImage = `url(../assets/images/${color}-2.jpg)`;
+  }
+
+  renderPagination(pagination: HTMLElement) {
+    const pageWrap = createElement('div', 'page-wrap');
+    pagination.appendChild(pageWrap);
+
+    // this.pageNumber = 3;
+
+    // this.pageNumber =
+    //   this.garageOrWinners === pageTypeHash() ? pageNumberHash() : 1;
+
+    // this.controller = new Controller();
+    // this.pageWrap = new Control(main, "div", "page-wrap");
+
+    const first = createElement('div', 'page-btn z-depth-2 waves-effect first', '<<');
+    pageWrap.appendChild(first);
+    first.onclick = () => this.changePageNumber('first');
+
+    const previous = createElement('div', 'page-btn z-depth-2 waves-effect previous', '<');
+    pageWrap.appendChild(previous);
+    previous.onclick = () => this.changePageNumber('prev');
+
+    this.pageNumberView = createElement('div', 'page-number', `${this.pageNumber}`);
+    this.pageNumberView.setAttribute('readonly', 'readonly');
+    pageWrap.appendChild(this.pageNumberView);
+
+    const next = createElement('div', 'page-btn z-depth-2 waves-effect next', '>');
+    pageWrap.appendChild(next);
+    next.onclick = () => this.changePageNumber('next');
+
+    const last = createElement('div', 'page-btn z-depth-2 waves-effect last', '>>');
+    pageWrap.appendChild(last);
+    last.onclick = () => this.changePageNumber('last');
+  }
+
+  changePageNumber(marker: string) {
+    // if (
+    //   pageTypeHash() !== this.garageOrWinners &&
+    //   !(pageTypeHash() === "" && this.garageOrWinners === "garage")
+    // )
+    //   return;
+    // this.pageNumber = pageNumberHash();
+    // this.createInput?.removeAttribute("disabled");
+    // this.generate?.classList.remove("blocked");
+    // const lastPageNumber =
+    //   pageTypeHash() === "garage"
+    //     ? await this.controller.getPagesCount(this.pageNumber)
+    //     : await this.controller.getPagesCountWin(this.pageNumber);
+    const lastPageNumber = 20;
+
+    if (marker === 'next' && this.pageNumber < lastPageNumber) this.pageNumber += 1;
+    if (marker === 'prev' && this.pageNumber > 1) this.pageNumber -= 1;
+    if (marker === 'first') this.pageNumber = 1;
+    if (marker === 'last') this.pageNumber = lastPageNumber;
+
+    (<HTMLElement>this.pageNumberView).innerHTML = this.pageNumber.toString();
+
+    /**     pageNumber в хэш         * */
+
+    // window.location.hash =
+    //   this.garageOrWinners === 'garage'
+    //     ? `${pageTypeHash()}#${this.pageNumber}`
+    //     : `${pageTypeHash()}#${pageSortHash()}#${pageOrderHash()}#${this.pageNumber}`;
+    // if (this.garageOrWinners === 'garage') await Controller.reDrawGarage();
+    // else await Controller.reDrawWinners();
   }
 
   renderCards(cards: HTMLElement, res: Word[]) {
