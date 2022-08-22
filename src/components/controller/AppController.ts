@@ -63,7 +63,7 @@ export class AppController {
       if (level) {
         await this.book.show(Number(level), Number(page));
       } else {
-        await this.book.show();
+        await this.book.show(0, 0);
       }
       this.appView.showFooter();
     } else if (route === Route.audio) {
