@@ -57,7 +57,7 @@ class Card {
     wordTranslate.innerHTML = `${this.data.wordTranslate}`;
     wordWrap.appendChild(wordTranslate);
 
-    const cardImage = createElement('div', 'card-image');
+    const cardImage = createElement('div', 'z-depth-1 card-image');
     cardImage.style.backgroundImage = `url(${HOST}/${this.data.image})`;
     wordImgWrap.appendChild(cardImage);
 
@@ -66,8 +66,8 @@ class Card {
     const cardContent = createElement('div', 'card-content');
     card.appendChild(cardContent);
 
-    const divider = createElement('div', 'divider divider-lang');
-    cardContent.appendChild(divider);
+    // const divider = createElement('div', 'divider divider-lang');
+    // cardContent.appendChild(divider);
 
     const meaning = createElement('p', 'grey-text text-darken-2 meaning p-lang', `Значение:`);
     cardContent.appendChild(meaning);

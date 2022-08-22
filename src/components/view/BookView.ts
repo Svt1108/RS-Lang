@@ -18,7 +18,7 @@ export class BookView {
     const title = createElement('div', 'parallax-container valign-wrapper title-lang');
     title.innerHTML = `    <div class="section no-pad-bot">
     <div class="container">
-        <h5 class="header center white-text h5-lang">Учебник</h5>
+        <h6 class="header center white-text h6-lang">Учебник. Multilevel coursebook</h6>
       </div>
     </div>
  

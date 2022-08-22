@@ -25,6 +25,7 @@
     background-repeat: no-repeat;
     background-position: top;
     z-index: 5;
+    border-bottom-left-radius: 3px;
 }
 
 .card .card-content {
@@ -33,6 +34,7 @@
 }
 
 .p-lang {
+    font-size: 0.9rem;
     line-height: 1.3rem;
     padding: 0.2rem;
 }
