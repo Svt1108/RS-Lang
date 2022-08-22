@@ -1,0 +1,120 @@
+.book-wrap {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    // background-color: aqua;
+    position: relative;
+    // z-index: -2;
+    background-image: url(../assets/images/violet-2.jpg);
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.title-lang {
+    min-height: 160px;
+    padding-top: 3rem;
+}
+
+.cards {
+    // height: 2000px;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 4rem;
+    row-gap: 2rem;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.bottom-lang {
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+    width: 100%;
+}
+
+.pagination {
+    height: 160px;
+}
+
+.levels,
+.games {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1rem;
+}
+
+.levels-title,
+.games-title {
+    padding: 0.5rem 0;
+    font-weight: 500;
+}
+
+.level-btn {
+    font-size: 1rem;
+    background-color: white;
+    font-weight: 500;
+    width: 90%;
+    height: 2.5rem;
+    min-width: fit-content;
+    max-width: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 3px;
+    transition: 0.3s;
+    cursor: pointer;
+    &:hover {
+        box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.14), 0 2px 2px 2px rgba(0, 0, 0, 0.12), 0 2px 2px -2px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.games-btn {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 7rem;
+    height: 7rem;
+    padding: 0.5rem;
+    border-radius: 3px;
+    transition: 0.3s;
+    cursor: pointer;
+    &:hover {
+        box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.14), 0 2px 2px 2px rgba(0, 0, 0, 0.12), 0 2px 2px -2px rgba(0, 0, 0, 0.2);
+    }
+    .game-title {
+        color: black;
+        text-align: center;
+        font-size: 0.8rem;
+        padding-bottom: 0.3rem;
+    }
+}
+
+.game-picture {
+    width: 90%;
+    height: 90%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 300;
+}
+
+.btn-sprint {
+    background-image: url(../assets/svg/run2.svg);
+}
+
+.btn-audio {
+    background-image: url(../assets/svg/audio1.svg);
+}
+
+.btn-collection {
+    background-image: url(../assets/svg/collection1.svg);
+}
+
+// .semi-transparent {
+//     opacity: 0.6;
+// }

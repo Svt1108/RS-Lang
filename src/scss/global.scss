@@ -1,10 +1,13 @@
 // @import 'abstracts/constants';
-@import './base/common.scss';
+@import 'base/common';
 @import '../../node_modules/materialize-css/dist/css/materialize.min.css';
 @import 'base/fonts';
-@import './base/header.scss';
-@import './base/footer.scss';
-@import './base/main.scss';
+@import 'base/header';
+@import 'base/footer';
+@import 'base/main';
+@import 'base/components';
+@import 'base/book';
+@import 'base/card';
 // @import 'base/base';
 // @import 'base/pagination';
 // @import 'layout/nav';

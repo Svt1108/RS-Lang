@@ -1,5 +1,6 @@
 // import { AppState } from '../types';
-import { createElement, renderHeader, renderFooter } from './helpers/renderHelpers';
+import { createElement } from './helpers/renderHelpers';
+import { renderHeader, renderFooter } from './helpers/appRenderHelpers';
 
 export class AppView {
   header;
@@ -7,7 +8,7 @@ export class AppView {
   footer;
 
   constructor(main: HTMLElement) {
-    this.header = createElement('footer', 'header');
+    this.header = createElement('header', 'header');
     this.main = main;
     this.footer = createElement('footer', 'footer');
   }

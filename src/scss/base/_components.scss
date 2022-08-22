@@ -1,0 +1,20 @@
+.h2-lang,
+.h3-lang,
+.h5-lang,
+.h6-lang {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5rem;
+}
+
+.h6-lang {
+    letter-spacing: 0.1em;
+}
+
+.btn-lang {
+    color: #004d40;
+    font-weight: 700;
+    opacity: 0.9;
+}
