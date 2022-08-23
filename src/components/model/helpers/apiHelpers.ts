@@ -2,7 +2,7 @@ import { Assets, Method, ObjType, Path, User, UserWord, Word } from '../../types
 
 export const HOST = 'https://rslang-english-learnwords.herokuapp.com';
 
-export const getWords = async (level = 0, page = 0): Promise<Word[]> => {
+export const getWords = async (page = 0, level = 0): Promise<Word[]> => {
   const url = `${HOST}${Path.words}?page=${page}&group=${level}`;
   const res: Response = await fetch(url);
   const wordsArr: Word[] = await res.json();
@@ -25,7 +25,7 @@ export const getAssets = async (wordId: string): Promise<Assets> => {
     audio: `${HOST}/${word.audio}`,
     audioMeaning: `${HOST}/${word.audioMeaning}`,
     audioExample: `${HOST}/${word.audioExample}`,
-  }
+  };
 };
 
 // export const getAssets = async (id: string): Promise<Assets> => {
@@ -147,8 +147,8 @@ export const getUserStatistic = async (userId: string, token: string) => {
   const url = await fetch(`${HOST}${Path.users}/${userId}${Path.statistics}`, {
     method: Method.get,
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
     },
   });
   const userStatistic = await url.json();
@@ -159,8 +159,8 @@ export const updateUserStatistic = async (userId: string, token: string) => {
   const url = await fetch(`${HOST}${Path.users}/${userId}${Path.statistics}`, {
     method: Method.update,
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Accept': 'application/json',
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
     },
   });
   const userStatistic = await url.json();

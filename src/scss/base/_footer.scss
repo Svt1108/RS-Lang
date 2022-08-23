@@ -38,11 +38,12 @@
     gap: 1rem;
     flex-direction: row;
     padding-top: 0.5rem;
-    .page-footer__github {
-        width: 2rem;
-        height: 2rem;
-        background-image: url(../assets/svg/github-icon.svg);
-        background-size: contain;
-        background-repeat: no-repeat;
-    }
+}
+
+.page-footer__github {
+    width: 2rem;
+    height: 2rem;
+    background-image: url(../assets/svg/github-icon.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
 }

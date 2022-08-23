@@ -26,6 +26,7 @@
     background-position: top;
     z-index: 5;
     border-bottom-left-radius: 3px;
+    flex-shrink: 2;
 }
 
 .card .card-content {
@@ -41,7 +42,7 @@
 
 .word {
     font-weight: 700;
-    font-size: 2rem;
+    font-size: 1.9rem;
     padding-bottom: 0.8rem;
 }
 
@@ -49,6 +50,7 @@
     font-weight: 600;
     font-size: 1.3rem;
     padding-top: 0.5rem;
+    text-align: center;
 }
 
 .meaning,

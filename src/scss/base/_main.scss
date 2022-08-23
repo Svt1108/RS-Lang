@@ -45,6 +45,31 @@ p {
     padding: 2rem 0;
 }
 
+.main-github {
+    display: flex;
+    flex-wrap: nowrap;
+    width: fit-content;
+    height: fit-content;
+    align-items: center;
+    //    background-color: rgba(0, 0, 0, 0.6);
+    // padding: 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    .main-github__image {
+        margin-left: 1rem;
+        width: 2rem;
+        height: 2rem;
+        background-image: url(../assets/svg/github-icon-black.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: 0.6;
+    }
+    .main-github__link {
+        width: fit-content;
+        height: fit-content;
+    }
+}
+
 @media only screen and (max-width: 992px) {
     .parallax-container .section {
         position: absolute;
