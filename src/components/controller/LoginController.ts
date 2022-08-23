@@ -3,8 +3,8 @@ import { LoginView } from '../view/LoginView';
 export class LoginController {
   view;
 
-  constructor(main: HTMLElement) {
-    this.view = new LoginView(main);
+  constructor(mainDiv: HTMLElement) {
+    this.view = new LoginView(mainDiv);
   }
 
   public show(route: 'login' | 'register') {
