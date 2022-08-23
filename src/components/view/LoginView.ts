@@ -1,50 +1,32 @@
+import { createElement } from './helpers/renderHelpers';
+import { createHeading, createParagraphWithLink, createLoginFormContent } from './helpers/loginRenderHelpers';
+
 export class LoginView {
   mainDiv;
+  form?: HTMLFormElement;
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
   }
 
   renderLogin() {
-    this.mainDiv.innerHTML = `
-<div class="lang_login">
-  <div class="lang_login_img_container lang_door"></div>
+    const loginPageDiv = createElement('div', 'lang_login');
+    const imgContainer = createElement('div', 'lang_login_img_container lang_door');
+    const formContainer = createElement('div', 'lang_login_form_container');
+    loginPageDiv.append(imgContainer, formContainer);
 
-  <div class="lang_login_form_container">
+    const heading = createHeading('Уже с нами?', 'Войди в аккаунт!');
+    const row = createElement('div', 'row');
+    const linkText = createParagraphWithLink('Впервые тут?', 'Зарегистрируйся!');
+    formContainer.append(heading, row, linkText);
 
-    <div class="lang_login_heading">Уже с нами?<br>&<br>Войди в аккаунт!</div>
+    this.form = createElement('form', 'col lang_login_form') as HTMLFormElement;
+    const formContent = createLoginFormContent();
+    this.form.append(formContent);
+    row.append(this.form);
 
-    <div class="row">
-      <form class="col lang_login_form">
-
-        <div class="row">
-
-          <div class="input-field col s12 lang_login_input">
-            <i class="grey-text text-darken-1 material-icons prefix">mail</i>
-            <input id="mail" type="email" class="validate" name="mail" required>
-            <label for="mail">e-mail *</label>
-          </div>
-
-          <div class="input-field col s12 lang_login_input lang_login_input_last">
-            <i class="grey-text text-darken-1 material-icons prefix">vpn_key</i>
-            <input id="pass" type="password" class="validate" name="pass" minlength="8" required>
-            <label for="pass">пароль *</label>
-          </div>
-
-          <button class="btn waves-effect waves-green grey lighten-3 z-depth-3 btn-lang lang_login_btn" type="submit">ВОЙТИ
-            <i class="material-icons right">check</i>
-          </button>
-          
-        </div>
-          
-      </form>
-    </div>
-          
-    <p>Впервые тут? <a class="red-text text-accent-4" href="#register">Зарегистрируйся!</a></p>
-
-  </div>
-</div>
-    `;
+    this.mainDiv.innerHTML = '';
+    this.mainDiv.append(loginPageDiv);
   }
 
   renderRegister() {
@@ -75,14 +57,14 @@ export class LoginView {
   
             <div class="input-field col s12 lang_login_input">
               <i class="grey-text text-darken-1 material-icons prefix">vpn_key</i>
-              <input id="pass_2" type="password" class="validate" name="pass_2" minlength="8" required>
-              <label for="pass_2">пароль (от 8 символов) *</label>
+              <input id="pass_1" type="password" class="validate" name="pass_1" minlength="8" required>
+              <label for="pass_1">пароль (от 8 символов) *</label>
             </div>
   
             <div class="input-field col s12 lang_login_input lang_login_input_last">
               <i class="grey-text text-darken-1 material-icons prefix">vpn_key</i>
-              <input id="pass_3" type="password" class="validate" name="pass_3" minlength="8" required>
-              <label for="pass_3">повторить пароль *</label>
+              <input id="pass_2" type="password" class="validate" name="pass_2" minlength="8" required>
+              <label for="pass_2">повторить пароль *</label>
             </div>
   
             <button class="btn waves-effect waves-green grey lighten-3 z-depth-3 btn-lang lang_login_btn" type="submit">РЕГИСТРАЦИЯ
