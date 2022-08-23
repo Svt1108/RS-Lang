@@ -51,3 +51,10 @@
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
 }
+
+@font-face {
+    font-family: 'Georgia';
+    src: url('../assets/fonts/georgia/Georgia.ttf'), url('../assets/fonts/georgia/Georgia4.ttf'), url('../assets/fonts/georgia/GeorgiaRegularfont.ttf'), url('../assets/fonts/georgia/GeorgiaBoldItalicfont.ttf');
+    font-weight: normal;
+    font-style: normal;
+}

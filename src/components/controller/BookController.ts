@@ -14,6 +14,6 @@ export class BookController {
 
   async show(level?: number, page?: number) {
     const res = await this.model.getBookWords(level, page);
-    this.view.render(res);
+    this.view.render(res, level, page);
   }
 }
