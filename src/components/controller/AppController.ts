@@ -54,10 +54,10 @@ export class AppController {
     // console.log('ROUTE:', route, 'LEVEL:', level, 'PAGE:', page);
 
     if (route === Route.main || route === '') {
-      await this.main.show();
+      this.main.show();
       this.appView.showFooter();
     } else if (route === Route.login || route === Route.register) {
-      await this.login.show(route);
+      this.login.show(route);
       this.appView.showFooter();
     } else if (route === Route.book) {
       if (level) {
