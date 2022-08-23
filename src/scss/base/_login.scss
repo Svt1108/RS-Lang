@@ -7,10 +7,17 @@
 .lang_login_img_container {
   width: 45%;
   height: 100%;
-  background-image: url('../assets/icons/login-door.png');
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.lang_login_img_container.lang_door {
+  background-image: url('../assets/icons/login-door.png');
+}
+
+.lang_login_img_container.lang_telephone {
+  background-image: url('../assets/icons/login-telephone.png');
 }
 
 .lang_login_img {
@@ -38,7 +45,7 @@
   width: fit-content;
   border: 15px double black;
   border-radius: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 .lang_login_form {
@@ -48,4 +55,13 @@
 
 .lang_login_input {
   margin: 5px auto;
+}
+
+.lang_login_input_last {
+  margin-bottom: 15px;
+}
+
+.lang_login_btn {
+  display: block;
+  margin: 0 auto;
 }
