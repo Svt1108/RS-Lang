@@ -16,17 +16,26 @@
     padding-top: 3rem;
 }
 
+.cards-wrap {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
 .cards {
     // height: 2000px;
     background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 3px;
     display: flex;
     flex-wrap: wrap;
     column-gap: 4rem;
     row-gap: 2rem;
     justify-content: center;
     margin: 0 auto;
-    padding: 4rem 2rem;
+    padding: 1rem 0 4rem 0;
 }
+
 
 .bottom-lang {
     position: absolute;
@@ -39,12 +48,17 @@
     height: 160px;
 }
 
+
 .levels,
 .games {
+    position:sticky;
+    top:175px;
     display: flex;
     flex-direction: column;
     align-items: center;
     row-gap: 1rem;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 3px;
 }
 
 .levels-title,

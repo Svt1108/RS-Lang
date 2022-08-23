@@ -6,9 +6,10 @@ import { createElement } from './helpers/renderHelpers';
 export class BookView {
   mainDiv;
   pageNumber: number;
-  pageNumberView?: HTMLElement;
+  pageNumberViewBottom?: HTMLElement;
   lastPageNumber: number;
   levelNumber: number;
+  pageNumberViewTop?: HTMLElement;
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
@@ -21,8 +22,8 @@ export class BookView {
     console.log(res);
     this.mainDiv.innerHTML = '';
 
-    console.log(`level: ${level}`);
-    console.log(`page: ${page}`);
+    // console.log(`level: ${level}`);
+    // console.log(`page: ${page}`);
 
     if (level !== undefined) this.levelNumber = level;
     if (page !== undefined) this.pageNumber = page;
@@ -50,8 +51,12 @@ export class BookView {
     row.appendChild(levels);
     this.renderLevels(levels);
 
-    const cardsWrap = createElement('div', 'col s12 m8');
+    const cardsWrap = createElement('div', 'col s12 m8 cards-wrap');
     row.appendChild(cardsWrap);
+
+    const paginationTop = createElement('div', 'pagination-top');
+    cardsWrap.appendChild(paginationTop);
+    this.renderPagination(paginationTop, "top");
 
     const cards = createElement('div', 'cards');
     cardsWrap.appendChild(cards);
@@ -63,7 +68,7 @@ export class BookView {
 
     const pagination = createElement('div', 'pagination');
     bookWrap.appendChild(pagination);
-    this.renderPagination(pagination);
+    this.renderPagination(pagination, "bottom");
 
     const bottom = createElement('div', 'parallax-container valign-wrapper bottom-lang');
     bottom.innerHTML = `
@@ -81,46 +86,46 @@ export class BookView {
     levels.appendChild(levelsTitle);
 
     const level0 = createElement('div', 'level-btn z-depth-2 waves-effect waves-purple', 'Level 0');
-    level0.style.border = `solid 1px #7851A9`;
+    level0.style.borderTop = `solid 1px #7851A9`;
     level0.style.borderLeft = `solid 3px #7851A9`;
     levels.appendChild(level0);
-    level0.onclick = () => this.switchHash(0);
+    level0.onclick = () => this.switchLevel(0);
 
     const level1 = createElement('div', 'level-btn z-depth-2 waves-effect waves-yellow', 'Level 1');
-    level1.style.border = `solid 1px #F0E891`;
+    level1.style.borderTop = `solid 1px #F0E891`;
     level1.style.borderLeft = `solid 3px #F0E891`;
     levels.appendChild(level1);
-    level1.onclick = () => this.switchHash(1);
+    level1.onclick = () => this.switchLevel(1);
 
     const level2 = createElement('div', 'level-btn z-depth-2 waves-effect waves-green', 'Level 2');
-    level2.style.border = `solid 1px #386646`;
+    level2.style.borderTop = `solid 1px #386646`;
     level2.style.borderLeft = `solid 3px #386646`;
     levels.appendChild(level2);
-    level2.onclick = () => this.switchHash(2);
+    level2.onclick = () => this.switchLevel(2);
 
     const level3 = createElement('div', 'level-btn z-depth-2 waves-effect waves-teal', 'Level 3');
-    level3.style.border = `solid 1px #4169E1`;
+    level3.style.borderTop = `solid 1px #4169E1`;
     level3.style.borderLeft = `solid 3px #4169E1`;
     levels.appendChild(level3);
-    level3.onclick = () => this.switchHash(3);
+    level3.onclick = () => this.switchLevel(3);
 
     const level4 = createElement('div', 'level-btn z-depth-2 waves-effect waves-orange', 'Level 4');
-    level4.style.border = `solid 1px #DEB768`;
+    level4.style.borderTop = `solid 1px #DEB768`;
     level4.style.borderLeft = `solid 3px #DEB768`;
     levels.appendChild(level4);
-    level4.onclick = () => this.switchHash(4);
+    level4.onclick = () => this.switchLevel(4);
 
     const level5 = createElement('div', 'level-btn z-depth-2 waves-effect waves-red', 'Level 5');
-    level5.style.border = `solid 1px #9B111E`;
-    level5.style.borderLeft = `solid 3px #9B111E`;
+    level5.style.borderTop = `solid 1px #FF1493`;
+    level5.style.borderLeft = `solid 3px #FF1493`;
     levels.appendChild(level5);
-    level5.onclick = () => this.switchHash(5);
+    level5.onclick = () => this.switchLevel(5);
 
     const level6 = createElement('div', 'level-btn z-depth-2 waves-effect waves-light', 'Сложные слова');
-    level6.style.border = `solid 1px #FCFCFD`;
+    level6.style.borderTop = `solid 1px #FCFCFD`;
     level6.style.borderLeft = `solid 3px #FCFCFD`;
     levels.appendChild(level6);
-    level6.onclick = () => this.switchHash(6);
+    level6.onclick = () => this.switchLevel(6);
   }
 
   renderGames(games: HTMLElement) {
@@ -152,7 +157,8 @@ export class BookView {
     game2.appendChild(game2Picture);
   }
 
-  switchHash(level: number) {
+  switchLevel(level: number) {
+    if(this.levelNumber === level) return;
     window.location.hash = `${Route.book}#${level}#0`;
   }
 
@@ -175,32 +181,40 @@ export class BookView {
     bookWrap.style.backgroundImage = `url(../assets/images/${color}-2.jpg)`;
   }
 
-  renderPagination(pagination: HTMLElement) {
+  renderPagination(pagination: HTMLElement, position: string) {
     const pageWrap = createElement('div', 'page-wrap');
     pagination.appendChild(pageWrap);
 
-    const first = createElement('div', 'page-btn z-depth-2 waves-effect first', '<<');
+    const first = createElement('div', 'page-btn z-depth-1 waves-effect first', '<<');
     pageWrap.appendChild(first);
     first.onclick = () => this.changePageNumber('first');
 
-    const previous = createElement('div', 'page-btn z-depth-2 waves-effect previous', '<');
+    const previous = createElement('div', 'page-btn z-depth-1 waves-effect previous', '<');
     pageWrap.appendChild(previous);
     previous.onclick = () => this.changePageNumber('prev');
 
-    this.pageNumberView = createElement('div', 'page-number', `${this.pageNumber}`);
-    this.pageNumberView.setAttribute('readonly', 'readonly');
-    pageWrap.appendChild(this.pageNumberView);
+    if(position==="top") {
+    this.pageNumberViewTop = createElement('div', 'page-number', `${this.pageNumber}`);
+    this.pageNumberViewTop.setAttribute('readonly', 'readonly');
+    pageWrap.appendChild(this.pageNumberViewTop);
+    (<HTMLElement>this.pageNumberViewTop).innerHTML = (this.pageNumber + 1).toString();
+    }
+    else {
+      this.pageNumberViewBottom = createElement('div', 'page-number', `${this.pageNumber}`);
+      this.pageNumberViewBottom.setAttribute('readonly', 'readonly');
+      pageWrap.appendChild(this.pageNumberViewBottom);
+      (<HTMLElement>this.pageNumberViewBottom).innerHTML = (this.pageNumber + 1).toString();
+    }
 
-    const next = createElement('div', 'page-btn z-depth-2 waves-effect next', '>');
+    const next = createElement('div', 'page-btn z-depth-1 waves-effect next', '>');
     pageWrap.appendChild(next);
     next.onclick = () => this.changePageNumber('next');
 
-    const last = createElement('div', 'page-btn z-depth-2 waves-effect last', '>>');
+    const last = createElement('div', 'page-btn z-depth-1 waves-effect last', '>>');
     pageWrap.appendChild(last);
     last.onclick = () => this.changePageNumber('last');
 
-    (<HTMLElement>this.pageNumberView).innerHTML = (this.pageNumber + 1).toString();
-    if (this.pageNumber === 0) {
+        if (this.pageNumber === 0) {
       first.classList.add('btn-blocked');
       first.classList.remove('waves-effect');
       previous.classList.add('btn-blocked');
@@ -220,7 +234,8 @@ export class BookView {
     if (marker === 'first') this.pageNumber = 0;
     if (marker === 'last') this.pageNumber = this.lastPageNumber;
 
-    (<HTMLElement>this.pageNumberView).innerHTML = (this.pageNumber + 1).toString();
+    (<HTMLElement>this.pageNumberViewTop).innerHTML = (this.pageNumber + 1).toString();
+    (<HTMLElement>this.pageNumberViewBottom).innerHTML = (this.pageNumber + 1).toString();
 
     window.location.hash = `${Route.book}#${this.levelNumber}#${this.pageNumber}`;
   }
