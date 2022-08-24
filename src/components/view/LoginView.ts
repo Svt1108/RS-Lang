@@ -4,12 +4,13 @@ import { createHeading, createParagraphWithLink, createLoginFormContent } from '
 export class LoginView {
   mainDiv;
   form?: HTMLFormElement;
+  handleSignIn?: (mail: string, pass: string) => Promise<void>;
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
   }
 
-  renderLogin() {
+  public renderLogin() {
     const loginPageDiv = createElement('div', 'lang_login');
     const imgContainer = createElement('div', 'lang_login_img_container lang_door');
     const formContainer = createElement('div', 'lang_login_form_container');
@@ -25,11 +26,27 @@ export class LoginView {
     this.form.append(formContent);
     row.append(this.form);
 
+    this.form.onsubmit = (e) => this.handleLogin(e);
+
     this.mainDiv.innerHTML = '';
     this.mainDiv.append(loginPageDiv);
   }
 
-  renderRegister() {
+  private async handleLogin(e: Event) {
+    e.preventDefault();
+    const formData = new FormData(this.form);
+
+    const mail = formData.get('mail');
+    const pass = formData.get('pass');
+
+    await this.handleSignIn?.(`${mail}`, `${pass}`);
+  }
+
+  public showToast(text: string) {
+    M.toast({ html: text });
+  }
+
+  public renderRegister() {
     this.mainDiv.innerHTML = `
   <div class="lang_login">
     <div class="lang_login_img_container lang_telephone"></div>
