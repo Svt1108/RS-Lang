@@ -56,7 +56,7 @@ export class BookView {
 
     const paginationTop = createElement('div', 'pagination-top');
     cardsWrap.appendChild(paginationTop);
-    this.renderPagination(paginationTop, "top");
+    this.renderPagination(paginationTop, 'top');
 
     const cards = createElement('div', 'cards');
     cardsWrap.appendChild(cards);
@@ -68,7 +68,7 @@ export class BookView {
 
     const pagination = createElement('div', 'pagination');
     bookWrap.appendChild(pagination);
-    this.renderPagination(pagination, "bottom");
+    this.renderPagination(pagination, 'bottom');
 
     const bottom = createElement('div', 'parallax-container valign-wrapper bottom-lang');
     bottom.innerHTML = `
@@ -158,7 +158,7 @@ export class BookView {
   }
 
   switchLevel(level: number) {
-    if(this.levelNumber === level) return;
+    if (this.levelNumber === level) return;
     window.location.hash = `${Route.book}#${level}#0`;
   }
 
@@ -193,13 +193,12 @@ export class BookView {
     pageWrap.appendChild(previous);
     previous.onclick = () => this.changePageNumber('prev');
 
-    if(position==="top") {
-    this.pageNumberViewTop = createElement('div', 'page-number', `${this.pageNumber}`);
-    this.pageNumberViewTop.setAttribute('readonly', 'readonly');
-    pageWrap.appendChild(this.pageNumberViewTop);
-    (<HTMLElement>this.pageNumberViewTop).innerHTML = (this.pageNumber + 1).toString();
-    }
-    else {
+    if (position === 'top') {
+      this.pageNumberViewTop = createElement('div', 'page-number', `${this.pageNumber}`);
+      this.pageNumberViewTop.setAttribute('readonly', 'readonly');
+      pageWrap.appendChild(this.pageNumberViewTop);
+      (<HTMLElement>this.pageNumberViewTop).innerHTML = (this.pageNumber + 1).toString();
+    } else {
       this.pageNumberViewBottom = createElement('div', 'page-number', `${this.pageNumber}`);
       this.pageNumberViewBottom.setAttribute('readonly', 'readonly');
       pageWrap.appendChild(this.pageNumberViewBottom);
@@ -214,7 +213,7 @@ export class BookView {
     pageWrap.appendChild(last);
     last.onclick = () => this.changePageNumber('last');
 
-        if (this.pageNumber === 0) {
+    if (this.pageNumber === 0) {
       first.classList.add('btn-blocked');
       first.classList.remove('waves-effect');
       previous.classList.add('btn-blocked');
@@ -272,6 +271,10 @@ export class BookView {
         card.audioMeaning.onended = () => card.audioExample.play();
         card.audioExample.onended = () => card.volume.classList.remove('volume-active');
       };
+
+      card.onDifficult = () => {};
+
+      card.onLearn = () => {};
     }
   }
 }
