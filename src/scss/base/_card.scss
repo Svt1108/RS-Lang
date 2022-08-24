@@ -8,10 +8,11 @@
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
+    position: relative;
 }
 
 .word-wrap {
-    width: 14rem;
+    width: 15rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -31,7 +32,7 @@
 
 .card .card-content {
     padding: 1rem;
-    width: 26rem;
+    width: 27rem;
 }
 
 .p-lang {
@@ -61,6 +62,7 @@
 .volume-up {
     cursor: pointer;
     margin-left: 0.5rem;
+    transition: 0.5s;
     &:hover {
         color: black;
         transform: scale(1.1);
@@ -74,6 +76,49 @@
 
 .divider-lang {
     margin: 0.2rem 0;
+}
+
+.difficult,
+.learn {
+    width: 1.3rem;
+    height: 3rem;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -0.7rem;
+    cursor: pointer;
+    transition: 0.5s;
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.difficult {
+    left: 0.4rem;
+}
+
+.learn {
+    left: 2.2rem;
+}
+
+.word-progress {
+    height: max-content;
+}
+
+.collapsible-lang {
+    margin: 0.7rem 0 0 0;
+}
+
+.collapsible-header-lang {
+    padding: 0.5rem;
+    display: flex;
+    align-items: flex-end;
+}
+
+.collapsible-body-lang {
+    padding: 1rem;
+    font-size: 0.9rem;
 }
 
 // .word-wrap {

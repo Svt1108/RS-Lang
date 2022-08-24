@@ -31,7 +31,7 @@ module.exports = {
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/lines-between-class-members': 'off',
         'prefer-const': 'warn',
-        'max-lines-per-function': ['warn', 110],
+        //   'max-lines-per-function': ['warn', 110],
         // 'func-names': ['error', 'never'],
     },
     settings: {
