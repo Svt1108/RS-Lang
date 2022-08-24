@@ -9,10 +9,11 @@ class Card {
   audio: HTMLAudioElement;
   audioMeaning: HTMLAudioElement;
   audioExample: HTMLAudioElement;
+  difficult: HTMLElement;
+  learn: HTMLElement;
 
-  // public onStop?: () => void;
-
-  //   public onSelect?: () => void;
+  public onDifficult?: () => void;
+  public onLearn?: () => void;
 
   //   public onRemove?: () => void;
 
@@ -25,6 +26,18 @@ class Card {
 
     const wordImgWrap = createElement('div', 'word-img-wrap');
     card.appendChild(wordImgWrap);
+
+    this.difficult = createElement('div', 'difficult tooltipped');
+    this.difficult.style.backgroundImage = `url(../assets/svg/difficult-colored.svg)`;
+    this.difficult.setAttribute('data-position', 'left');
+    this.difficult.setAttribute('data-tooltip', 'Сложно!');
+    wordImgWrap.appendChild(this.difficult);
+
+    this.learn = createElement('div', 'learn tooltipped');
+    this.learn.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
+    this.learn.setAttribute('data-position', 'right');
+    this.learn.setAttribute('data-tooltip', 'Изучено :)');
+    wordImgWrap.appendChild(this.learn);
 
     const wordWrap = createElement('div', 'word-wrap');
     wordImgWrap.appendChild(wordWrap);
@@ -100,17 +113,30 @@ class Card {
     );
     cardContent.appendChild(textExampleTranslate);
 
+    const wordProgress = createElement('div', 'word-progress');
+    wordProgress.innerHTML = `  <ul class="collapsible collapsible-lang">
+    <li>
+      <div class="collapsible-header collapsible-header-lang"><i class="material-icons grey-text text-darken-2">add_circle_outline</i>Статистика в играх</div>
+      <div class="collapsible-body collapsible-body-lang"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li>
+  </ul>`;
+    cardContent.appendChild(wordProgress);
+
+    //     var elem = document.querySelector('.collapsible.expandable');
+    // var instance = M.Collapsible.init(elem, {
+    //   accordion: false
+    // });
+
     this.setListeners();
   }
 
   private setListeners() {
     this.volume.onclick = () => this.onVolume?.();
 
-    //     this.select.node.onclick = () => {
-    //       if (this.select.node.classList.contains('blocked')) return;
-    //       this.onSelect?.();
-    //       this.select.node.classList.add('selected');
-    //     };
+    this.difficult.onclick = () => this.onDifficult?.();
+
+    this.learn.onclick = () => this.onLearn?.();
+
     //     this.remove.node.onclick = () => {
     //       if (this.remove.node.classList.contains('blocked')) return;
     //       this.onRemove?.();
