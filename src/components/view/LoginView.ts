@@ -1,70 +1,97 @@
+import { UserData } from '../types/loginTypes';
+import { createElement } from './helpers/renderHelpers';
+import {
+  createHeading,
+  createParagraphWithLink,
+  createLoginFormContent,
+  createRegistryFormContent,
+} from './helpers/loginRenderHelpers';
+
 export class LoginView {
-  main;
+  mainDiv;
+  form?: HTMLFormElement;
+  handleSignIn?: (mail: string, pass: string) => Promise<void>;
+  handleCreateUser?: (obj: UserData) => Promise<void>;
 
-  constructor(main: HTMLElement) {
-    this.main = main;
+  constructor(mainDiv: HTMLElement) {
+    this.mainDiv = mainDiv;
   }
 
-  renderLogin() {
-    this.main.innerHTML = `
-<div class="lang_login">
-  <div class="lang_login_img_container"></div>
+  public renderLogin() {
+    const loginPageDiv = createElement('div', 'lang_login');
+    const imgContainer = createElement('div', 'lang_login_img_container lang_door');
+    const formContainer = createElement('div', 'lang_login_form_container');
+    loginPageDiv.append(imgContainer, formContainer);
 
-  <div class="lang_login_form_container">
+    const heading = createHeading('Уже с нами?', 'Войди в аккаунт!');
+    const row = createElement('div', 'row');
+    const linkText = createParagraphWithLink('register', 'Впервые тут?', 'Зарегистрируйся!');
+    formContainer.append(heading, row, linkText);
 
-    <div class="lang_login_heading">Уже с нами?<br>&<br>Войди в аккаунт!</div>
+    this.form = createElement('form', 'col lang_login_form') as HTMLFormElement;
+    const formContent = createLoginFormContent();
+    this.form.append(formContent);
+    row.append(this.form);
 
-    <div class="row">
-      <form class="col lang_login_form">
+    this.form.onsubmit = (e) => this.handleLogin(e);
 
-        <div class="row">
-
-          <div class="input-field col s12 lang_login_input">
-            <i class="grey-text text-darken-1 material-icons prefix">person</i>
-            <input id="name" type="text" class="validate">
-            <label for="name">имя</label>
-          </div>
-
-          <div class="input-field col s12 lang_login_input">
-            <i class="grey-text text-darken-1 material-icons prefix">mail</i>
-            <input id="email" type="email" class="validate">
-            <label for="email">e-mail *</label>
-          </div>
-
-          <div class="input-field col s12 lang_login_input">
-            <i class="grey-text text-darken-1 material-icons prefix">vpn_key</i>
-            <input id="password" type="password" class="validate">
-            <label for="password">пароль *</label>
-          </div>
-
-          <div class="input-field col s12 lang_login_input">
-            <i class="grey-text text-darken-1 material-icons prefix">vpn_key</i>
-            <input id="password" type="password" class="validate">
-            <label for="password">подтвердите пароль *</label>
-          </div>
-
-          <button class="teal darken-3 amber-text text-lighten-5 btn waves-effect waves-teal" type="submit" name="action">ВОЙТИ
-            <i class="material-icons right">check</i>
-          </button>
-          
-        </div>
-
-      </form>
-    </div>
-
-  </div>
-</div>
-    `;
+    this.mainDiv.innerHTML = '';
+    this.mainDiv.append(loginPageDiv);
   }
 
-  renderRegister() {
-    this.main.innerHTML = `<h1>Registry</h1>
-    <a href="#login">to Login</a>`;
+  private async handleLogin(e: Event) {
+    e.preventDefault();
+    const formData = new FormData(this.form);
+
+    const mail = formData.get('mail');
+    const pass = formData.get('pass');
+
+    await this.handleSignIn?.(`${mail}`, `${pass}`);
+  }
+
+  public showToast(text: string) {
+    M.toast({ html: text });
+  }
+
+  public renderRegistry() {
+    const registryPageDiv = createElement('div', 'lang_login');
+    const imgContainer = createElement('div', 'lang_login_img_container lang_telephone');
+    const formContainer = createElement('div', 'lang_login_form_container');
+    registryPageDiv.append(imgContainer, formContainer);
+
+    const heading = createHeading('Впервые тут?', 'Зарегистрируйся!');
+    const row = createElement('div', 'row');
+    const linkText = createParagraphWithLink('login', 'Уже с нами?', 'Войди в аккаунт!');
+    formContainer.append(heading, row, linkText);
+
+    this.form = createElement('form', 'col lang_login_form') as HTMLFormElement;
+    const formContent = createRegistryFormContent();
+    this.form.append(formContent);
+    row.append(this.form);
+
+    this.form.onsubmit = (e) => this.handleRegistry(e);
+
+    this.mainDiv.innerHTML = '';
+    this.mainDiv.append(registryPageDiv);
+  }
+
+  private async handleRegistry(e: Event) {
+    e.preventDefault();
+    const formData = new FormData(this.form);
+
+    const name = formData.get('name') || 'Аноним';
+    const mail = formData.get('mail');
+    const pass1 = formData.get('pass_1');
+    const pass2 = formData.get('pass_2');
+
+    if (pass1 !== pass2) {
+      this.showToast('Пароли должны совпадать');
+    } else {
+      await this.handleCreateUser?.({
+        name: `${name}`,
+        mail: `${mail}`,
+        pass: `${pass1}`,
+      });
+    }
   }
 }
-
-// class="lang_login_form"
-// teal darken-4 amber-text text-lighten-5
-// <h2 class="lang_login_heading">Уже с нами?</h2>
-// <h2 class="lang_login_heading">&</h2>
-// <h2 class="lang_login_heading">Войди в аккаунт!</h2>

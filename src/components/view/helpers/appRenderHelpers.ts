@@ -16,7 +16,7 @@ export const renderHeader = () => `<div class = "header-lang">
     <li><a href="#${Route.book}">Учебник</a></li>
     <li><a href="#${Route.stats}">Статистика</a></li>
     <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Игры<i class="material-icons right">arrow_drop_down</i></a></li>
-    <li><a href="#${Route.login}">Вход</a></li>
+    <li><a href="#${Route.login}" id="lang_login_btn">Вход</a></li>
   </ul>
 </div>
 </nav>
