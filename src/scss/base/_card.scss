@@ -12,7 +12,7 @@
 }
 
 .word-wrap {
-    width: 14rem;
+    width: 15rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -32,7 +32,7 @@
 
 .card .card-content {
     padding: 1rem;
-    width: 26rem;
+    width: 27rem;
 }
 
 .p-lang {
@@ -100,6 +100,25 @@
 
 .learn {
     left: 2.2rem;
+}
+
+.word-progress {
+    height: max-content;
+}
+
+.collapsible-lang {
+    margin: 0.7rem 0 0 0;
+}
+
+.collapsible-header-lang {
+    padding: 0.5rem;
+    display: flex;
+    align-items: flex-end;
+}
+
+.collapsible-body-lang {
+    padding: 1rem;
+    font-size: 0.9rem;
 }
 
 // .word-wrap {

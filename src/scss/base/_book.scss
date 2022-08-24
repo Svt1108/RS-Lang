@@ -17,7 +17,7 @@
 }
 
 .cards-wrap {
-    display:flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 0.5rem;
@@ -33,9 +33,8 @@
     row-gap: 2rem;
     justify-content: center;
     margin: 0 auto;
-    padding: 1rem 0 4rem 0;
+    padding: 1.2rem 0 4rem 0;
 }
-
 
 .bottom-lang {
     position: absolute;
@@ -48,11 +47,10 @@
     height: 160px;
 }
 
-
 .levels,
 .games {
-    position:sticky;
-    top:175px;
+    position: sticky;
+    top: 175px;
     display: flex;
     flex-direction: column;
     align-items: center;

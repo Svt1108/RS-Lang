@@ -3,6 +3,8 @@ import { Route } from '../types/appRoutes';
 import Card from './helpers/CardView';
 import { createElement } from './helpers/renderHelpers';
 
+const LAST_PAGE = 29;
+
 export class BookView {
   mainDiv;
   pageNumber: number;
@@ -15,7 +17,7 @@ export class BookView {
     this.mainDiv = mainDiv;
     this.pageNumber = 0;
     this.levelNumber = 0;
-    this.lastPageNumber = 29;
+    this.lastPageNumber = LAST_PAGE;
   }
 
   render(res: Word[], level?: number, page?: number) {

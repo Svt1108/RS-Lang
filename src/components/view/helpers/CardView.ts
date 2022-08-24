@@ -113,6 +113,20 @@ class Card {
     );
     cardContent.appendChild(textExampleTranslate);
 
+    const wordProgress = createElement('div', 'word-progress');
+    wordProgress.innerHTML = `  <ul class="collapsible collapsible-lang">
+    <li>
+      <div class="collapsible-header collapsible-header-lang"><i class="material-icons grey-text text-darken-2">add_circle_outline</i>Статистика в играх</div>
+      <div class="collapsible-body collapsible-body-lang"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li>
+  </ul>`;
+    cardContent.appendChild(wordProgress);
+
+    //     var elem = document.querySelector('.collapsible.expandable');
+    // var instance = M.Collapsible.init(elem, {
+    //   accordion: false
+    // });
+
     this.setListeners();
   }
 
