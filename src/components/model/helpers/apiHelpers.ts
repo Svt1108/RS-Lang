@@ -1,5 +1,5 @@
 import { Assets, Method, ObjType, Path, User, UserWord, Word } from '../../types';
-import { AuthResponse } from '../../types/loginTypes';
+import { AuthResponse, CreateResponse } from '../../types/loginTypes';
 
 export const HOST = 'https://rslang-english-learnwords.herokuapp.com';
 
@@ -41,9 +41,9 @@ export const getAssets = async (wordId: string): Promise<Assets> => {
 //   };
 // };
 
-export const createUser = async (user: User): Promise<ObjType> => {
+export const createUser = async (user: User) => {
   const url = `${HOST}${Path.users}`;
-  const res: Response = await fetch(url, {
+  const res = await fetch(url, {
     method: Method.create,
     headers: {
       Accept: 'application/json',
@@ -51,8 +51,14 @@ export const createUser = async (user: User): Promise<ObjType> => {
     },
     body: JSON.stringify(user),
   });
-  const newUser: ObjType = await res.json();
-  return newUser;
+
+  const { ok, status } = res;
+  let data: CreateResponse | undefined;
+  if (ok) {
+    data = (await res.json()) as CreateResponse;
+  }
+
+  return { ok, status, data };
 };
 
 export const logUserIn = async (user: User) => {
@@ -67,7 +73,7 @@ export const logUserIn = async (user: User) => {
   });
 
   const { ok, status } = res;
-  let data;
+  let data: AuthResponse | undefined;
   if (ok) {
     data = (await res.json()) as AuthResponse;
   }

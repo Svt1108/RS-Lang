@@ -1,5 +1,5 @@
-import { logUserIn } from './helpers/apiHelpers';
-import { AuthResponse } from '../types/loginTypes';
+import { AuthResponse, UserData } from '../types/loginTypes';
+import { logUserIn, createUser } from './helpers/apiHelpers';
 
 export class LoginModel {
   public async sendSignIn(email: string, password: string) {
@@ -14,5 +14,10 @@ export class LoginModel {
     delete userData.userId;
 
     localStorage.setItem('user', JSON.stringify(userData));
+  }
+
+  public async sendCreateUser({ name, mail, pass }: UserData) {
+    const res = await createUser({ email: mail, password: pass, name });
+    return res;
   }
 }
