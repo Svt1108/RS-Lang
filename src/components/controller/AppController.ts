@@ -31,15 +31,16 @@ export class AppController {
     // this.stats = new StatsController(this.mainDiv);
   }
 
-  public start() {
+  public async start() {
     const [route, level, page] = window.location.hash.slice(1).split('#');
     this.appView.render(route);
 
+    // this.loader.init()
     this.header = document.querySelector('.header-lang');
     this.loader.innerHTML = '<div class="indeterminate"></div>';
 
-    this.renderNewPage([route, level, page]);
     this.enableRouting();
+    await this.renderNewPage([route, level, page]);
   }
 
   private enableRouting() {
@@ -51,7 +52,8 @@ export class AppController {
 
   private async renderNewPage([route, level = '', page = '']: string[]) {
     this.header?.append(this.loader);
-    // console.log('ROUTE:', route, 'LEVEL:', level, 'PAGE:', page);
+    const status = await this.login.updateLoginStatus();
+    this.appView.updateLoginBtnText(status);
 
     if (route === Route.main || route === '') {
       this.main.show();

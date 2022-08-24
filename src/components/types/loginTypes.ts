@@ -28,3 +28,8 @@ export type CreateResponse = {
   email: string;
   name: string;
 };
+
+export type RefreshResponse = {
+  token: string;
+  refreshToken: string;
+};

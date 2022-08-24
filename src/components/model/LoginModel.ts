@@ -1,5 +1,6 @@
-import { AuthResponse, UserData } from '../types/loginTypes';
+import { AuthResponse, UserData, LoginData, RefreshResponse } from '../types/loginTypes';
 import { logUserIn, createUser } from './helpers/apiHelpers';
+import { refreshToken } from './helpers/apiLogin';
 
 export class LoginModel {
   public async sendSignIn(email: string, password: string) {
@@ -19,5 +20,19 @@ export class LoginModel {
   public async sendCreateUser({ name, mail, pass }: UserData) {
     const res = await createUser({ email: mail, password: pass, name });
     return res;
+  }
+
+  public async sendTokenRefresh(user: LoginData) {
+    const res = await refreshToken(user);
+    return res;
+  }
+
+  public updateLoginData(userData: LoginData, newTokens?: RefreshResponse) {
+    const updatedTime = Date.now();
+    if (newTokens) {
+      const newData = { ...userData, ...newTokens, loginTime: updatedTime };
+
+      localStorage.setItem('user', JSON.stringify(newData));
+    }
   }
 }
