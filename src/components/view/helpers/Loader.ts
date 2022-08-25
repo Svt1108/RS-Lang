@@ -1,20 +1,20 @@
 import { createElement } from './renderHelpers';
 
 class Loader {
-  header?: HTMLElement | null; // ============
-  loader = createElement('div', 'progress'); // ============
+  header?: HTMLElement | null;
+  loader = createElement('div', 'progress');
 
   public show() {
-    this.header?.append(this.loader); // ============
+    this.header?.append(this.loader);
   }
 
   public hide() {
-    this.loader.remove(); // ============
+    this.loader.remove();
   }
 
   public init() {
-    this.header = document.querySelector('.header-lang'); // ============
-    this.loader.innerHTML = '<div class="indeterminate"></div>'; // ============
+    this.header = document.querySelector('.header-lang');
+    this.loader.innerHTML = '<div class="indeterminate"></div>';
   }
 }
 
