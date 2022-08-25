@@ -12,8 +12,8 @@ export class AppController {
   appModel;
   main;
   book;
-  header?: HTMLElement | null;
-  loader = createElement('div', 'progress');
+  header?: HTMLElement | null; // ============
+  loader = createElement('div', 'progress'); // ============
   login;
 
   constructor() {
@@ -35,9 +35,9 @@ export class AppController {
     const [route, level, page] = window.location.hash.slice(1).split('#');
     this.appView.render(route);
 
-    // this.loader.init()
-    this.header = document.querySelector('.header-lang');
-    this.loader.innerHTML = '<div class="indeterminate"></div>';
+    // this.loader.init() // ============
+    this.header = document.querySelector('.header-lang'); // ============
+    this.loader.innerHTML = '<div class="indeterminate"></div>'; // ============
 
     this.enableRouting();
     this.updateLoginStatusOnFocus();
@@ -52,9 +52,9 @@ export class AppController {
   }
 
   private async renderNewPage([route, level = '', page = '']: string[]) {
-    this.header?.append(this.loader);
+    this.header?.append(this.loader); // ============
     const status = await this.login.updateLoginStatus();
-    this.appView.updateLoginBtnText(status);
+    this.appView.updateLoginBtnText(status); // m.b. save Prev + compare ?
 
     if (route === Route.main || route === '') {
       this.main.show();
@@ -94,7 +94,7 @@ export class AppController {
       // await this.error.show();
       this.appView.showFooter();
     }
-    this.loader.remove();
+    this.loader.remove(); // ============
     document.documentElement.scrollTop = 0;
     M.AutoInit();
   }
@@ -103,6 +103,7 @@ export class AppController {
     window.addEventListener('focus', async () => {
       const status = await this.login.updateLoginStatus();
       this.appView.updateLoginBtnText(status);
+      console.log('FOCUS EVT fired');
     });
   }
 }
