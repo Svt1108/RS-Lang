@@ -129,8 +129,94 @@ export class SprintGameView {
 
   }
 
-  
+  private showGame(data: Word[]): HTMLElement {
 
+    this.timeleft = 60;
+    const mixData = getMixWords(data);
+    const word = createElement('div', 'word card');
+    const wordName = createElement('div', 'word-name');
+    const crowsBlock = createElement('div', 'crows');
+    const points = createElement('div', 'points', `+${this.points} очков за слово`);
+    const totalPoints = createElement('div', 'total-points', `${0}`);
+    const blockBtn = createElement('div', 'btn-block');
+    const timeBlock = createElement ('div', 'time');
+    const timeImg = createElement ('div', 'clock');
+    const seconds = createElement ('div', 'seconds card', `:${this.timeleft}`);
+    const btnRight = <HTMLButtonElement>createElement('button', 'waves-effect waves-light btn right-sptint-btn', 'верно');
+    const btnWrong = <HTMLButtonElement>createElement('button', 'waves-effect waves-light btn left-sptint-btn', 'неверно');
+    const crow1 = createElement('div', `crow`);
+    const crow2 = createElement('div', `crow`);
+    const crow3 = createElement('div', `crow`);
+    let index = 1;
+    wordName.innerHTML = `${mixData[0].en}   -   ${mixData[0].ru}`;
+
+    const downloadTimer = setInterval(() => {
+     seconds.innerHTML = `:${this.timeleft}`;
+      if(this.timeleft <= 0){
+        this.endGame();
+        clearInterval(downloadTimer);
+      }
+      this.timeleft -= 1;
+    }, 1000);
+   
+    btnRight.onclick = async () => {
+
+      if(!mixData[index-1].match) {
+        this.createSounds(this.sound, 'false');
+        this.createWrongResult(data, mixData[index-1].en);
+        this.pointsTotalResult = [];
+        this.points = 10;
+        this.styleCrow ([crow1, crow2, crow3], true);
+        points.innerHTML = `+${this.points} очков за слово`;
+      } else { 
+        this.createSounds(this.sound, 'true');
+        this.createCorrectResult(data, mixData[index-1].en);
+        this.countResult(totalPoints, points);
+        this.styleCrow ([crow1, crow2, crow3]);
+      }
+      wordName.innerHTML = `${mixData[index].en}   -   ${mixData[index].ru}`;
+      index += 1;
+
+    };
+
+    btnWrong.onclick = () => {
+      if(!mixData[index-1].match) {
+        this.createSounds(this.sound, 'true');
+        this.createCorrectResult(data, mixData[index-1].en);
+        this.countResult(totalPoints, points);
+        this.styleCrow ([crow1, crow2, crow3]);
+      } else {
+        this.createSounds(this.sound, 'false');
+        this.createWrongResult(data, mixData[index-1].en);
+        this.pointsTotalResult = [];
+        this.points = 10;
+        points.innerHTML = `+${this.points} очков за слово`;
+        this.styleCrow ([crow1, crow2, crow3], true);
+      }
+
+      wordName.innerHTML = `${mixData[index].en}   -   ${mixData[index].ru}`;
+      index += 1;
+
+    };
+   
+    crowsBlock.append(crow1);
+    crowsBlock.append(crow2);
+    crowsBlock.append(crow3);
+    timeBlock.append(timeImg)
+    timeBlock.append(seconds)
+    blockBtn.append(btnWrong);
+    blockBtn.append(btnRight);
+    word.append(crowsBlock);
+    word.append(points)
+    word.append(wordName);
+    this.stateGame.append(totalPoints)
+    this.stateGame.append(timeBlock);
+    this.stateGame.append(word);
+    this.stateGame.append(blockBtn);
+    return this.stateGame;
+  }
+
+  
 }
 
 // const start = <HTMLButtonElement>createElement('button', 'waves-effect waves-light btn-large start', 'Начать');
