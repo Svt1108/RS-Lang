@@ -58,4 +58,10 @@ export interface UserWord {
   optional: { testFieldString: string; testFieldBoolean: boolean };
 }
 
+export interface MixWords {
+  en: string;
+  ru: string;
+  match: boolean;
+}
+
 // export const HOST = 'https://rslang-english-learnwords.herokuapp.com';
