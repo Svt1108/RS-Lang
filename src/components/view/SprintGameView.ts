@@ -23,7 +23,7 @@ export class SprintGameView {
     this.controlBlock = createElement('div', 'sprint_controll');
     this.sound = true;
     this.fullscreen = false;
-    this.timeleft = 20;
+    this.timeleft = 60;
     this.points = 10;
     this.pointsTotal = 0;
     this.pointsTotalResult = [];
@@ -134,7 +134,7 @@ export class SprintGameView {
 
   private showGame(data: Word[]): HTMLElement {
 
-    this.timeleft = 20;
+    this.timeleft = 60;
     const mixData = getMixWords(data);
     const word = createElement('div', 'sprint_word card');
     const wordName = createElement('div', 'sprint_word-name');
@@ -340,7 +340,7 @@ export class SprintGameView {
   stopGame () {
     this.sound = false;
     this.fullscreen = false;
-    this.timeleft = 20;
+    this.timeleft = 60;
     this.points = 10;
     this.pointsTotal = 0;
     this.pointsTotalResult = [];
