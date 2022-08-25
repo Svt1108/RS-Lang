@@ -40,7 +40,7 @@ export class AppController {
     this.loader.innerHTML = '<div class="indeterminate"></div>';
 
     this.enableRouting();
-    this.updateLoginStatusOnFocus();
+    //  this.updateLoginStatusOnFocus();
     await this.renderNewPage([route, level, page]);
   }
 
@@ -99,10 +99,10 @@ export class AppController {
     M.AutoInit();
   }
 
-  private updateLoginStatusOnFocus() {
-    window.addEventListener('focus', async () => {
-      const status = await this.login.updateLoginStatus();
-      this.appView.updateLoginBtnText(status);
-    });
-  }
+  // private updateLoginStatusOnFocus() {
+  //   window.addEventListener('focus', async () => {
+  //     const status = await this.login.updateLoginStatus();
+  //     this.appView.updateLoginBtnText(status);
+  //   });
+  // }
 }

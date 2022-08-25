@@ -128,7 +128,8 @@ export const getUserWord = async (userId: string, wordId: string, token: string)
       Accept: 'application/json',
     },
   });
-  const userWord = await url.json();
+  // const userWord = await url.json();
+  const userWord = url.status !== 404 ? await url.json() : {};
   return userWord;
 };
 

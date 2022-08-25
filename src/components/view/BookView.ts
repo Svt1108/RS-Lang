@@ -1,5 +1,7 @@
-import { Word } from '../types';
+import { createUserWord, getAllUserWords, getUserWord, updateUserWord } from '../model/helpers/apiHelpers';
+import { UserWord, Word } from '../types';
 import { Route } from '../types/appRoutes';
+import { LoginData } from '../types/loginTypes';
 import Card from './helpers/CardView';
 import { createElement } from './helpers/renderHelpers';
 
@@ -12,6 +14,7 @@ export class BookView {
   lastPageNumber: number;
   levelNumber: number;
   pageNumberViewTop?: HTMLElement;
+  // user?: LoginData;
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
@@ -20,8 +23,18 @@ export class BookView {
     this.lastPageNumber = LAST_PAGE;
   }
 
-  render(res: Word[], level?: number, page?: number) {
-    console.log(res);
+  render(res: Word[], level?: number, page?: number, user?: LoginData) {
+    // console.log(user);
+    // console.log(res);
+    //  if (user) this.user = user;
+    const audioTags = document.querySelectorAll('audio');
+    const audioArr = [...audioTags];
+    for (let i = 0; i < audioArr.length; i += 1) {
+      audioArr[i].removeAttribute('src');
+      audioArr[i].srcObject = null;
+      audioArr[i].remove();
+    }
+
     this.mainDiv.innerHTML = '';
 
     // console.log(`level: ${level}`);
@@ -62,6 +75,7 @@ export class BookView {
 
     const cards = createElement('div', 'cards');
     cardsWrap.appendChild(cards);
+    if (user) this.renderCards(cards, res, user);
     this.renderCards(cards, res);
 
     const games = createElement('div', 'col s12 m2 games');
@@ -241,8 +255,8 @@ export class BookView {
     window.location.hash = `${Route.book}#${this.levelNumber}#${this.pageNumber}`;
   }
 
-  renderCards(cards: HTMLElement, res: Word[]) {
-    //  console.log(res);
+  renderCards(cards: HTMLElement, res: Word[], user?: LoginData) {
+    // console.log(user?.id);
     for (let i = 0; i < res.length; i += 1) {
       const card = new Card(cards, res[i]);
 
@@ -274,7 +288,39 @@ export class BookView {
         card.audioExample.onended = () => card.volume.classList.remove('volume-active');
       };
 
-      card.onDifficult = () => {};
+      card.onDifficult = async () => {
+        const userWords = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
+
+        console.log(userWords);
+
+        if (userWords.length > 0) {
+          const userWordsFounded: UserWord = userWords.find((item: { wordId: string }) => item.wordId === res[i].id);
+          if (userWordsFounded === undefined) {
+            console.log(userWordsFounded);
+            await createUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
+              difficulty: 'true',
+              optional: { learned: false, learnDate: new Date() },
+            });
+          } else {
+            await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
+              difficulty: 'difficult',
+              optional: { learned: false, learnDate: new Date() },
+            });
+          }
+        } else {
+          console.log(111);
+          await createUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
+            difficulty: 'true',
+            optional: { learned: false, learnDate: new Date() },
+          });
+        }
+
+        const userWord: UserWord = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+        if (userWord) console.log(1);
+        else console.log(2);
+
+        card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
+      };
 
       card.onLearn = () => {};
     }

@@ -55,7 +55,7 @@ export enum Method {
 
 export interface UserWord {
   difficulty: string;
-  optional: { testFieldString: string; testFieldBoolean: boolean };
+  optional: { learned: boolean; learnDate: Date };
 }
 
 // export const HOST = 'https://rslang-english-learnwords.herokuapp.com';
