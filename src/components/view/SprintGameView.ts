@@ -80,7 +80,57 @@ export class SprintGameView {
 
   }
 
+  private startGame(): HTMLElement {
+
+    this.stateGame.innerHTML = '';
+    this.pointsResult = [];
+    this.points = 10;
+    this.pointsTotal = 0;
+    this.learnedWords = [];
+    this.unlearnedWords = [];
+    const randomPageArr: number[] = [];
+    const title: HTMLElement = createElement('h1', 'title-sprint', 'Sprint');
+    const subTitle: HTMLElement = createElement(
+      'h5',
+      'subtitle-sprint',
+      'Попробуй угадать как можно больше слов за минуту',
+    );
+    const levelBlock: HTMLElement = createElement('div', 'level-sprint');
+
+    while(randomPageArr.length < 7) {
+    const randomPage = Math.floor(Math.random() * 29);
+      if(!randomPageArr.includes(randomPage)) {
+        randomPageArr.push(randomPage); 
+      }
+    }
+
+    for (let i = 0; i <= 5; i += 1) {
+
+      const levelArr: string[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+      const classArr: string[] = ['waves-purple', 'waves-yellow', 'waves-green',
+                                  'waves-teal', 'waves-orange','waves-red']                       
+      const btnLevel = createElement('button', `sprint-level-btn z-depth-1 waves-effect ${classArr[i]}`, 
+                       `${levelArr[i]}`);   
+
+      btnLevel.onclick = async () => {   
+        const words = await getRandomWords(randomPageArr, i);
+        this.stateGame.innerHTML = '';
+        this.mainDiv.append(this.showGame(words));
+      };
+
+      levelBlock.append(btnLevel);
+
+    }
+     
+    this.stateGame.append(title);
+    this.stateGame.append(subTitle);
+    this.stateGame.append(levelBlock);
+    return this.stateGame;
+
+  }
+
   
+
 }
 
 // const start = <HTMLButtonElement>createElement('button', 'waves-effect waves-light btn-large start', 'Начать');
