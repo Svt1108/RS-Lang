@@ -1,5 +1,4 @@
-import { Assets, Method, ObjType, Path, User, UserWord, Word } from '../../types';
-import { AuthResponse, CreateResponse } from '../../types/loginTypes';
+import { Assets, Method, ObjType, Path, UserWord, Word } from '../../types';
 
 export const HOST = 'https://rslang-english-learnwords.herokuapp.com';
 
@@ -51,45 +50,45 @@ export const getAssets = async (wordId: string): Promise<Assets> => {
 //   };
 // };
 
-export const createUser = async (user: User) => {
-  const url = `${HOST}${Path.users}`;
-  const res = await fetch(url, {
-    method: Method.create,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
-  });
+// export const createUser = async (user: User) => {
+//   const url = `${HOST}${Path.users}`;
+//   const res = await fetch(url, {
+//     method: Method.create,
+//     headers: {
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(user),
+//   });
 
-  const { ok, status } = res;
-  let data: CreateResponse | undefined;
-  if (ok) {
-    data = (await res.json()) as CreateResponse;
-  }
+//   const { ok, status } = res;
+//   let data: CreateResponse | undefined;
+//   if (ok) {
+//     data = (await res.json()) as CreateResponse;
+//   }
 
-  return { ok, status, data };
-};
+//   return { ok, status, data };
+// };
 
-export const logUserIn = async (user: User) => {
-  const url = `${HOST}${Path.signin}`;
-  const res = await fetch(url, {
-    method: Method.create,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
-  });
+// export const logUserIn = async (user: User) => {
+//   const url = `${HOST}${Path.signin}`;
+//   const res = await fetch(url, {
+//     method: Method.create,
+//     headers: {
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(user),
+//   });
 
-  const { ok, status } = res;
-  let data: AuthResponse | undefined;
-  if (ok) {
-    data = (await res.json()) as AuthResponse;
-  }
+//   const { ok, status } = res;
+//   let data: AuthResponse | undefined;
+//   if (ok) {
+//     data = (await res.json()) as AuthResponse;
+//   }
 
-  return { ok, status, data };
-};
+//   return { ok, status, data };
+// };
 
 export const getUser = async (userId: string, token: string): Promise<ObjType> => {
   const url = `${HOST}${Path.users}/${userId}`;
