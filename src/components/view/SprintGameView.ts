@@ -296,7 +296,39 @@ export class SprintGameView {
 
   }
 
- 
+  private styleCrow (crowArr: HTMLElement[], removeClass?: boolean): void {
+
+    if (removeClass) {
+      crowArr.forEach((el)=> el.classList.remove('active'));
+      this.pointsResult = [];
+    }
+    else {
+      if (this.pointsResult.length) crowArr[this.pointsResult.length-1].classList.add('active'); 
+      if (this.pointsResult.length === 1) {
+        crowArr.forEach((el)=> el.classList.remove('active'));
+        crowArr[this.pointsResult.length-1].classList.add('active');
+      }
+    }
+
+  }
+
+  private countResult(totalPointsDiv: HTMLElement, pointsDiv: HTMLElement): void {
+
+    const totalPoints = totalPointsDiv;
+    const points = pointsDiv;
+
+    if (this.pointsResult.length >= 3)  this.pointsResult = [];
+    this.pointsTotalResult.push(this.points);
+    this.pointsTotal += this.points;
+
+    if(this.pointsTotalResult.length === 3) this.points = 20;
+    if(this.pointsTotalResult.length === 6) this.points = 40;
+    if(this.pointsTotalResult.length === 9) this.points = 80;
+
+    totalPoints.innerHTML = `${this.pointsTotal}`;
+    this.pointsResult.push(this.points);
+    points.innerHTML = `+${this.points} очков за слово`;
+  }
 
 }
 
