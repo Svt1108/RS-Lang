@@ -1,5 +1,4 @@
 import { AppView } from '../view/AppView';
-import { AppModel } from '../model/AppModel';
 import { MainController } from './MainController';
 import { BookController } from './BookController';
 import { createElement } from '../view/helpers/renderHelpers';
@@ -10,7 +9,6 @@ import { loaderInstance } from '../view/helpers/Loader';
 export class AppController {
   mainDiv;
   appView;
-  appModel;
   main;
   book;
   login;
@@ -18,9 +16,7 @@ export class AppController {
 
   constructor() {
     this.mainDiv = createElement('main');
-
     this.appView = new AppView(this.mainDiv);
-    this.appModel = new AppModel();
 
     this.main = new MainController(this.mainDiv);
     this.login = new LoginController(this.mainDiv);

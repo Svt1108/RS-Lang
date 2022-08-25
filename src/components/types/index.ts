@@ -1,6 +1,3 @@
-// export type AppState = {
-//   isAuthorised: boolean;
-// };
 export interface Word {
   id: string;
   group: number;
