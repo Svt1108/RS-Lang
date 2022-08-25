@@ -5,6 +5,7 @@ import { BookController } from './BookController';
 import { createElement } from '../view/helpers/renderHelpers';
 import { Route } from '../types/appRoutes';
 import { LoginController } from './LoginController';
+import { loaderInstance } from '../view/helpers/Loader';
 
 export class AppController {
   mainDiv;
@@ -12,9 +13,8 @@ export class AppController {
   appModel;
   main;
   book;
-  header?: HTMLElement | null; // ============
-  loader = createElement('div', 'progress'); // ============
   login;
+  loader = loaderInstance;
 
   constructor() {
     this.mainDiv = createElement('main');
@@ -35,12 +35,10 @@ export class AppController {
     const [route, level, page] = window.location.hash.slice(1).split('#');
     this.appView.render(route);
 
-    // this.loader.init() // ============
-    this.header = document.querySelector('.header-lang'); // ============
-    this.loader.innerHTML = '<div class="indeterminate"></div>'; // ============
-
+    this.loader.init();
     this.enableRouting();
     this.updateLoginStatusOnFocus();
+
     await this.renderNewPage([route, level, page]);
   }
 
@@ -52,7 +50,8 @@ export class AppController {
   }
 
   private async renderNewPage([route, level = '', page = '']: string[]) {
-    this.header?.append(this.loader); // ============
+    this.loader.show();
+
     const status = await this.login.updateLoginStatus();
     this.appView.updateLoginBtnText(status); // m.b. save Prev + compare ?
 
@@ -94,7 +93,8 @@ export class AppController {
       // await this.error.show();
       this.appView.showFooter();
     }
-    this.loader.remove(); // ============
+
+    this.loader.hide();
     document.documentElement.scrollTop = 0;
     M.AutoInit();
   }
