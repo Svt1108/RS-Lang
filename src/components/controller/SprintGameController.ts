@@ -18,4 +18,8 @@ export class SprintGameController {
     this.view.render();
     }
   }
+
+  stopSprintGame() {
+    this.view.stopGame()
+  }
 }
