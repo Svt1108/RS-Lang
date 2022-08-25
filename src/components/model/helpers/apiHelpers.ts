@@ -17,6 +17,16 @@ export const getWord = async (wordId: string): Promise<Word> => {
   return word;
 };
 
+export const getRandomWords = async (randomPageArr: number[], level: number) => {
+  const requests = randomPageArr.map((el) =>  fetch(`${HOST}${Path.words}?page=${el}&group=${level}`));
+  return Promise.all(requests).then(res => res)
+    .then(responses => Promise.all(responses.map(r => r.json())))
+    .then(words => words.reduce((a,b) => {
+      a.push(b)
+      return a.flat(Infinity)
+    }, []))
+};
+
 export const getAssets = async (wordId: string): Promise<Assets> => {
   const url = `${HOST}${Path.words}/${wordId}`;
   const res: Response = await fetch(url);
