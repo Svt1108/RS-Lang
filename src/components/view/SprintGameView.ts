@@ -216,6 +216,62 @@ export class SprintGameView {
     return this.stateGame;
   }
 
+  private endGame(): void {
+    this.stateGame.innerHTML = ''
+    const gameOver: HTMLAudioElement = new Audio('../../assets/images/audio/over.mp3');
+    const winBlock = createElement('div', 'over card');
+    const showTotalRes = createElement('div', 'result');
+    const showExperience = createElement('div', 'show-resultexperience'); 
+    const learnWords = createElement('ul', 'list-words'); 
+    const unlearnWords = createElement('ul', 'list-words'); 
+    const headerBlock = createElement('div', 'header-result')
+    const allWords = createElement('ul', 'all-words'); 
+    const headerListLerned = createElement('div', 'header-learn', `Изученные слова - ${this.learnedWords.length}`)
+    const headerListUnlerned = createElement('div', 'header-unlearn', `Слова с ошибками - ${this.unlearnedWords.length}`)
+    showTotalRes.innerHTML = `Набрано ${this.pointsTotal} очков` 
+    showExperience.innerHTML = `Получено +${this.learnedWords.length + this.unlearnedWords.length} опыта`
+    const blockBtn = createElement('div', 'btn-block-over');
+    const moreGame = createElement('button', 'waves-effect waves-light btn right-sptint-btn end', 'сыграть еще раз');
+    const endGame = createElement('button', 'waves-effect waves-light btn left-sptint-btn end', 'перейти в учебник');
+    
+    if(this.learnedWords.length) {
+      Promise.all(this.learnedWords).then(res => {
+        for (let i = 0; i < res.length; i += 1) {
+          const list = createElement('li', 'list', 
+            `${res[i][0]} ${res[i][1]} - ${res[i][2]}`)      
+          learnWords.append(list)
+        }
+      })
+    } 
+    
+    if(this.unlearnedWords.length) {
+      Promise.all(this.unlearnedWords).then(res => {
+        for (let i = 0; i < res.length; i += 1) {
+          const list = createElement('li', 'list', 
+            `${res[i][0]} ${res[i][1]} - ${res[i][2]}`)
+          unlearnWords.append(list)
+        }
+      })
+    }
+    
+    moreGame.onclick = () => {this.startGame()}
+    endGame.onclick = () => {window.location.hash = 'book'}
+    if(this.sound) gameOver.play();
+    
+    blockBtn.append(endGame);
+    blockBtn.append(moreGame);
+    headerBlock.append(showTotalRes);
+    headerBlock.append(showExperience);
+    winBlock.append(headerBlock);
+    learnWords.append(headerListLerned);
+    unlearnWords.append(headerListUnlerned);
+    allWords.append(unlearnWords);
+    allWords.append(learnWords);
+    winBlock.append(allWords);
+    winBlock.append(blockBtn);
+    this.stateGame.append(winBlock);
+  }
+
   
 }
 
