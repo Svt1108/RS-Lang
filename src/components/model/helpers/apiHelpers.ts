@@ -135,7 +135,8 @@ export const getUserWord = async (userId: string, wordId: string, token: string)
 
 export const updateUserWord = async (userId: string, wordId: string, token: string, word: UserWord) => {
   const url = await fetch(`${HOST}${Path.users}/${userId}${Path.words}/${wordId}`, {
-    method: Method.update,
+    // method: Method.update,
+    method: Method.engineStatus,
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
