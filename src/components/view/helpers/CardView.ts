@@ -1,5 +1,5 @@
 import { HOST } from '../../model/helpers/apiHelpers';
-import { Word } from '../../types';
+import { Word, WordPlusUserWord } from '../../types';
 import { createElement } from './renderHelpers';
 
 class Card {
@@ -17,7 +17,7 @@ class Card {
 
   //   public onRemove?: () => void;
 
-  constructor(content: HTMLElement, data: Word) {
+  constructor(content: HTMLElement, data: WordPlusUserWord) {
     //  const HOST = 'https://rslang-english-learnwords.herokuapp.com';
     this.data = data;
 

@@ -1,8 +1,9 @@
-import { createUserWord, getAllUserWords, getUserWord, updateUserWord } from '../model/helpers/apiHelpers';
-import { UserWord, Word } from '../types';
+import { createUserWord, deleteUserWord, getAllUserWords, updateUserWord } from '../model/helpers/apiHelpers';
+import { UserWordPlus, Word, WordPlusUserWord } from '../types';
 import { Route } from '../types/appRoutes';
 import { LoginData } from '../types/loginTypes';
 import Card from './helpers/CardView';
+import { combineWords } from './helpers/combineArr';
 import { createElement } from './helpers/renderHelpers';
 
 const LAST_PAGE = 29;
@@ -23,7 +24,7 @@ export class BookView {
     this.lastPageNumber = LAST_PAGE;
   }
 
-  render(res: Word[], level?: number, page?: number, user?: LoginData) {
+  async render(res: Word[], level?: number, page?: number, user?: LoginData) {
     // console.log(user);
     // console.log(res);
     //  if (user) this.user = user;
@@ -75,8 +76,11 @@ export class BookView {
 
     const cards = createElement('div', 'cards');
     cardsWrap.appendChild(cards);
-    if (user) this.renderCards(cards, res, user);
-    this.renderCards(cards, res);
+    if (user) {
+      const userWords: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
+      const userRes: WordPlusUserWord[] = combineWords(res, userWords);
+      this.renderCards(cards, userRes, user);
+    } else this.renderCards(cards, res);
 
     const games = createElement('div', 'col s12 m2 games');
     row.appendChild(games);
@@ -255,8 +259,7 @@ export class BookView {
     window.location.hash = `${Route.book}#${this.levelNumber}#${this.pageNumber}`;
   }
 
-  renderCards(cards: HTMLElement, res: Word[], user?: LoginData) {
-    // console.log(user?.id);
+  renderCards(cards: HTMLElement, res: WordPlusUserWord[], user?: LoginData) {
     for (let i = 0; i < res.length; i += 1) {
       const card = new Card(cards, res[i]);
 
@@ -289,40 +292,61 @@ export class BookView {
       };
 
       card.onDifficult = async () => {
-        const userWords = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
-
-        console.log(userWords);
-
-        if (userWords.length > 0) {
-          const userWordsFounded: UserWord = userWords.find((item: { wordId: string }) => item.wordId === res[i].id);
-          if (userWordsFounded === undefined) {
-            console.log(userWordsFounded);
-            await createUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
-              difficulty: 'true',
-              optional: { learned: false, learnDate: new Date() },
-            });
-          } else {
-            await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
-              difficulty: 'difficult',
-              optional: { learned: false, learnDate: new Date() },
-            });
-          }
-        } else {
-          console.log(111);
+        if (!res[i].difficulty) {
           await createUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
-            difficulty: 'true',
-            optional: { learned: false, learnDate: new Date() },
+            difficulty: 'difficult',
+            optional: { learned: 'no', learnDate: new Date() },
           });
+          res[i].difficulty = 'difficult';
+          res[i].optional = { learned: 'no' };
+          card.difficult.style.backgroundImage = `url(../assets/svg/difficult-colored.svg)`;
+          card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
+        } else if (res[i].difficulty && res[i].difficulty === 'difficult') {
+          await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+          delete res[i].difficulty;
+          delete res[i].optional;
+          card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
+          card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
+        } else if (res[i].difficulty && res[i].difficulty === 'easy') {
+          await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
+            difficulty: 'difficult',
+            optional: { learned: 'no', learnDate: new Date() },
+          });
+          res[i].difficulty = 'difficult';
+          res[i].optional = { learned: 'no' };
+          card.difficult.style.backgroundImage = `url(../assets/svg/difficult-colored.svg)`;
+          card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
         }
-
-        const userWord: UserWord = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
-        if (userWord) console.log(1);
-        else console.log(2);
-
-        card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
       };
 
-      card.onLearn = () => {};
+      card.onLearn = async () => {
+        if (!res[i].optional) {
+          console.log('create');
+          await createUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
+            difficulty: 'easy',
+            optional: { learned: 'yes', learnDate: new Date() },
+          });
+          res[i].difficulty = 'easy';
+          res[i].optional = { learned: 'yes' };
+          card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
+          card.learn.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
+        } else if (res[i].optional && res[i].optional?.learned === 'yes') {
+          await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+          delete res[i].difficulty;
+          delete res[i].optional;
+          card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
+          card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
+        } else if (res[i].optional && res[i].optional?.learned === 'no') {
+          await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
+            difficulty: 'easy',
+            optional: { learned: 'yes', learnDate: new Date() },
+          });
+          res[i].difficulty = 'easy';
+          res[i].optional = { learned: 'yes' };
+          card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
+          card.learn.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
+        }
+      };
     }
   }
 }

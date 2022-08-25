@@ -2,6 +2,8 @@
 //   isAuthorised: boolean;
 // };
 export interface Word {
+  // optional: { learned: boolean; learnDate: Date; };
+  // difficulty: string;
   id: string;
   group: number;
   page: number;
@@ -50,12 +52,38 @@ export enum Method {
   create = 'POST',
   update = 'PUT',
   delete = 'DELETE',
-  engineStatus = 'PATCH',
+  updatePatch = 'PATCH',
 }
 
 export interface UserWord {
   difficulty: string;
-  optional: { learned: boolean; learnDate: Date };
+  optional: { learned: string; learnDate: Date };
 }
 
+export interface UserWordPlus {
+  difficulty: string;
+  id: string;
+  optional: { learned: string; learnDate?: Date };
+  wordId: string;
+}
 // export const HOST = 'https://rslang-english-learnwords.herokuapp.com';
+
+export interface WordPlusUserWord {
+  id: string;
+  group: number;
+  page: number;
+  word: string;
+  image: string;
+  audio: string;
+  audioMeaning: string;
+  audioExample: string;
+  textMeaning: string;
+  textExample: string;
+  transcription: string;
+  textExampleTranslate: string;
+  textMeaningTranslate: string;
+  wordTranslate: string;
+  optional?: { learned: string; learnDate?: Date; };
+  difficulty?: string;
+//  wordExists?: boolean;
+}
