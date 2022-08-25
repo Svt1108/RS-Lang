@@ -272,7 +272,32 @@ export class SprintGameView {
     this.stateGame.append(winBlock);
   }
 
-  
+  private createCorrectResult(data: Word[], word: string): void {
+    data.filter(el => el.word === word 
+      ? this.learnedWords.push([el.word, el.transcription, el.wordTranslate, el.audio]) : [])
+  }
+
+  private createWrongResult(data: Word[], word: string): void {
+    data.filter(el => el.word === word 
+      ? this.unlearnedWords.push([el.word, el.transcription, el.wordTranslate, el.audio]) : [])
+  }
+
+  private createSounds(sound: boolean, flag?: string): void {
+
+    const rightAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/cool.mp3');
+    const wrongAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/bug.mp3');
+    if (!sound) {
+      rightAnswer.pause();
+      wrongAnswer.pause();
+    } else {
+      if (flag === 'true') rightAnswer.play();
+      if (flag === 'false') wrongAnswer.play();
+    }
+
+  }
+
+ 
+
 }
 
 // const start = <HTMLButtonElement>createElement('button', 'waves-effect waves-light btn-large start', 'Начать');
