@@ -1,32 +1,30 @@
 import { AppView } from '../view/AppView';
-import { AppModel } from '../model/AppModel';
 import { MainController } from './MainController';
 import { BookController } from './BookController';
 import { createElement } from '../view/helpers/renderHelpers';
 import { Route } from '../types/appRoutes';
 import { LoginController } from './LoginController';
+import { SprintGameController } from './SprintGameController';
+import { loaderInstance } from '../view/helpers/Loader';
 
 export class AppController {
   mainDiv;
   appView;
-  appModel;
   main;
   book;
-  header?: HTMLElement | null;
-  loader = createElement('div', 'progress');
   login;
+  sprint;
+  loader = loaderInstance;
 
   constructor() {
     this.mainDiv = createElement('main');
-
     this.appView = new AppView(this.mainDiv);
-    this.appModel = new AppModel();
 
     this.main = new MainController(this.mainDiv);
     this.login = new LoginController(this.mainDiv);
     this.book = new BookController(this.mainDiv);
     // this.audio = new AudioGameController(this.mainDiv);
-    // this.sprint = new SprintGameController(this.mainDiv);
+    this.sprint = new SprintGameController(this.mainDiv);
     // this.drag = new DragAndDropController(this.mainDiv);
     // this.stats = new StatsController(this.mainDiv);
   }
@@ -35,12 +33,9 @@ export class AppController {
     const [route, level, page] = window.location.hash.slice(1).split('#');
     this.appView.render(route);
 
-    // this.loader.init()
-    this.header = document.querySelector('.header-lang');
-    this.loader.innerHTML = '<div class="indeterminate"></div>';
-
+    this.loader.init();
     this.enableRouting();
-    //  this.updateLoginStatusOnFocus();
+    this.updateLoginStatusOnFocus();
     await this.renderNewPage([route, level, page]);
   }
 
@@ -52,7 +47,8 @@ export class AppController {
   }
 
   private async renderNewPage([route, level = '', page = '']: string[]) {
-    this.header?.append(this.loader);
+    this.loader.show();
+
     const status = await this.login.updateLoginStatus();
     this.appView.updateLoginBtnText(status);
 
@@ -76,10 +72,11 @@ export class AppController {
       //
       this.appView.hideFooter();
     } else if (route === Route.sprint) {
-      // level ?
-      // await this.sprint.show(Number(level), Number(page)) :
-      // await this.sprint.show();
-      //
+      if (level) {
+        await this.sprint.show(Number(level), Number(page));
+      } else {
+        await this.sprint.show();
+      }
       this.appView.hideFooter();
     } else if (route === Route.drag) {
       // level ?
@@ -94,15 +91,16 @@ export class AppController {
       // await this.error.show();
       this.appView.showFooter();
     }
-    this.loader.remove();
+
+    this.loader.hide();
     document.documentElement.scrollTop = 0;
     M.AutoInit();
   }
 
-  // private updateLoginStatusOnFocus() {
-  //   window.addEventListener('focus', async () => {
-  //     const status = await this.login.updateLoginStatus();
-  //     this.appView.updateLoginBtnText(status);
-  //   });
-  // }
+  private updateLoginStatusOnFocus() {
+    window.addEventListener('focus', async () => {
+      const status = await this.login.updateLoginStatus();
+      this.appView.updateLoginBtnText(status);
+    });
+  }
 }

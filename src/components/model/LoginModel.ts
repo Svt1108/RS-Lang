@@ -1,6 +1,5 @@
 import { AuthResponse, UserData, LoginData, RefreshResponse } from '../types/loginTypes';
-import { logUserIn, createUser } from './helpers/apiHelpers';
-import { refreshToken } from './helpers/apiLogin';
+import { logUserIn, createUser, refreshToken } from './helpers/apiLogin';
 
 export class LoginModel {
   public async sendSignIn(email: string, password: string) {

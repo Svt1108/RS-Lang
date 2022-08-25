@@ -1,6 +1,3 @@
-// export type AppState = {
-//   isAuthorised: boolean;
-// };
 export interface Word {
   // optional: { learned: boolean; learnDate: Date; };
   // difficulty: string;
@@ -60,6 +57,12 @@ export interface UserWord {
   optional: { learned: string; learnDate: Date };
 }
 
+export interface MixWords {
+  en: string;
+  ru: string;
+  match: boolean;
+}
+
 export interface UserWordPlus {
   difficulty: string;
   id: string;
@@ -83,7 +86,7 @@ export interface WordPlusUserWord {
   textExampleTranslate: string;
   textMeaningTranslate: string;
   wordTranslate: string;
-  optional?: { learned: string; learnDate?: Date; };
+  optional?: { learned: string; learnDate?: Date };
   difficulty?: string;
-//  wordExists?: boolean;
+  //  wordExists?: boolean;
 }
