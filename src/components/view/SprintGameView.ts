@@ -19,8 +19,8 @@ export class SprintGameView {
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
-    this.stateGame = createElement('div', 'game-content');
-    this.controlBlock = createElement('div', 'controll');
+    this.stateGame = createElement('div', 'sprint_game-content');
+    this.controlBlock = createElement('div', 'sprint_controll');
     this.sound = true;
     this.fullscreen = false;
     this.timeleft = 60;
@@ -39,9 +39,9 @@ export class SprintGameView {
     this.mainDiv.innerHTML = '';
     const sprint = createElement('div', 'sprint');
     const mainImg = <HTMLImageElement>createElement('img', 'img-sprint');
-    const soundImg = createElement('div', 'sound');
-    const fullscreenImg = createElement('div', 'fullscreen');
-    const crossImg = createElement('div', 'cross');
+    const soundImg = createElement('div', 'sprint_sound');
+    const fullscreenImg = createElement('div', 'sprint_fullscreen');
+    const crossImg = createElement('div', 'sprint_cross');
     mainImg.src = "./assets/images/bridge.jpg";
 
     fullscreenImg.onclick = () => {
@@ -58,16 +58,19 @@ export class SprintGameView {
     soundImg.onclick = () => {
       if(this.sound) {
         this.sound = false;
-        soundImg.classList.add('not-sound');
+        soundImg.classList.add('sprint_not-sound');
       }
       else {
         this.sound = true;
-        soundImg.classList.remove('not-sound');
+        soundImg.classList.remove('sprint_not-sound');
       }
       this.createSounds(this.sound);
     }
     
-    crossImg.onclick = () => {window.location.hash = 'main'}
+    crossImg.onclick = () => {
+      window.location.hash = 'main';
+      this.stopGame();
+    }
 
     sprint.append(mainImg);
     this.controlBlock.appendChild(soundImg);
@@ -97,7 +100,7 @@ export class SprintGameView {
     );
     const levelBlock: HTMLElement = createElement('div', 'level-sprint');
 
-    while(randomPageArr.length < 7) {
+    while(randomPageArr.length < 8) {
     const randomPage = Math.floor(Math.random() * 29);
       if(!randomPageArr.includes(randomPage)) {
         randomPageArr.push(randomPage); 
@@ -133,20 +136,20 @@ export class SprintGameView {
 
     this.timeleft = 60;
     const mixData = getMixWords(data);
-    const word = createElement('div', 'word card');
-    const wordName = createElement('div', 'word-name');
-    const crowsBlock = createElement('div', 'crows');
-    const points = createElement('div', 'points', `+${this.points} очков за слово`);
-    const totalPoints = createElement('div', 'total-points', `${0}`);
-    const blockBtn = createElement('div', 'btn-block');
-    const timeBlock = createElement ('div', 'time');
-    const timeImg = createElement ('div', 'clock');
-    const seconds = createElement ('div', 'seconds card', `:${this.timeleft}`);
+    const word = createElement('div', 'sprint_word card');
+    const wordName = createElement('div', 'sprint_word-name');
+    const crowsBlock = createElement('div', 'sprint_crows');
+    const points = createElement('div', 'sprint_points', `+${this.points} очков за слово`);
+    const totalPoints = createElement('div', 'sprint_total-points', `${0}`);
+    const blockBtn = createElement('div', 'sprint_btn-block');
+    const timeBlock = createElement ('div', 'sprint_time');
+    const timeImg = createElement ('div', 'sprint_clock');
+    const seconds = createElement ('div', 'sprint_seconds card', `:${this.timeleft}`);
     const btnRight = <HTMLButtonElement>createElement('button', 'waves-effect waves-light btn right-sptint-btn', 'верно');
     const btnWrong = <HTMLButtonElement>createElement('button', 'waves-effect waves-light btn left-sptint-btn', 'неверно');
-    const crow1 = createElement('div', `crow`);
-    const crow2 = createElement('div', `crow`);
-    const crow3 = createElement('div', `crow`);
+    const crow1 = createElement('div', `sprint_crow`);
+    const crow2 = createElement('div', `sprint_crow`);
+    const crow3 = createElement('div', `sprint_crow`);
     let index = 1;
     wordName.innerHTML = `${mixData[0].en}   -   ${mixData[0].ru}`;
 
@@ -218,26 +221,27 @@ export class SprintGameView {
 
   private endGame(): void {
     this.stateGame.innerHTML = ''
-    const gameOver: HTMLAudioElement = new Audio('../../assets/images/audio/over.mp3');
-    const winBlock = createElement('div', 'over card');
-    const showTotalRes = createElement('div', 'result');
-    const showExperience = createElement('div', 'show-resultexperience'); 
-    const learnWords = createElement('ul', 'list-words'); 
-    const unlearnWords = createElement('ul', 'list-words'); 
-    const headerBlock = createElement('div', 'header-result')
-    const allWords = createElement('ul', 'all-words'); 
-    const headerListLerned = createElement('div', 'header-learn', `Изученные слова - ${this.learnedWords.length}`)
-    const headerListUnlerned = createElement('div', 'header-unlearn', `Слова с ошибками - ${this.unlearnedWords.length}`)
+    const winBlock = createElement('div', 'sprint_over card');
+    const showTotalRes = createElement('div', 'sprint_result');
+    const showExperience = createElement('div', 'sprint_show-resultexperience'); 
+    const gameOver = <HTMLAudioElement>new Audio('../../assets/images/audio/over.mp3');
+    const learnWords = createElement('ul', 'sprint_list-words'); 
+    const unlearnWords = createElement('ul', 'sprint_list-words'); 
+    const headerBlock = createElement('div', 'sprint_header-result')
+    const allWords = createElement('ul', 'sprint_all-words'); 
+    const headerListLerned = createElement('div', 'sprint_header-learn', `Изученные слова - ${this.learnedWords.length}`)
+    const headerListUnlerned = createElement('div', 'sprint_header-unlearn', `Слова с ошибками - ${this.unlearnedWords.length}`)
     showTotalRes.innerHTML = `Набрано ${this.pointsTotal} очков` 
     showExperience.innerHTML = `Получено +${this.learnedWords.length + this.unlearnedWords.length} опыта`
-    const blockBtn = createElement('div', 'btn-block-over');
+    const blockBtn = createElement('div', 'sprint_btn-block-over');
     const moreGame = createElement('button', 'waves-effect waves-light btn right-sptint-btn end', 'сыграть еще раз');
     const endGame = createElement('button', 'waves-effect waves-light btn left-sptint-btn end', 'перейти в учебник');
-    
+    gameOver.pause();
+
     if(this.learnedWords.length) {
       Promise.all(this.learnedWords).then(res => {
         for (let i = 0; i < res.length; i += 1) {
-          const list = createElement('li', 'list', 
+          const list = createElement('li', 'sprint_list', 
             `${res[i][0]} ${res[i][1]} - ${res[i][2]}`)      
           learnWords.append(list)
         }
@@ -247,7 +251,7 @@ export class SprintGameView {
     if(this.unlearnedWords.length) {
       Promise.all(this.unlearnedWords).then(res => {
         for (let i = 0; i < res.length; i += 1) {
-          const list = createElement('li', 'list', 
+          const list = createElement('li', 'sprint_list', 
             `${res[i][0]} ${res[i][1]} - ${res[i][2]}`)
           unlearnWords.append(list)
         }
@@ -255,7 +259,10 @@ export class SprintGameView {
     }
     
     moreGame.onclick = () => {this.startGame()}
-    endGame.onclick = () => {window.location.hash = 'book'}
+    endGame.onclick = () => {
+      window.location.hash = 'book';
+      this.stopGame();
+    }
     if(this.sound) gameOver.play();
     
     blockBtn.append(endGame);
@@ -330,6 +337,18 @@ export class SprintGameView {
     points.innerHTML = `+${this.points} очков за слово`;
   }
 
+  stopGame () {
+    this.sound = false;
+    this.fullscreen = false;
+    this.timeleft = 60;
+    this.points = 10;
+    this.pointsTotal = 0;
+    this.pointsTotalResult = [];
+    this.pointsResult = [];
+    this.learnedWords = [];
+    this.unlearnedWords = [];
+    document.exitFullscreen();
+  }
 }
 
 // const start = <HTMLButtonElement>createElement('button', 'waves-effect waves-light btn-large start', 'Начать');

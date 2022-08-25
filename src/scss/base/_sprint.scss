@@ -1,10 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.game-content {
+.sprint_game-content {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -30,11 +24,6 @@
 
 .subtitle-sprint {
   font-weight: 500;
-}
-
-.start {
-  margin-top: 40px;
-  width: 150px;
 }
 
 .sprint-level-btn {
@@ -75,7 +64,7 @@
   height: 100vh;
 }
 
-.word {
+.sprint_word {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,7 +83,7 @@
   }
 }
 
-.over {
+.sprint_over {
   display: flex;
   align-items: start;
   justify-content: center;
@@ -113,7 +102,7 @@
   }
 }
 
-.header-result {
+.sprint_header-result {
   position: absolute;
   top: 0;
   background-color: #FFE2D9;
@@ -126,7 +115,7 @@
   border-bottom: 2px solid #beb0b0;
 }
 
-.list-words {
+.sprint_list-words {
   margin-left: 20px;
   font-size: 18px;
   font-weight: 500;
@@ -134,12 +123,12 @@
   padding-bottom: 20px;
 }
 
-.list {
+.sprint_list {
   font-style: italic;
   padding-bottom: 5px;
 }
 
-.all-words {
+.sprint_all-words {
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100%;
@@ -147,7 +136,7 @@
   padding-bottom: 50px;
 }
 
-.header-learn {
+.sprint_header-learn {
   color: #04EFDB;
   font-size: 18px;
   font-weight: 700;
@@ -156,7 +145,7 @@
   border-top: 2px solid #beb0b0;
 }
 
-.header-unlearn {
+.sprint_header-unlearn {
   color: #F57096;
   font-size: 18px;
   font-weight: 700;
@@ -164,7 +153,7 @@
   padding-top: 10px;
 }
 
-.word-name {
+.sprint_word-name {
   font-weight: 400;
   font-size: 40px;
   color: #313030;
@@ -176,14 +165,14 @@
   width: fit-content;
 }
 
-.crows {
+.sprint_crows {
   display: flex;
   justify-content: space-around;
   width: 150px;
   margin-bottom: 10px;
 }
 
-.crow {
+.sprint_crow {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -192,16 +181,16 @@
   background-image: url(../assets/svg/crow.svg);
 }
 
-.crow.active { 
+.sprint_crow.active { 
   background-image: url(../assets/svg/crow-win.svg);
 }
-.total-points {
+.sprint_total-points {
   margin-bottom: 13px;
   font-size: 36px;
   font-weight: 500;
   color: #000000;
 }
-.points {
+.sprint_points {
   margin-bottom: 20px;
   font-size: 16px;
   font-weight: 400;
@@ -212,7 +201,7 @@
   display: flex;
 }
 
-.cross {
+.sprint_cross {
   position: absolute;
   right: 0;
   top: 85px;
@@ -228,7 +217,7 @@
   cursor: pointer;
 }
 
-.fullscreen {
+.sprint_fullscreen {
   position: absolute;
   right: 0;
   top: 85px;
@@ -244,7 +233,7 @@
   cursor: pointer;
 }
 
-.sound {
+.sprint_sound {
   position: absolute;
   right: 0;
   top: 84px;
@@ -260,11 +249,11 @@
   cursor: pointer;
 }
 
-.sound.not-sound {
+.sprint_sound.sprint_not-sound {
   background-image: url(../assets/svg/not-sound.svg);
 }
 
-.time {
+.sprint_time {
   position: absolute;
   width: 65px;
   display: flex;
@@ -275,7 +264,7 @@
   margin-left: 220px;
 }
 
-.clock {
+.sprint_clock {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -285,7 +274,7 @@
   background-image: url(../assets/svg/clock.svg);
 }
 
-.seconds{
+.sprint_seconds{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -299,7 +288,7 @@
   background-color: #FFFFFF;
 }
 
-.btn-block {
+.sprint_btn-block {
   display: flex;
   justify-content: space-around;
   padding-top: 30px;
@@ -326,7 +315,7 @@
   background-color: #FFE2D9!important;
 }
 
-.btn-block-over {
+.sprint_btn-block-over {
   background-color: #FFFFFF;
   position: absolute;
   bottom: 0;
@@ -349,7 +338,7 @@
 }
 
 @media (max-width: 1100px) {
-  .time {
+  .sprint_time {
     margin-left: 40px;
   }
 }  
