@@ -1,10 +1,10 @@
 import { HOST } from '../../model/helpers/apiHelpers';
-import { Word, WordPlusUserWord } from '../../types';
+import { WordPlusUserWord } from '../../types';
 import { createElement } from './renderHelpers';
 
 class Card {
   public onVolume?: () => void;
-  data: Word;
+  data: WordPlusUserWord;
   volume: HTMLElement;
   audio: HTMLAudioElement;
   audioMeaning: HTMLAudioElement;
@@ -19,6 +19,7 @@ class Card {
 
   constructor(content: HTMLElement, data: WordPlusUserWord) {
     //  const HOST = 'https://rslang-english-learnwords.herokuapp.com';
+    const userJSON = localStorage.getItem('user');
     this.data = data;
 
     const card = createElement('div', 'card z-depth-2');
@@ -28,16 +29,20 @@ class Card {
     card.appendChild(wordImgWrap);
 
     this.difficult = createElement('div', 'difficult tooltipped');
-    this.difficult.style.backgroundImage = `url(../assets/svg/difficult-colored.svg)`;
+    if (this.data.difficulty && this.data.difficulty === 'difficult')
+      this.difficult.style.backgroundImage = `url(../assets/svg/difficult-colored.svg)`;
+    else this.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
     this.difficult.setAttribute('data-position', 'left');
     this.difficult.setAttribute('data-tooltip', 'Сложно!');
-    wordImgWrap.appendChild(this.difficult);
+    if (userJSON) wordImgWrap.appendChild(this.difficult);
 
     this.learn = createElement('div', 'learn tooltipped');
-    this.learn.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
+    if (this.data.optional && this.data.optional.learned === 'true')
+      this.learn.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
+    else this.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
     this.learn.setAttribute('data-position', 'right');
     this.learn.setAttribute('data-tooltip', 'Изучено :)');
-    wordImgWrap.appendChild(this.learn);
+    if (userJSON) wordImgWrap.appendChild(this.learn);
 
     const wordWrap = createElement('div', 'word-wrap');
     wordImgWrap.appendChild(wordWrap);

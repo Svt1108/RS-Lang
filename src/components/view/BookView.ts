@@ -321,7 +321,7 @@ export class BookView {
 
       card.onLearn = async () => {
         if (!res[i].optional) {
-          console.log('create');
+          //  console.log('create');
           await createUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
             difficulty: 'easy',
             optional: { learned: 'yes', learnDate: new Date() },
