@@ -53,7 +53,7 @@ export class AppController {
     this.loader.show();
 
     const status = await this.login.updateLoginStatus();
-    this.appView.updateLoginBtnText(status); // m.b. save Prev + compare ?
+    this.appView.updateLoginBtnText(status);
 
     if (route === Route.main || route === '') {
       this.main.show();
@@ -101,9 +101,10 @@ export class AppController {
 
   private updateLoginStatusOnFocus() {
     window.addEventListener('focus', async () => {
+      this.loader.show();
       const status = await this.login.updateLoginStatus();
       this.appView.updateLoginBtnText(status);
-      console.log('FOCUS EVT fired');
+      this.loader.hide();
     });
   }
 }
