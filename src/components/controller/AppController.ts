@@ -60,7 +60,7 @@ export class AppController {
       this.login.show(route);
       this.appView.showFooter();
     } else if (route === Route.book) {
-      if (level) {
+      if (level !== '') {
         await this.book.show(Number(level), Number(page));
       } else {
         await this.book.show(0, 0);
@@ -73,7 +73,7 @@ export class AppController {
       //
       this.appView.hideFooter();
     } else if (route === Route.sprint) {
-      if (level) {
+      if (level !== '') {
         await this.sprint.show(Number(level), Number(page));
       } else {
         await this.sprint.show();
