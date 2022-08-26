@@ -36,6 +36,7 @@ export class AppController {
     this.loader.init();
     this.enableRouting();
     this.updateLoginStatusOnFocus();
+
     await this.renderNewPage([route, level, page]);
   }
 
@@ -99,8 +100,10 @@ export class AppController {
 
   private updateLoginStatusOnFocus() {
     window.addEventListener('focus', async () => {
+      this.loader.show();
       const status = await this.login.updateLoginStatus();
       this.appView.updateLoginBtnText(status);
+      this.loader.hide();
     });
   }
 }
