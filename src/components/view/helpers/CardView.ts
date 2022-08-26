@@ -15,6 +15,7 @@ class Card {
   public onDifficult?: () => void;
   public onLearn?: () => void;
   word: HTMLElement;
+  card: HTMLElement;
 
   //   public onRemove?: () => void;
 
@@ -23,11 +24,11 @@ class Card {
     const userJSON = localStorage.getItem('user');
     this.data = data;
 
-    const card = createElement('div', 'card z-depth-2');
-    content.appendChild(card);
+    this.card = createElement('div', 'card z-depth-2');
+    content.appendChild(this.card);
 
     const wordImgWrap = createElement('div', 'word-img-wrap');
-    card.appendChild(wordImgWrap);
+    this.card.appendChild(wordImgWrap);
 
     this.difficult = createElement('div', 'difficult tooltipped');
     if (this.data.difficulty && this.data.difficulty === 'difficult')
@@ -83,7 +84,7 @@ class Card {
     // audio.play();
 
     const cardContent = createElement('div', 'card-content');
-    card.appendChild(cardContent);
+    this.card.appendChild(cardContent);
 
     // const divider = createElement('div', 'divider divider-lang');
     // cardContent.appendChild(divider);

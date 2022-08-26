@@ -90,3 +90,13 @@ export interface WordPlusUserWord {
   difficulty?: string;
   //  wordExists?: boolean;
 }
+
+export enum Difficulty {
+  'difficult',
+  'easy',
+}
+
+export enum Learn {
+  'yes',
+  'no',
+}

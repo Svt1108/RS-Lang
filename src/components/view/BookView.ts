@@ -1,5 +1,5 @@
 import { createUserWord, deleteUserWord, updateUserWord } from '../model/helpers/apiHelpers';
-import {  WordPlusUserWord } from '../types';
+import { WordPlusUserWord } from '../types';
 import { Route } from '../types/appRoutes';
 import { LoginData } from '../types/loginTypes';
 import Card from './helpers/CardView';
@@ -18,6 +18,8 @@ export class BookView {
   pageNumberViewTop?: HTMLElement;
   learnAndDifficult: number;
   userRes: WordPlusUserWord[] = [];
+  learnedMessage!: HTMLElement;
+  games!: HTMLElement;
   // user?: LoginData;
 
   constructor(mainDiv: HTMLElement) {
@@ -45,11 +47,11 @@ export class BookView {
     this.mainDiv.innerHTML = '';
 
     // if (user) {
-      // const userWords: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
-      // const tempObj = combineWords(res, userWords);
-      // this.userRes = tempObj.combinedArr;
-      // this.learnAndDifficult = tempObj.num;
-      // } 
+    // const userWords: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
+    // const tempObj = combineWords(res, userWords);
+    // this.userRes = tempObj.combinedArr;
+    // this.learnAndDifficult = tempObj.num;
+    // }
 
     if (level !== undefined) this.levelNumber = level;
     if (page !== undefined) this.pageNumber = page;
@@ -90,9 +92,9 @@ export class BookView {
     if (user) this.renderCards(cards, this.userRes, user);
     else this.renderCards(cards, this.userRes);
 
-    const games = createElement('div', 'col s12 m2 games');
-    row.appendChild(games);
-    this.renderGames(games);
+    this.games = createElement('div', 'col s12 m2 games');
+    row.appendChild(this.games);
+    this.renderGames(this.games);
 
     const pagination = createElement('div', 'pagination');
     bookWrap.appendChild(pagination);
@@ -106,13 +108,13 @@ export class BookView {
 
     if (level && level !== 0) this.switchImages(level);
 
-    const learnedMessage = createElement('div', 'learned-message', 'Cлова на этой странице изучены!');
-   // const learnedMessage = createElement('div', 'learned-message');
-    bookWrap.appendChild(learnedMessage);
+    this.learnedMessage = createElement('div', 'learned-message', 'Cлова на этой странице изучены!');
+    // const learnedMessage = createElement('div', 'learned-message');
+    bookWrap.appendChild(this.learnedMessage);
 
-    console.log(this.learnAndDifficult)
+    console.log(this.learnAndDifficult);
 
-    if (user && this.learnAndDifficult === WORD_ON_PAGE) learnedMessage.classList.add('non-transparent');
+    if (user && this.learnAndDifficult === WORD_ON_PAGE) this.changePageStyle('learned');
 
     // else this.switchImages(0);
   }
@@ -145,10 +147,10 @@ export class BookView {
     levels.appendChild(level5);
     level5.onclick = () => this.switchLevel(5);
 
-    if(user) {
-    const level6 = createElement('div', 'level-btn z-depth-2 waves-effect waves-light white-border', 'Сложные слова');
-    levels.appendChild(level6);
-    level6.onclick = () => this.switchLevel(6);
+    if (user) {
+      const level6 = createElement('div', 'level-btn z-depth-2 waves-effect waves-light white-border', 'Сложные слова');
+      levels.appendChild(level6);
+      level6.onclick = () => this.switchLevel(6);
     }
   }
 
@@ -305,15 +307,20 @@ export class BookView {
           res[i].optional = { learned: 'no' };
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult-colored.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
+
           this.learnAndDifficult += 1;
-        //  if (this.learnAndDifficult === WORD_ON_PAGE) learnedMessage.classList.add('non-transparent');
+          // card.card.style.border = '1px solid rgba(243, 252, 64, 0.4)';
+          if (this.learnAndDifficult >= WORD_ON_PAGE) this.changePageStyle('learned');
         } else if (res[i].difficulty && res[i].difficulty === 'difficult') {
           await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
           delete res[i].difficulty;
           delete res[i].optional;
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
+
           this.learnAndDifficult -= 1;
+          card.card.style.border = '1px solid transparent';
+          if (this.learnAndDifficult < WORD_ON_PAGE) this.changePageStyle('not-learned');
         } else if (res[i].difficulty && res[i].difficulty === 'easy') {
           await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
             difficulty: 'difficult',
@@ -337,7 +344,10 @@ export class BookView {
           res[i].optional = { learned: 'yes' };
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
+
           this.learnAndDifficult += 1;
+          if (this.learnAndDifficult >= WORD_ON_PAGE) this.changePageStyle('learned');
+
           //  if (this.learnAndDifficult === WORD_ON_PAGE) bookWrap.style.backgroundColor = `#F0E891`;
         } else if (res[i].optional && res[i].optional?.learned === 'yes') {
           await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
@@ -345,7 +355,9 @@ export class BookView {
           delete res[i].optional;
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
+
           this.learnAndDifficult -= 1;
+          if (this.learnAndDifficult < WORD_ON_PAGE) this.changePageStyle('not-learned');
         } else if (res[i].optional && res[i].optional?.learned === 'no') {
           await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
             difficulty: 'easy',
@@ -358,6 +370,22 @@ export class BookView {
         }
       };
     }
-   // M.AutoInit();
+    // M.AutoInit();
+  }
+
+  changePageStyle(mark: string) {
+    if (mark === 'learned') {
+      this.learnedMessage.classList.add('non-transparent');
+      (<HTMLElement>this.pageNumberViewTop).style.backgroundColor = 'rgba(1, 37, 19, 0.8)';
+      (<HTMLElement>this.pageNumberViewBottom).style.backgroundColor = 'rgba(1, 37, 19, 0.8)';
+      this.games.style.pointerEvents = 'none';
+      this.games.classList.add('non-acceptable');
+    } else {
+      this.learnedMessage.classList.remove('non-transparent');
+      (<HTMLElement>this.pageNumberViewTop).style.backgroundColor = '';
+      (<HTMLElement>this.pageNumberViewBottom).style.backgroundColor = '';
+      this.games.style.pointerEvents = 'auto';
+      this.games.classList.remove('non-acceptable');
+    }
   }
 }

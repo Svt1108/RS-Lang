@@ -28,38 +28,49 @@
     cursor: auto;
 }
 
-
 .violet-border {
-    border-top : solid 1px #7851A9;
-    border-left: solid 3px #7851A9;
-   }
-   
-   .yellow-border {
-     border-top : solid 1px #F0E891;
-     border-left: solid 3px #F0E891;
-    }
-   
-    .green-border {
-     border-top : solid 1px #386646;
-     border-left: solid 3px #386646;
-    }
-    
-    .blue-border {
-     border-top : solid 1px #4169E1;
-     border-left: solid 3px #4169E1;
-    }
-   
-    .orange-border {
-     border-top : solid 1px #DEB768;
-     border-left: solid 3px #DEB768;
-    }
-   
-    .red-border {
-     border-top : solid 1px #FF1493;
-     border-left: solid 3px #FF1493;
-    }
+    border-top: solid 1px #7851a9;
+    border-left: solid 3px #7851a9;
+}
+
+.yellow-border {
+    border-top: solid 1px #f0e891;
+    border-left: solid 3px #f0e891;
+}
+
+.green-border {
+    border-top: solid 1px #386646;
+    border-left: solid 3px #386646;
+}
+
+.blue-border {
+    border-top: solid 1px #4169e1;
+    border-left: solid 3px #4169e1;
+}
+
+.orange-border {
+    border-top: solid 1px #deb768;
+    border-left: solid 3px #deb768;
+}
+
+.red-border {
+    border-top: solid 1px #ff1493;
+    border-left: solid 3px #ff1493;
+}
 
 .white-border {
-       border-top : solid 1px #FCFCFD;
-        border-left: solid 3px #FCFCFD;
-      }
+    border-top: solid 1px #fcfcfd;
+    border-left: solid 3px #fcfcfd;
+}
+
+.blocked {
+    background-color: rgb(236, 236, 236);
+    color: gray;
+    &:hover {
+        cursor: auto;
+        background-color: rgb(236, 236, 236);
+    }
+    &:active {
+        background-color: rgb(236, 236, 236);
+    }
+}
