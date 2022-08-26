@@ -134,7 +134,7 @@ class Card {
 
     this.setListeners();
 
-    M.AutoInit();
+    //  M.AutoInit();
   }
 
   private setListeners() {

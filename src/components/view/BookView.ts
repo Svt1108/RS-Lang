@@ -371,5 +371,6 @@ export class BookView {
         }
       };
     }
+    M.AutoInit();
   }
 }
