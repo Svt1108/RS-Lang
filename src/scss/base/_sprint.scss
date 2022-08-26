@@ -116,7 +116,7 @@
 }
 
 .sprint_list-words {
-  margin-left: 20px;
+  margin-left: 3px;
   font-size: 18px;
   font-weight: 500;
   width: 95%;
@@ -124,6 +124,9 @@
 }
 
 .sprint_list {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: start;
   font-style: italic;
   padding-bottom: 5px;
 }
@@ -137,6 +140,7 @@
 }
 
 .sprint_header-learn {
+  margin-left: 20px;
   color: #04EFDB;
   font-size: 18px;
   font-weight: 700;
@@ -146,6 +150,7 @@
 }
 
 .sprint_header-unlearn {
+  margin-left: 20px;
   color: #F57096;
   font-size: 18px;
   font-weight: 700;
@@ -155,6 +160,9 @@
 
 .sprint_word-name {
   font-weight: 400;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
   font-size: 40px;
   color: #313030;
   font-family: 'Roboto';
@@ -163,6 +171,7 @@
   padding-bottom: 40px;
   text-align: center;
   width: fit-content;
+  margin-right: 15px;
 }
 
 .sprint_crows {
@@ -190,6 +199,7 @@
   font-weight: 500;
   color: #000000;
 }
+
 .sprint_points {
   margin-bottom: 20px;
   font-size: 16px;
@@ -199,6 +209,12 @@
 
 .sprint {
   display: flex;
+}
+
+.sprint-audio {
+  font-size: 1.4rem!important;
+  margin-top: 4px;
+  margin-right: 1px;
 }
 
 .sprint_cross {

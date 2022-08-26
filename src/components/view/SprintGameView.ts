@@ -1,4 +1,4 @@
-import { getRandomWords} from '../model/helpers/apiHelpers';
+import { getRandomWords, HOST} from '../model/helpers/apiHelpers';
 import {  Word } from '../types';
 import { getMixWords } from './helpers/appMixWords';
 import { createElement } from './helpers/renderHelpers';
@@ -78,12 +78,12 @@ export class SprintGameView {
     this.controlBlock.appendChild(crossImg);
     this.mainDiv.append(this.controlBlock);
     this.mainDiv.append(sprint);
-    if (data) this.mainDiv.append(this.showGame(data));
-    else this.mainDiv.append(this.startGame());
+    if (data) this.mainDiv.append(this.startGameFromBook(data));
+    else this.mainDiv.append(this.startGameFromMenu());
 
   }
 
-  private startGame(): HTMLElement {
+  private startGameFromMenu(): HTMLElement {
 
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
@@ -100,7 +100,7 @@ export class SprintGameView {
     );
     const levelBlock: HTMLElement = createElement('div', 'level-sprint');
 
-    while(randomPageArr.length < 8) {
+    while(randomPageArr.length < 15) {
     const randomPage = Math.floor(Math.random() * 29);
       if(!randomPageArr.includes(randomPage)) {
         randomPageArr.push(randomPage); 
@@ -132,12 +132,40 @@ export class SprintGameView {
 
   }
 
+  private startGameFromBook(data: Word[]): HTMLElement {
+
+    this.stateGame.innerHTML = '';
+    this.pointsResult = [];
+    this.points = 10;
+    this.pointsTotal = 0;
+    this.learnedWords = [];
+    this.unlearnedWords = [];
+    const title: HTMLElement = createElement('h1', 'title-sprint', 'Sprint');
+    const subTitle: HTMLElement = createElement(
+      'h5',
+      'subtitle-sprint',
+      'Попробуй угадать как можно больше слов за минуту',
+    );
+
+    const btnStart = createElement('button', `sprint-level-btn z-depth-1 waves-effect`, 
+                       'начать');
+    btnStart.onclick = () => {
+      this.stateGame.innerHTML = '';
+      this.showGame(data)
+    }   
+
+    this.stateGame.append(title);
+    this.stateGame.append(subTitle);
+    this.stateGame.append(btnStart);
+    return this.stateGame;
+  }
   private showGame(data: Word[]): HTMLElement {
 
     this.timeleft = 60;
     const mixData = getMixWords(data);
     const word = createElement('div', 'sprint_word card');
     const wordName = createElement('div', 'sprint_word-name');
+    const audioBlock = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up sprint-audio', 'volume_up');
     const crowsBlock = createElement('div', 'sprint_crows');
     const points = createElement('div', 'sprint_points', `+${this.points} очков за слово`);
     const totalPoints = createElement('div', 'sprint_total-points', `${0}`);
@@ -150,8 +178,14 @@ export class SprintGameView {
     const crow1 = createElement('div', `sprint_crow`);
     const crow2 = createElement('div', `sprint_crow`);
     const crow3 = createElement('div', `sprint_crow`);
+    const audio = new Audio()
     let index = 1;
+    
+    audio.src = `${HOST}/${mixData[0].audio}`
+    audioBlock.onclick = () => {audio.play()}
+    
     wordName.innerHTML = `${mixData[0].en}   -   ${mixData[0].ru}`;
+    wordName.appendChild(audioBlock)
 
     const downloadTimer = setInterval(() => {
      seconds.innerHTML = `:${this.timeleft}`;
@@ -163,7 +197,9 @@ export class SprintGameView {
     }, 1000);
    
     btnRight.onclick = async () => {
-
+      console.log(index);
+      
+      if(index < mixData.length) {
       if(!mixData[index-1].match) {
         this.createSounds(this.sound, 'false');
         this.createWrongResult(data, mixData[index-1].en);
@@ -177,12 +213,17 @@ export class SprintGameView {
         this.countResult(totalPoints, points);
         this.styleCrow ([crow1, crow2, crow3]);
       }
+    } 
+    else this.endGame()
       wordName.innerHTML = `${mixData[index].en}   -   ${mixData[index].ru}`;
+      wordName.appendChild(audioBlock)
+      audio.src = `${HOST}/${mixData[index].audio}`
       index += 1;
 
     };
 
     btnWrong.onclick = () => {
+      if(mixData[mixData.length]) this.endGame();
       if(!mixData[index-1].match) {
         this.createSounds(this.sound, 'true');
         this.createCorrectResult(data, mixData[index-1].en);
@@ -198,6 +239,8 @@ export class SprintGameView {
       }
 
       wordName.innerHTML = `${mixData[index].en}   -   ${mixData[index].ru}`;
+      wordName.appendChild(audioBlock)
+      audio.src = `${HOST}/${mixData[index].audio}`
       index += 1;
 
     };
@@ -237,12 +280,19 @@ export class SprintGameView {
     const moreGame = createElement('button', 'waves-effect waves-light btn right-sptint-btn end', 'сыграть еще раз');
     const endGame = createElement('button', 'waves-effect waves-light btn left-sptint-btn end', 'перейти в учебник');
     gameOver.pause();
+    
 
     if(this.learnedWords.length) {
       Promise.all(this.learnedWords).then(res => {
         for (let i = 0; i < res.length; i += 1) {
+          const audio = new Audio()
+          const audioBlock = createElement('i', 
+            'tiny grey-text text-darken-2 material-icons volume-up sprint-audio', 'volume_up');
+          audioBlock.onclick = () => {audio.play()}
           const list = createElement('li', 'sprint_list', 
-            `${res[i][0]} ${res[i][1]} - ${res[i][2]}`)      
+            `${res[i][0]} ${res[i][1]} - ${res[i][2]}`)       
+          audio.src = `${HOST}/${res[i][3]}`
+          list.append(audioBlock)    
           learnWords.append(list)
         }
       })
@@ -251,14 +301,20 @@ export class SprintGameView {
     if(this.unlearnedWords.length) {
       Promise.all(this.unlearnedWords).then(res => {
         for (let i = 0; i < res.length; i += 1) {
+          const audio = new Audio()
+          const audioBlock = createElement('i', 
+            'tiny grey-text text-darken-2 material-icons volume-up sprint-audio', 'volume_up');
+          audioBlock.onclick = () => {audio.play()}
           const list = createElement('li', 'sprint_list', 
             `${res[i][0]} ${res[i][1]} - ${res[i][2]}`)
+          audio.src = `${HOST}/${res[i][3]}`  
+          list.append(audioBlock) 
           unlearnWords.append(list)
         }
       })
     }
     
-    moreGame.onclick = () => {this.startGame()}
+    moreGame.onclick = () => {this.startGameFromMenu()}
     endGame.onclick = () => {
       window.location.hash = 'book';
       this.stopGame();
@@ -347,7 +403,7 @@ export class SprintGameView {
     this.pointsResult = [];
     this.learnedWords = [];
     this.unlearnedWords = [];
-    document.exitFullscreen();
+    if(document.fullscreenElement) document.exitFullscreen();
   }
 }
 
