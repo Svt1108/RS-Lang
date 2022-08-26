@@ -1,6 +1,9 @@
 import { BookView } from '../view/BookView';
 import { BookModel } from '../model/BookModel';
-import { Word } from '../types';
+import { UserWordPlus, Word, WordPlusUserWord } from '../types';
+import { getAllUserWords } from '../model/helpers/apiHelpers';
+import { LoginData } from '../types/loginTypes';
+import { combineWords } from '../view/helpers/combineArr';
 
 export class BookController {
   mainDiv;
@@ -16,16 +19,18 @@ export class BookController {
   async show(level?: number, page?: number) {
     const userJSON = localStorage.getItem('user');
 
-    // const user = JSON.parse(localStorage.getItem('user') as string); // если его нет, то вернется NULL
-    // поэтому можно писать
     let res: Word[];
 
     if (userJSON) {
       const user = JSON.parse(localStorage.getItem('user') as string);
       res = await this.model.getBookWords(level, page);
-      this.view.render(res, level, page, user);
-      // console.log(user.id);
-      // console.log(user.token);
+
+      const userWords: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
+      const tempObj = combineWords(res, userWords);
+      const userRes: WordPlusUserWord[] = tempObj.combinedArr;
+      const learnAndDifficult: number = tempObj.num;
+      
+      this.view.render(userRes, level, page, user, learnAndDifficult);
     } else {
       res = await this.model.getBookWords(level, page);
       this.view.render(res, level, page);

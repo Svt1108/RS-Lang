@@ -14,6 +14,7 @@ class Card {
 
   public onDifficult?: () => void;
   public onLearn?: () => void;
+  word: HTMLElement;
 
   //   public onRemove?: () => void;
 
@@ -50,8 +51,8 @@ class Card {
     // const wordWrap = createElement('div', 'word-wrap');
     // cardContent.appendChild(wordWrap);
 
-    const word = createElement('p', 'grey-text text-darken-2 word', `${this.data.word}`);
-    wordWrap.appendChild(word);
+    this.word = createElement('p', 'grey-text text-darken-2 word', `${this.data.word}`);
+    wordWrap.appendChild(this.word);
 
     const transcription = createElement('p', 'grey-text text-darken-2 p-lang', `${this.data.transcription}`);
     wordWrap.appendChild(transcription);
@@ -125,7 +126,7 @@ class Card {
       <div class="collapsible-body collapsible-body-lang"><span>Lorem ipsum dolor sit amet.</span></div>
     </li>
     </ul>`;
-    cardContent.appendChild(wordProgress);
+    if (userJSON) cardContent.appendChild(wordProgress);
 
     //     var elem = document.querySelector('.collapsible.expandable');
     // var instance = M.Collapsible.init(elem, {
