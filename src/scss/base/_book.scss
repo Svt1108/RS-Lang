@@ -127,6 +127,23 @@
     background-image: url(../assets/svg/collection1.svg);
 }
 
-// .semi-transparent {
-//     opacity: 0.6;
-// }
+.learned-message {
+    background-color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5rem 3rem;
+    border-radius: 3px;
+    position: fixed;
+    top: 60px;
+    left: 20px;
+    color: rgba(0, 0, 0, 0.8);
+    transform: rotate(-20deg);
+    opacity: 0;
+    z-index: 1001;
+}
+
+.non-transparent {
+    opacity: 1;
+}

@@ -109,7 +109,11 @@ export class BookView {
     bookWrap.appendChild(bottom);
 
     if (level && level !== 0) this.switchImages(level);
-    if (user && this.learnAndDifficult === WORD_ON_PAGE) bookWrap.style.backgroundColor = `#F0E891`;
+
+    const learnedMessage = createElement('div', 'learned-message', 'Cлова на этой странице изучены!');
+    bookWrap.appendChild(learnedMessage);
+
+    if (user && this.learnAndDifficult === WORD_ON_PAGE) learnedMessage.classList.add('non-transparent');
 
     // else this.switchImages(0);
   }
