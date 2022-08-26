@@ -13,7 +13,7 @@ export const renderHeader = () => `<div class = "header-lang">
   <a href="#${Route.main}" class="brand-logo logo-lang hide-on-med-and-down"></a>
   <ul class="right">
     <li><a href="#${Route.main}">На главную</a></li>
-    <li><a href="#${Route.book}">Учебник</a></li>
+    <li><a href="#${Route.book}#0#0">Учебник</a></li>
     <li><a href="#${Route.stats}">Статистика</a></li>
     <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Игры<i class="material-icons right">arrow_drop_down</i></a></li>
     <li><a href="#${Route.login}" id="lang_login_btn">Вход</a></li>

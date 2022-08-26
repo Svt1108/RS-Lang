@@ -137,13 +137,16 @@ export const getUserWord = async (userId: string, wordId: string, token: string)
       Accept: 'application/json',
     },
   });
-  const userWord = await url.json();
+  // const userWord = await url.json();
+  const userWord = url.status !== 404 ? await url.json() : {};
   return userWord;
 };
 
-export const updateUserWord = async (userId: string, wordId: string, token: string, word: UserWord) => {
+ export const updateUserWord = async (userId: string, wordId: string, token: string, word: UserWord) => {
+// export const updateUserWord = async (userId: string, wordId: string, token: string, word: Partial<UserWord>) => {
   const url = await fetch(`${HOST}${Path.users}/${userId}${Path.words}/${wordId}`, {
     method: Method.update,
+   // method: Method.updatePatch,
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
