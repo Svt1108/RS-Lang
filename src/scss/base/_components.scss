@@ -1,3 +1,4 @@
+.h1-lang,
 .h2-lang,
 .h3-lang,
 .h5-lang,
@@ -20,3 +21,45 @@
     font-weight: 700;
     opacity: 0.9;
 }
+
+.invisible-element {
+    width: 0;
+    height: 0;
+    cursor: auto;
+}
+
+
+.violet-border {
+    border-top : solid 1px #7851A9;
+    border-left: solid 3px #7851A9;
+   }
+   
+   .yellow-border {
+     border-top : solid 1px #F0E891;
+     border-left: solid 3px #F0E891;
+    }
+   
+    .green-border {
+     border-top : solid 1px #386646;
+     border-left: solid 3px #386646;
+    }
+    
+    .blue-border {
+     border-top : solid 1px #4169E1;
+     border-left: solid 3px #4169E1;
+    }
+   
+    .orange-border {
+     border-top : solid 1px #DEB768;
+     border-left: solid 3px #DEB768;
+    }
+   
+    .red-border {
+     border-top : solid 1px #FF1493;
+     border-left: solid 3px #FF1493;
+    }
+
+.white-border {
+       border-top : solid 1px #FCFCFD;
+        border-left: solid 3px #FCFCFD;
+      }

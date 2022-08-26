@@ -1,10 +1,12 @@
 import { UserData, LoginData } from '../types/loginTypes';
 import { LoginView } from '../view/LoginView';
 import { LoginModel } from '../model/LoginModel';
+import { loaderInstance } from '../view/helpers/Loader';
 
 export class LoginController {
   view;
   model;
+  loader = loaderInstance;
 
   constructor(mainDiv: HTMLElement) {
     this.view = new LoginView(mainDiv);
@@ -23,6 +25,7 @@ export class LoginController {
   }
 
   private async handleSignIn(mail: string, pass: string) {
+    this.loader.show();
     const res = await this.model.sendSignIn(mail, pass);
 
     if (res.data) {
@@ -31,10 +34,12 @@ export class LoginController {
       this.view.showToast('Успешный вход в аккаунт :)');
     } else {
       this.view.showToast('Неверный логин/пароль :(');
+      this.loader.hide();
     }
   }
 
   private async handleCreateUser(user: UserData) {
+    this.loader.show();
     const res = await this.model.sendCreateUser(user);
 
     if (res.data) {
@@ -42,6 +47,7 @@ export class LoginController {
       await this.handleSignIn(user.mail, user.pass);
     } else {
       this.view.showToast('Этот E-mail уже зарегистрирован');
+      this.loader.hide();
     }
   }
 
