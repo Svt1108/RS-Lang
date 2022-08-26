@@ -1,4 +1,3 @@
-import { getWordsFromBook } from '../model/helpers/apiHelpers';
 import { SprintGameModel } from '../model/SprintGameModel';
 import { SprintGameView } from '../view/SprintGameView';
 
@@ -12,12 +11,11 @@ export class SprintGameController {
   }
   
   async show(page?: number, level?: number) {
-    if(page && level) {
-    const data = await this.model.getGameData(page, level);
+    if(page !== undefined && level !== undefined) {   
+    const data = await this.model.getGameData(level, page);
     this.view.render(data);
     } else {
-    const data = await getWordsFromBook(0, 4);  
-    this.view.render(data);
+    this.view.render();
     }
   }
 

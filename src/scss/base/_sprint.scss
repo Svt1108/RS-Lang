@@ -51,6 +51,28 @@
   }
 }
 
+.sprint-start-btn {
+  margin-top: 20px;
+  width: 150px;
+  height: 35px;
+  border-radius: 3px;
+  border-right: none;
+  border-bottom: none;
+  display: flex;
+  color: #302F2F;
+  font-weight: 600;
+  font-size: 14px;
+  background: #FFFFFF;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFFFFF!important;
+  transition: 0.3s;
+  cursor: pointer;
+  &:hover {
+      box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.14), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
+  }
+}
+
 .title-sprint {
   margin-bottom: 80px;
 }
@@ -364,7 +386,6 @@
   padding-left: 10px;
   padding-right: 10px;
 }
-
 
 @media (max-width: 1100px) {
   .sprint_time {

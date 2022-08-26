@@ -1,11 +1,12 @@
 import { getRandomWords, HOST} from '../model/helpers/apiHelpers';
-import {  Word } from '../types';
+import {  MixWords, Word } from '../types';
 import { getMixWords } from './helpers/appMixWords';
 import { createElement } from './helpers/renderHelpers';
 
 export class SprintGameView {
   mainDiv: HTMLElement;
   stateGame: HTMLElement;
+  againGame: HTMLElement;
   sound: boolean;
   fullscreen: boolean;
   timeleft: number;
@@ -21,6 +22,8 @@ export class SprintGameView {
     this.mainDiv = mainDiv;
     this.stateGame = createElement('div', 'sprint_game-content');
     this.controlBlock = createElement('div', 'sprint_controll');
+    this.againGame = createElement('button', 
+      'waves-effect waves-light btn right-sptint-btn end', 'сыграть еще раз');
     this.sound = true;
     this.fullscreen = false;
     this.timeleft = 60;
@@ -32,9 +35,8 @@ export class SprintGameView {
     this.unlearnedWords = [];
   }
 
-  public render(data?: Word[]): void {
+  public render(data?: Word[]): void { 
     this.controlBlock.innerHTML = '';
-    this.sound = true;
     this.mainDiv.innerHTML = '';
     const sprint = createElement('div', 'sprint');
     const mainImg = <HTMLImageElement>createElement('img', 'img-sprint');
@@ -75,8 +77,14 @@ export class SprintGameView {
     this.controlBlock.appendChild(crossImg);
     this.mainDiv.append(this.controlBlock);
     this.mainDiv.append(sprint);
-    if (data) this.mainDiv.append(this.startGameFromBook(data));
-    else this.mainDiv.append(this.startGameFromMenu());
+    if (data) {
+      this.mainDiv.append(this.startGameFromBook(data));
+      this.againGame.onclick = () => {this.startGameFromBook(data)} 
+      
+    } else {
+      this.mainDiv.append(this.startGameFromMenu());
+      this.againGame.onclick = () => {this.startGameFromMenu()} 
+    }
   }
 
   private startGameFromMenu(): HTMLElement {
@@ -148,15 +156,15 @@ export class SprintGameView {
     this.pointsTotal = 0;
     this.learnedWords = [];
     this.unlearnedWords = [];
-    const title: HTMLElement = createElement('h1', 'title-sprint', 'Sprint');
+    const title: HTMLElement = createElement('h1', 'title-sprint h1-lang', 'Sprint');
     const subTitle: HTMLElement = createElement(
       'h5',
-      'subtitle-sprint',
+      'subtitle-sprint h5-lang',
       'Попробуй угадать как можно больше слов за минуту',
     );
 
-    const btnStart = createElement('button', `sprint-level-btn z-depth-1 waves-effect`, 
-                       'начать');
+    const btnStart = createElement('button', `sprint-start-btn z-depth-1 waves-effect`, 
+                       'НАЧАТЬ');
     btnStart.onclick = () => {
       this.stateGame.innerHTML = '';
       this.showGame(data)
@@ -167,6 +175,7 @@ export class SprintGameView {
     this.stateGame.append(btnStart);
     return this.stateGame;
   }
+  
   private showGame(data: Word[]): HTMLElement {
     this.timeleft = 60;
     const mixData = getMixWords(data);
@@ -190,7 +199,7 @@ export class SprintGameView {
     const crow2 = createElement('div', `sprint_crow`);
     const crow3 = createElement('div', `sprint_crow`);
     const audio = new Audio()
-    let index = 1;
+    let index = 0;
     
     audio.src = `${HOST}/${mixData[0].audio}`
     audioBlock.onclick = () => {audio.play()}
@@ -206,52 +215,43 @@ export class SprintGameView {
       }
       this.timeleft -= 1;
     }, 1000);
-   
-    btnRight.onclick = async () => {
-      console.log(index);
-      
+
+    const handleKeypress = (el: KeyboardEvent)  => {
       if(index < mixData.length) {
-      if(!mixData[index-1].match) {
-        this.createSounds(this.sound, 'false');
-        this.createWrongResult(data, mixData[index - 1].en);
-        this.pointsTotalResult = [];
-        this.points = 10;
-        this.styleCrow([crow1, crow2, crow3], true);
-        points.innerHTML = `+${this.points} очков за слово`;
+        if(el.code === 'ArrowRight') {
+  
+          this.rightChoice (index, mixData, data, crow1, 
+            crow2, crow3, points, totalPoints, 
+            wordName, audio, audioBlock)     
+        }  
+        
+        if(el.code === 'ArrowLeft') {
+          this.wrongChoice (index, mixData, data, crow1, 
+            crow2, crow3, points, totalPoints, 
+            wordName, audio, audioBlock)
+        }
+        index += 1; 
       } else {
-        this.createSounds(this.sound, 'true');
-        this.createCorrectResult(data, mixData[index - 1].en);
-        this.countResult(totalPoints, points);
-        this.styleCrow([crow1, crow2, crow3]);
-      }
-    } 
-    else this.endGame()
-      wordName.innerHTML = `${mixData[index].en}   -   ${mixData[index].ru}`;
-      wordName.appendChild(audioBlock)
-      audio.src = `${HOST}/${mixData[index].audio}`
+      window.removeEventListener('keypress', handleKeypress)
+    }
+  }
+
+  window.addEventListener('keydown', handleKeypress)
+    btnRight.onclick = () => {
+
+      this.rightChoice (index, mixData, data, crow1, 
+        crow2, crow3, points, totalPoints, 
+        wordName, audio, audioBlock)
       index += 1;
     };
 
     btnWrong.onclick = () => {
-      if(mixData[mixData.length]) this.endGame();
-      if(!mixData[index-1].match) {
-        this.createSounds(this.sound, 'true');
-        this.createCorrectResult(data, mixData[index - 1].en);
-        this.countResult(totalPoints, points);
-        this.styleCrow([crow1, crow2, crow3]);
-      } else {
-        this.createSounds(this.sound, 'false');
-        this.createWrongResult(data, mixData[index - 1].en);
-        this.pointsTotalResult = [];
-        this.points = 10;
-        points.innerHTML = `+${this.points} очков за слово`;
-        this.styleCrow([crow1, crow2, crow3], true);
-      }
-
-      wordName.innerHTML = `${mixData[index].en}   -   ${mixData[index].ru}`;
-      wordName.appendChild(audioBlock)
-      audio.src = `${HOST}/${mixData[index].audio}`
+      
+      this.wrongChoice (index, mixData, data, crow1, 
+        crow2, crow3, points, totalPoints, 
+        wordName, audio, audioBlock)
       index += 1;
+
     };
 
     crowsBlock.append(crow1);
@@ -294,7 +294,6 @@ export class SprintGameView {
     showTotalRes.innerHTML = `Набрано ${this.pointsTotal} очков`;
     showExperience.innerHTML = `Получено +${this.learnedWords.length + this.unlearnedWords.length} опыта`;
     const blockBtn = createElement('div', 'sprint_btn-block-over');
-    const moreGame = createElement('button', 'waves-effect waves-light btn right-sptint-btn end', 'сыграть еще раз');
     const endGame = createElement('button', 'waves-effect waves-light btn left-sptint-btn end', 'перейти в учебник');
     gameOver.pause();
     
@@ -331,15 +330,14 @@ export class SprintGameView {
       })
     }
     
-    moreGame.onclick = () => {this.startGameFromMenu()}
     endGame.onclick = () => {
       window.location.hash = 'book';
       this.stopGame();
     };
-    if (this.sound) gameOver.play();
 
+    if (this.sound) gameOver.play();
     blockBtn.append(endGame);
-    blockBtn.append(moreGame);
+    blockBtn.append(this.againGame);
     headerBlock.append(showTotalRes);
     headerBlock.append(showExperience);
     winBlock.append(headerBlock);
@@ -351,6 +349,76 @@ export class SprintGameView {
     winBlock.append(blockBtn);
     this.stateGame.append(winBlock);
   }
+  
+  rightChoice (index: number, mixData: MixWords[], data: Word[], crow1: HTMLElement, 
+    crow2: HTMLElement, crow3: HTMLElement, pointsDiv: HTMLElement, totalPointsDiv: HTMLElement, 
+    wordNameDiv: HTMLElement, audioTag: HTMLAudioElement, audioBlock: HTMLElement) {
+    const points = pointsDiv
+    const totalPoints = totalPointsDiv
+    const wordName = wordNameDiv
+    const audio = audioTag
+    
+    if(index < mixData.length) { 
+      if(!mixData[index].match) {
+        this.createSounds(this.sound, 'false');
+        this.createWrongResult(data, mixData[index].en);
+        this.pointsTotalResult = [];
+        this.points = 10;
+        this.styleCrow([crow1, crow2, crow3], true);
+        points.innerHTML = `+${this.points} очков за слово`;
+      } else {
+        this.createSounds(this.sound, 'true');
+        this.createCorrectResult(data, mixData[index].en);
+        this.countResult(totalPoints, points);
+        this.styleCrow([crow1, crow2, crow3]);
+      }
+    } 
+    if(index < mixData.length - 1 ) {
+      wordName.innerHTML = `${mixData[index + 1].en}   -   ${mixData[index + 1].ru}`;
+      audio.src = `${HOST}/${mixData[index + 1].audio}`;
+     }
+    if (index === mixData.length - 1) {
+      setTimeout(() => {
+        this.timeleft = 0;
+      }, 700);
+    } 
+    wordName.appendChild(audioBlock);
+  }
+
+  wrongChoice (index: number, mixData: MixWords[], data: Word[], crow1: HTMLElement, 
+    crow2: HTMLElement, crow3: HTMLElement, pointsDiv: HTMLElement, totalPointsDiv: HTMLElement, 
+    wordNameDiv: HTMLElement, audioTag: HTMLAudioElement, audioBlock: HTMLElement) {
+    const points = pointsDiv
+    const totalPoints = totalPointsDiv
+    const wordName = wordNameDiv
+    const audio = audioTag
+    if(index < mixData.length) {
+      if(!mixData[index].match) {
+        this.createSounds(this.sound, 'true');
+        this.createCorrectResult(data, mixData[index].en);
+        this.countResult(totalPoints, points);
+        this.styleCrow([crow1, crow2, crow3]);
+      } else {
+        this.createSounds(this.sound, 'false');
+        this.createWrongResult(data, mixData[index].en);
+        this.pointsTotalResult = [];
+        this.points = 10;
+        points.innerHTML = `+${this.points} очков за слово`;
+        this.styleCrow([crow1, crow2, crow3], true);
+      }
+    } 
+    if(index < mixData.length - 1 ) {
+      wordName.innerHTML = `${mixData[index + 1].en}   -   ${mixData[index + 1].ru}`;
+      audio.src = `${HOST}/${mixData[index + 1].audio}`;
+     }
+    if (index === mixData.length - 1) {
+      setTimeout(() => {
+        this.timeleft = 0;
+      }, 700);
+    } 
+    wordName.appendChild(audioBlock);
+  }
+
 
   private createCorrectResult(data: Word[], word: string): void {
     data.filter((el) =>
