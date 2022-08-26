@@ -7,6 +7,7 @@ import { combineWords } from './helpers/combineArr';
 import { createElement } from './helpers/renderHelpers';
 
 const LAST_PAGE = 29;
+const WORD_ON_PAGE = 20;
 
 export class BookView {
   mainDiv;
@@ -15,12 +16,15 @@ export class BookView {
   lastPageNumber: number;
   levelNumber: number;
   pageNumberViewTop?: HTMLElement;
+  learnAndDifficult: number;
+  userRes: WordPlusUserWord[] = [];
   // user?: LoginData;
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
     this.pageNumber = 0;
     this.levelNumber = 0;
+    this.learnAndDifficult = 0;
     this.lastPageNumber = LAST_PAGE;
   }
 
@@ -37,6 +41,17 @@ export class BookView {
     }
 
     this.mainDiv.innerHTML = '';
+
+    // let userRes: WordPlusUserWord[];
+
+    if (user) {
+      const userWords: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
+      const tempObj = combineWords(res, userWords);
+      this.userRes = tempObj.combinedArr;
+      this.learnAndDifficult = tempObj.num;
+      // if(tempObj.combinedArr ===  WORD_ON_PAGE)
+      // this.renderCards(cards, userRes, user);
+    } // else this.renderCards(cards, res);
 
     // console.log(`level: ${level}`);
     // console.log(`page: ${page}`);
@@ -76,11 +91,8 @@ export class BookView {
 
     const cards = createElement('div', 'cards');
     cardsWrap.appendChild(cards);
-    if (user) {
-      const userWords: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
-      const userRes: WordPlusUserWord[] = combineWords(res, userWords);
-      this.renderCards(cards, userRes, user);
-    } else this.renderCards(cards, res);
+    if (user) this.renderCards(cards, this.userRes, user);
+    else this.renderCards(cards, res);
 
     const games = createElement('div', 'col s12 m2 games');
     row.appendChild(games);
@@ -97,6 +109,7 @@ export class BookView {
     bookWrap.appendChild(bottom);
 
     if (level && level !== 0) this.switchImages(level);
+    if (user && this.learnAndDifficult === WORD_ON_PAGE) bookWrap.style.backgroundColor = `#F0E891`;
 
     // else this.switchImages(0);
   }
@@ -301,12 +314,15 @@ export class BookView {
           res[i].optional = { learned: 'no' };
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult-colored.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
+          this.learnAndDifficult += 1;
+          //  if (this.learnAndDifficult === WORD_ON_PAGE) bookWrap.style.backgroundColor = `#F0E891`;
         } else if (res[i].difficulty && res[i].difficulty === 'difficult') {
           await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
           delete res[i].difficulty;
           delete res[i].optional;
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
+          this.learnAndDifficult -= 1;
         } else if (res[i].difficulty && res[i].difficulty === 'easy') {
           await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
             difficulty: 'difficult',
@@ -330,12 +346,15 @@ export class BookView {
           res[i].optional = { learned: 'yes' };
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
+          this.learnAndDifficult += 1;
+          //  if (this.learnAndDifficult === WORD_ON_PAGE) bookWrap.style.backgroundColor = `#F0E891`;
         } else if (res[i].optional && res[i].optional?.learned === 'yes') {
           await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
           delete res[i].difficulty;
           delete res[i].optional;
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
+          this.learnAndDifficult -= 1;
         } else if (res[i].optional && res[i].optional?.learned === 'no') {
           await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
             difficulty: 'easy',

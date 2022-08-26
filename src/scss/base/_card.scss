@@ -33,6 +33,9 @@
 .card .card-content {
     padding: 1rem;
     width: 27rem;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: flex-end;
 }
 
 .p-lang {
@@ -88,7 +91,7 @@
     position: absolute;
     top: -0.7rem;
     cursor: pointer;
-    transition: 0.4s;
+    transition: 0.2s;
     &:hover {
         transform: scale(1.1);
     }

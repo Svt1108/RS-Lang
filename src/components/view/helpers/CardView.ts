@@ -37,7 +37,7 @@ class Card {
     if (userJSON) wordImgWrap.appendChild(this.difficult);
 
     this.learn = createElement('div', 'learn tooltipped');
-    if (this.data.optional && this.data.optional.learned === 'true')
+    if (this.data.optional && this.data.optional.learned === 'yes')
       this.learn.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
     else this.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
     this.learn.setAttribute('data-position', 'right');
@@ -124,7 +124,7 @@ class Card {
       <div class="collapsible-header collapsible-header-lang"><i class="material-icons grey-text text-darken-2">add_circle_outline</i>Статистика в играх</div>
       <div class="collapsible-body collapsible-body-lang"><span>Lorem ipsum dolor sit amet.</span></div>
     </li>
-  </ul>`;
+    </ul>`;
     cardContent.appendChild(wordProgress);
 
     //     var elem = document.querySelector('.collapsible.expandable');
@@ -133,6 +133,8 @@ class Card {
     // });
 
     this.setListeners();
+
+    M.AutoInit();
   }
 
   private setListeners() {
