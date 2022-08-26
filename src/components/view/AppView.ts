@@ -37,11 +37,11 @@ export class AppView {
   }
 
   private handleExitClick(e: Event) {
-    const { innerText } = this.loginBtn as HTMLElement;
+    let { innerText } = this.loginBtn as HTMLElement;
     if (innerText === 'Выйти') {
       e.preventDefault();
       localStorage.removeItem('user');
-      // innerText = 'Вход';
+      innerText = 'Вход';
       window.location.hash = '';
       M.toast({ html: 'Уже уходишь? Очень жаль :(' });
     }
