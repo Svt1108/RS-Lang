@@ -45,6 +45,9 @@
     &:hover {
         box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.14), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
     }
+    &:focus {
+        box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.3), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
+    }
 }
 
 .sprint-start-btn {
@@ -66,6 +69,9 @@
     cursor: pointer;
     &:hover {
         box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.14), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
+    }
+    &:focus {
+        box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.2), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
     }
 }
 
@@ -250,6 +256,8 @@
     align-items: end;
     width: 3.2rem;
     height: 1.2rem;
+    background-color: transparent;
+    border: none;
     background-image: url(../assets/svg/cross.svg);
     cursor: pointer;
 }
@@ -266,6 +274,8 @@
     align-items: end;
     width: 3.2rem;
     height: 1.2rem;
+    background-color: transparent;
+    border: none;
     background-image: url(../assets/svg/fullscreen.svg);
     cursor: pointer;
 }
@@ -282,6 +292,8 @@
     align-items: end;
     width: 3.6rem;
     height: 1.6rem;
+    background-color: transparent;
+    border: none;
     background-image: url(../assets/svg/sound.svg);
     cursor: pointer;
 }
@@ -292,6 +304,10 @@
     transition: 0.4s;
     &:hover {
         transform: scale(1.2);
+    }
+    &:focus {
+        transform: scale(1.2);
+        background-color: transparent;
     }
 }
 
@@ -384,6 +400,9 @@
     font-size: 12px;
     padding-left: 10px;
     padding-right: 10px;
+    &:focus {
+        box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.3), 0 2px 2px 2px rgba(0, 0, 0, 0.12), 0 2px 2px -2px rgba(0, 0, 0, 0.2);
+    }
 }
 
 @media (max-width: 1100px) {
