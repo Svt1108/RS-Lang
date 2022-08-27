@@ -6,6 +6,7 @@ import { Route } from '../types/appRoutes';
 import { LoginController } from './LoginController';
 import { SprintGameController } from './SprintGameController';
 import { loaderInstance } from '../view/helpers/Loader';
+import { AudioGameController } from './AudioGameController';
 
 export class AppController {
   mainDiv;
@@ -14,6 +15,7 @@ export class AppController {
   book;
   login;
   sprint;
+  audio;
   loader = loaderInstance;
 
   constructor() {
@@ -23,7 +25,7 @@ export class AppController {
     this.main = new MainController(this.mainDiv);
     this.login = new LoginController(this.mainDiv);
     this.book = new BookController(this.mainDiv);
-    // this.audio = new AudioGameController(this.mainDiv);
+    this.audio = new AudioGameController(this.mainDiv);
     this.sprint = new SprintGameController(this.mainDiv);
     // this.drag = new DragAndDropController(this.mainDiv);
     // this.stats = new StatsController(this.mainDiv);
@@ -67,10 +69,11 @@ export class AppController {
       }
       this.appView.showFooter();
     } else if (route === Route.audio) {
-      // level ?
-      // await this.audio.show(Number(level), Number(page)) :
-      // await this.audio.show();
-      //
+      if (level !== '') {
+        await this.audio.show(Number(level), Number(page));
+      } else {
+        await this.audio.show();
+      }
       this.appView.hideFooter();
     } else if (route === Route.sprint) {
       if (level !== '') {
