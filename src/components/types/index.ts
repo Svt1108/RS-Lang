@@ -54,7 +54,7 @@ export enum Method {
 
 export interface UserWord {
   difficulty: string;
-  optional: { learned: string; learnDate: Date };
+  optional: { learned: string; learnDate: number };
 }
 
 export interface MixWords {
@@ -67,7 +67,7 @@ export interface MixWords {
 export interface UserWordPlus {
   difficulty: string;
   id: string;
-  optional: { learned: string; learnDate?: Date };
+  optional: { learned: string; learnDate: number };
   wordId: string;
 }
 // export const HOST = 'https://rslang-english-learnwords.herokuapp.com';
@@ -87,7 +87,7 @@ export interface WordPlusUserWord {
   textExampleTranslate: string;
   textMeaningTranslate: string;
   wordTranslate: string;
-  optional?: { learned: string; learnDate?: Date };
+  optional?: { learned: string; learnDate?: number };
   difficulty?: string;
   //  wordExists?: boolean;
 }

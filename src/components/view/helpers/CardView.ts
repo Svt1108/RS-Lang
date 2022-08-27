@@ -2,7 +2,7 @@ import { HOST } from '../../model/helpers/apiHelpers';
 import { WordPlusUserWord } from '../../types';
 import { createElement } from './renderHelpers';
 
-class Card {
+export class Card {
   public onVolume?: () => void;
   data: WordPlusUserWord;
   volume: HTMLElement;
@@ -181,4 +181,4 @@ class Card {
   }
 }
 
-export default Card;
+// export class Card;
