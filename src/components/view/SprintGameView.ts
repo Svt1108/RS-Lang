@@ -99,7 +99,7 @@ export class SprintGameView {
     this.learnedWords = [];
     this.unlearnedWords = [];
     const randomPageArr: number[] = [];
-    const title: HTMLElement = createElement('h1', 'title-sprint h1-lang', 'Sprint');
+    const title: HTMLElement = createElement('h1', 'title-sprint h1-lang', 'Спринт');
     const subTitle: HTMLElement = createElement(
       'h5',
       'subtitle-sprint h5-lang',
@@ -493,11 +493,3 @@ export class SprintGameView {
     if(document.fullscreenElement) document.exitFullscreen();
   }
 }
-
-// const start = <HTMLButtonElement>createElement('button', 'waves-effect waves-light btn-large start', 'Начать');
-// start.disabled = true;
-// start.onclick = async () => {
-//   this.stateGame.innerHTML = '';
-//   const words = await getWords(0, level[level.length - 1]);
-//   this.mainDiv.append(this.showGame(words));
-// };
