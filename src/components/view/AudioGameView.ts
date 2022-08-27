@@ -1,6 +1,6 @@
-import { getRandomWords, HOST} from '../model/helpers/apiHelpers';
-import {  MixWords, Word } from '../types';
-import { getMixWords } from './helpers/appMixWords';
+import { getWords, HOST} from '../model/helpers/apiHelpers';
+import { Word } from '../types';
+import { getMixWordsForAudio } from './helpers/appMixWords';
 import { createElement } from './helpers/renderHelpers';
 
 export class AudioGameView {
@@ -9,7 +9,6 @@ export class AudioGameView {
   againGame: HTMLElement;
   sound: boolean;
   fullscreen: boolean;
-  timeleft: number;
   points: number;
   pointsTotal: number;
   controlBlock: HTMLElement;
@@ -27,7 +26,6 @@ export class AudioGameView {
       'waves-effect waves-light btn right-audio-btn end', 'сыграть еще раз');
     this.sound = true;
     this.fullscreen = false;
-    this.timeleft = 60;
     this.points = 10;
     this.pointsTotal = 0;
     this.pointsTotalResult = [];
@@ -65,12 +63,12 @@ export class AudioGameView {
         this.sound = true;
         soundImg.classList.remove('audio_not-sound');
       }
-      this.createSounds(this.sound);
+      // this.createSounds(this.sound);
     };
 
     crossImg.onclick = () => {
       window.location.hash = 'main';
-      this.stopGame();
+      // this.stopGame();
     };
 
     this.againGame.tabIndex = 0
@@ -100,7 +98,6 @@ export class AudioGameView {
     this.pointsTotal = 0;
     this.learnedWords = [];
     this.unlearnedWords = [];
-    const randomPageArr: number[] = [];
     const title: HTMLElement = createElement('h1', 'title-audio h1-lang', 'Аудиовызов');
     const subTitle: HTMLElement = createElement(
       'h5',
@@ -109,12 +106,6 @@ export class AudioGameView {
     );
     const levelBlock: HTMLElement = createElement('div', 'level-audio');
 
-    while (randomPageArr.length < 15) {
-      const randomPage = Math.floor(Math.random() * 29);
-      if (!randomPageArr.includes(randomPage)) {
-        randomPageArr.push(randomPage);
-      }
-    }
 
     const levelArr: string[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
@@ -139,7 +130,8 @@ export class AudioGameView {
       );
       btnLevel.tabIndex = 0
       btnLevel.onclick = async () => {
-        const words = await getRandomWords(randomPageArr, i);
+        const randomPage = Math.floor(Math.random() * 29)
+        const words = await getWords(randomPage, i);
         this.stateGame.innerHTML = '';
         this.mainDiv.append(this.showGame(words));
       };
@@ -183,4 +175,47 @@ export class AudioGameView {
     return this.stateGame;
   }
   
+  private showGame(data: Word[]): HTMLElement {
+    const mixData = getMixWordsForAudio(data);
+    const word = createElement('div', 'audio_word card');
+    const wordName = createElement('div', 'audio_word-name');
+    const audioBlock = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up audio_game-audio', 'volume_up');
+    const blockBtn = createElement('div', 'audio_btn-block');
+    const mainBtn = createElement('button', `audio_main-btn z-depth-1 waves-effect`, 
+      `НЕ ЗНАЮ`);
+    const mainBlock =  createElement('div', 'audio_main-block'); 
+    const volumeBtn = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up audio_volume', 'volume_up');
+    const imgDiv = createElement('div', 'audio_img-word')
+    const audio = new Audio()
+    const volume = new Audio()
+    
+    imgDiv.style.backgroundImage = `url(${HOST}/${mixData[0].image})` 
+    audio.src = `${HOST}/${mixData[0].audio}`
+    volume.src = `${HOST}/${mixData[0].audio}`
+    audioBlock.onclick = () => {audio.play()}
+    volumeBtn.onclick = () => {volume.play()}
+    
+    wordName.innerHTML = `${mixData[0].en}  ${mixData[0].tr}`;
+
+    for(let i = 0; i < mixData[0].ruRandom.length; i += 1) {
+      const wordContainer = createElement('button', `audio_block-word z-depth-1 waves-effect`, 
+      `${i + 1} ${mixData[0].ruRandom[i]}`);
+      blockBtn.append(wordContainer)
+    }
+    
+    mainBtn.onclick = () => {
+      mainBtn.innerText = 'ДАЛЬШЕ'
+      mainBlock.innerHTML = ''
+      mainBlock.append(word);
+    }
+    wordName.appendChild(audioBlock)
+    word.append(imgDiv);
+    word.append(wordName);
+    mainBlock.append(volumeBtn)
+    this.stateGame.append(mainBlock);
+    this.stateGame.append(blockBtn);
+    this.stateGame.append(mainBtn)
+    return this.stateGame;
+  }
+
 }
