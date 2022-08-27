@@ -47,6 +47,28 @@
     }
 }
 
+.sprint-start-btn {
+    margin-top: 20px;
+    width: 150px;
+    height: 35px;
+    border-radius: 3px;
+    border-right: none;
+    border-bottom: none;
+    display: flex;
+    color: #302f2f;
+    font-weight: 600;
+    font-size: 14px;
+    background: #ffffff;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff !important;
+    transition: 0.3s;
+    cursor: pointer;
+    &:hover {
+        box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.14), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
+    }
+}
+
 .title-sprint {
     margin-bottom: 80px;
 }
@@ -114,7 +136,7 @@
 }
 
 .sprint_list-words {
-    margin-left: 20px;
+    margin-left: 3px;
     font-size: 18px;
     font-weight: 500;
     width: 95%;
@@ -122,6 +144,9 @@
 }
 
 .sprint_list {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
     font-style: italic;
     padding-bottom: 5px;
 }
@@ -135,6 +160,7 @@
 }
 
 .sprint_header-learn {
+    margin-left: 20px;
     color: #04efdb;
     font-size: 18px;
     font-weight: 700;
@@ -144,6 +170,7 @@
 }
 
 .sprint_header-unlearn {
+    margin-left: 20px;
     color: #f57096;
     font-size: 18px;
     font-weight: 700;
@@ -153,6 +180,9 @@
 
 .sprint_word-name {
     font-weight: 400;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
     font-size: 40px;
     color: #313030;
     font-family: 'Roboto';
@@ -161,6 +191,7 @@
     padding-bottom: 40px;
     text-align: center;
     width: fit-content;
+    margin-right: 15px;
 }
 
 .sprint_crows {
@@ -199,6 +230,12 @@
 
 .sprint {
     display: flex;
+}
+
+.sprint-audio {
+    font-size: 1.4rem !important;
+    margin-top: 4px;
+    margin-right: 1px;
 }
 
 .sprint_cross {

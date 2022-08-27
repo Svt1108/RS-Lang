@@ -36,6 +36,7 @@ export class AppController {
     this.loader.init();
     this.enableRouting();
     this.updateLoginStatusOnFocus();
+
     await this.renderNewPage([route, level, page]);
   }
 
@@ -59,7 +60,7 @@ export class AppController {
       this.login.show(route);
       this.appView.showFooter();
     } else if (route === Route.book) {
-      if (level) {
+      if (level !== '') {
         await this.book.show(Number(level), Number(page));
       } else {
         await this.book.show(0, 0);
@@ -72,7 +73,7 @@ export class AppController {
       //
       this.appView.hideFooter();
     } else if (route === Route.sprint) {
-      if (level) {
+      if (level !== '') {
         await this.sprint.show(Number(level), Number(page));
       } else {
         await this.sprint.show();
@@ -99,8 +100,10 @@ export class AppController {
 
   private updateLoginStatusOnFocus() {
     window.addEventListener('focus', async () => {
+      this.loader.show();
       const status = await this.login.updateLoginStatus();
       this.appView.updateLoginBtnText(status);
+      this.loader.hide();
     });
   }
 }
