@@ -15,6 +15,7 @@ export class AppController {
   login;
   sprint;
   loader = loaderInstance;
+  prevRoute = '';
 
   constructor() {
     this.mainDiv = createElement('main');
@@ -36,6 +37,7 @@ export class AppController {
     this.loader.init();
     this.enableRouting();
     this.updateLoginStatusOnFocus();
+    this.prevRoute = route;
 
     await this.renderNewPage([route, level, page]);
   }
@@ -43,6 +45,10 @@ export class AppController {
   private enableRouting() {
     window.addEventListener('hashchange', () => {
       const [route, level, page] = window.location.hash.slice(1).split('#');
+
+      if (this.prevRoute === Route.sprint) this.sprint.stopSprintGame();
+      this.prevRoute = route;
+
       this.renderNewPage([route, level, page]);
     });
   }
@@ -55,44 +61,35 @@ export class AppController {
 
     if (route === Route.main || route === '') {
       this.main.show();
-      this.appView.showFooter();
     } else if (route === Route.login || route === Route.register) {
       this.login.show(route);
-      this.appView.showFooter();
     } else if (route === Route.book) {
       if (level !== '') {
         await this.book.show(Number(level), Number(page));
       } else {
         await this.book.show(0, 0);
       }
-      this.appView.showFooter();
     } else if (route === Route.audio) {
       // level ?
       // await this.audio.show(Number(level), Number(page)) :
       // await this.audio.show();
-      //
-      this.appView.hideFooter();
     } else if (route === Route.sprint) {
       if (level !== '') {
         await this.sprint.show(Number(level), Number(page));
       } else {
         await this.sprint.show();
       }
-      this.appView.hideFooter();
     } else if (route === Route.drag) {
       // level ?
       // await this.drag.show(Number(level), Number(page)) :
       // await this.drag.show();
-      //
-      this.appView.hideFooter();
     } else if (route === Route.stats) {
       // await this.stats.show();
-      this.appView.showFooter();
     } else {
       // await this.error.show();
-      this.appView.showFooter();
     }
 
+    this.handleFooter(route);
     this.loader.hide();
     document.documentElement.scrollTop = 0;
     M.AutoInit();
@@ -105,5 +102,14 @@ export class AppController {
       this.appView.updateLoginBtnText(status);
       this.loader.hide();
     });
+  }
+
+  private handleFooter(route: string) {
+    const games = ['sprint', 'audio'];
+    if (games.includes(route)) {
+      this.appView.hideFooter();
+    } else {
+      this.appView.showFooter();
+    }
   }
 }
