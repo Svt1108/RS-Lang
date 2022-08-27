@@ -17,6 +17,7 @@ export class SprintGameView {
   pointsTotalResult: number[];
   learnedWords: string[][];
   unlearnedWords: string[][];
+  test: {n: number, w: string}[]
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
@@ -33,6 +34,7 @@ export class SprintGameView {
     this.pointsResult = [];
     this.learnedWords = [];
     this.unlearnedWords = [];
+    this.test = []
   }
 
   public render(data?: Word[]): void { 
@@ -243,7 +245,11 @@ export class SprintGameView {
 
   window.addEventListener('keydown', handleKeypress)
     btnRight.onclick = () => {
-
+       const a = {n: 2,
+        w: 'aaa'}
+        this.test.push(a)
+        console.log(a);
+        
       this.rightChoice (index, mixData, data, crow1, 
         crow2, crow3, points, totalPoints, 
         wordName, audio, audioBlock)
