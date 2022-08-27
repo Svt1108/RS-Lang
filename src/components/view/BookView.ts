@@ -108,6 +108,10 @@ export class BookView {
     bookWrap.appendChild(this.learnedMessage);
 
     if (user && this.learnAndDifficult === WORD_ON_PAGE && this.levelNumber !== 6) this.changePageStyle('learned');
+    if (this.levelNumber === 6 && res.length === 0) {
+      (<HTMLElement>this.games).style.pointerEvents = 'none';
+      (<HTMLElement>this.games).classList.add('non-acceptable');
+    }
   }
 
   renderLevels(levels: HTMLElement, user?: LoginData) {
@@ -266,8 +270,13 @@ export class BookView {
     if (this.levelNumber === 6 && res.length === 0) {
       const noDifficultCard = createElement('p', 'no-difficult-card', 'Сложных слов нет. Для тебя всё просто :)');
       (<HTMLElement>this.cards).appendChild(noDifficultCard);
+      // this.changePageStyle('learned');
+      // (<HTMLElement>this.games).style.pointerEvents = 'none';
+      // (<HTMLElement>this.games).classList.add('non-acceptable');
       return;
     }
+
+    // (<HTMLElement>this.games).classList.remove('non-acceptable');
 
     for (let i = 0; i < res.length; i += 1) {
       const card = new Card(<HTMLElement>this.cards, res[i], this.levelNumber);
@@ -395,12 +404,14 @@ export class BookView {
       (<HTMLElement>this.learnedMessage).classList.add('non-transparent');
       (<HTMLElement>this.pageNumberViewTop).style.color = 'rgba(1, 37, 19, 0.9)';
       (<HTMLElement>this.pageNumberViewBottom).style.color = 'rgba(1, 37, 19, 0.9)';
+      (<HTMLElement>this.pageNumberViewBottom).style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
       (<HTMLElement>this.games).style.pointerEvents = 'none';
       (<HTMLElement>this.games).classList.add('non-acceptable');
     } else {
       (<HTMLElement>this.learnedMessage).classList.remove('non-transparent');
       (<HTMLElement>this.pageNumberViewTop).style.color = 'rgb(255, 255, 255)';
       (<HTMLElement>this.pageNumberViewBottom).style.color = 'rgb(255, 255, 255)';
+      (<HTMLElement>this.pageNumberViewBottom).style.backgroundColor = '';
       (<HTMLElement>this.games).style.pointerEvents = 'auto';
       (<HTMLElement>this.games).classList.remove('non-acceptable');
     }
