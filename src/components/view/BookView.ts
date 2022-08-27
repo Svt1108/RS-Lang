@@ -20,6 +20,7 @@ export class BookView {
   userRes: WordPlusUserWord[] = [];
   learnedMessage!: HTMLElement;
   games!: HTMLElement;
+  cards!: HTMLElement;
   // user?: LoginData;
 
   constructor(mainDiv: HTMLElement) {
@@ -80,10 +81,10 @@ export class BookView {
       this.renderPagination(paginationTop, 'top');
     }
 
-    const cards = createElement('div', 'cards');
-    cardsWrap.appendChild(cards);
-    if (user) this.renderCards(cards, this.userRes, user);
-    else this.renderCards(cards, this.userRes);
+    this.cards = createElement('div', 'cards');
+    cardsWrap.appendChild(this.cards);
+    if (user) this.renderCards(this.userRes, user);
+    else this.renderCards(this.userRes);
 
     this.games = createElement('div', 'col s12 m2 games');
     row.appendChild(this.games);
@@ -255,9 +256,15 @@ export class BookView {
     window.location.hash = `${Route.book}#${this.levelNumber}#${this.pageNumber}`;
   }
 
-  renderCards(cards: HTMLElement, res: WordPlusUserWord[], user?: LoginData) {
+  renderCards(res: WordPlusUserWord[], user?: LoginData) {
+    const materialTooltipTags = document.querySelectorAll('.material-tooltip');
+    const materialTooltipArr = [...materialTooltipTags];
+    for (let i = 0; i < materialTooltipArr.length; i += 1) {
+      materialTooltipArr[i].remove();
+    }
+
     for (let i = 0; i < res.length; i += 1) {
-      const card = new Card(cards, res[i]);
+      const card = new Card(this.cards, res[i], this.levelNumber);
 
       card.onVolume = () => {
         // card.audio.addEventListener('canplaythrough', () => card.audio.play());
@@ -321,6 +328,20 @@ export class BookView {
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult-colored.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
         }
+      };
+
+      card.onLearnDifficultLevel = async () => {
+        card.learnDifficultLevel.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
+        await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
+          difficulty: 'easy',
+          optional: { learned: 'yes', learnDate: new Date() },
+        });
+        res.splice(i, 1);
+        this.cards.innerHTML = '';
+        this.renderCards(res, user);
+        // card.
+        // res[i].difficulty = 'difficult';
+        // res[i].optional = { learned: 'no' };
       };
 
       card.onLearn = async () => {
