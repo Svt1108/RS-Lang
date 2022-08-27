@@ -17,6 +17,7 @@ export class SprintGameView {
   pointsTotalResult: number[];
   learnedWords: string[][];
   unlearnedWords: string[][];
+  test: {n: number, w: string}[]
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
@@ -33,6 +34,7 @@ export class SprintGameView {
     this.pointsResult = [];
     this.learnedWords = [];
     this.unlearnedWords = [];
+    this.test = []
   }
 
   public render(data?: Word[]): void { 
@@ -243,7 +245,11 @@ export class SprintGameView {
 
   window.addEventListener('keydown', handleKeypress)
     btnRight.onclick = () => {
-
+       const a = {n: 2,
+        w: 'aaa'}
+        this.test.push(a)
+        console.log(a);
+        
       this.rightChoice (index, mixData, data, crow1, 
         crow2, crow3, points, totalPoints, 
         wordName, audio, audioBlock)
@@ -493,11 +499,3 @@ export class SprintGameView {
     if(document.fullscreenElement) document.exitFullscreen();
   }
 }
-
-// const start = <HTMLButtonElement>createElement('button', 'waves-effect waves-light btn-large start', 'Начать');
-// start.disabled = true;
-// start.onclick = async () => {
-//   this.stateGame.innerHTML = '';
-//   const words = await getWords(0, level[level.length - 1]);
-//   this.mainDiv.append(this.showGame(words));
-// };
