@@ -58,6 +58,7 @@ export interface UserWord {
 }
 
 export interface MixWords {
+  audio: string;
   en: string;
   ru: string;
   match: boolean;
