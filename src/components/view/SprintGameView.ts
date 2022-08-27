@@ -40,9 +40,9 @@ export class SprintGameView {
     this.mainDiv.innerHTML = '';
     const sprint = createElement('div', 'sprint');
     const mainImg = <HTMLImageElement>createElement('img', 'img-sprint');
-    const soundImg = createElement('div', 'sprint_sound');
-    const fullscreenImg = createElement('div', 'sprint_fullscreen');
-    const crossImg = createElement('div', 'sprint_cross');
+    const soundImg = createElement('button', 'sprint_sound');
+    const fullscreenImg = createElement('button', 'sprint_fullscreen');
+    const crossImg = createElement('button', 'sprint_cross');
     mainImg.src = './assets/images/bridge.jpg';
 
     fullscreenImg.onclick = () => {
@@ -71,6 +71,10 @@ export class SprintGameView {
       this.stopGame();
     };
 
+    this.againGame.tabIndex = 0
+    crossImg.tabIndex = 0
+    soundImg.tabIndex = 0
+    fullscreenImg.tabIndex = 0
     sprint.append(mainImg);
     this.controlBlock.appendChild(soundImg);
     this.controlBlock.append(fullscreenImg);
@@ -131,7 +135,7 @@ export class SprintGameView {
         `sprint-level-btn z-depth-2 waves-effect ${classArr[i]}`,
         `${levelArr[i]}`,
       );
-
+      btnLevel.tabIndex = 0
       btnLevel.onclick = async () => {
         const words = await getRandomWords(randomPageArr, i);
         this.stateGame.innerHTML = '';
@@ -165,6 +169,7 @@ export class SprintGameView {
 
     const btnStart = createElement('button', `sprint-start-btn z-depth-1 waves-effect`, 
                        'НАЧАТЬ');
+    btnStart.tabIndex = 0                   
     btnStart.onclick = () => {
       this.stateGame.innerHTML = '';
       this.showGame(data)
@@ -296,6 +301,7 @@ export class SprintGameView {
     const blockBtn = createElement('div', 'sprint_btn-block-over');
     const endGame = createElement('button', 'waves-effect waves-light btn left-sptint-btn end', 'перейти в учебник');
     gameOver.pause();
+    endGame.tabIndex = 0
     
 
     if (this.learnedWords.length) {
