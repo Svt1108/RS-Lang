@@ -14,36 +14,51 @@ class Card {
 
   public onDifficult?: () => void;
   public onLearn?: () => void;
+  public onLearnDifficultLevel?: () => void;
   word: HTMLElement;
+  card: HTMLElement;
+  learnDifficultLevel: HTMLElement;
 
   //   public onRemove?: () => void;
 
-  constructor(content: HTMLElement, data: WordPlusUserWord) {
+  constructor(content: HTMLElement, data: WordPlusUserWord, level: number) {
     //  const HOST = 'https://rslang-english-learnwords.herokuapp.com';
     const userJSON = localStorage.getItem('user');
     this.data = data;
 
-    const card = createElement('div', 'card z-depth-2');
-    content.appendChild(card);
+    this.card = createElement('div', 'card z-depth-2');
+    content.appendChild(this.card);
 
     const wordImgWrap = createElement('div', 'word-img-wrap');
-    card.appendChild(wordImgWrap);
+    this.card.appendChild(wordImgWrap);
 
     this.difficult = createElement('div', 'difficult tooltipped');
-    if (this.data.difficulty && this.data.difficulty === 'difficult')
-      this.difficult.style.backgroundImage = `url(../assets/svg/difficult-colored.svg)`;
-    else this.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
-    this.difficult.setAttribute('data-position', 'left');
-    this.difficult.setAttribute('data-tooltip', 'Сложно!');
-    if (userJSON) wordImgWrap.appendChild(this.difficult);
+    if (userJSON && level !== 6) {
+      if (this.data.difficulty && this.data.difficulty === 'difficult')
+        this.difficult.style.backgroundImage = `url(../assets/svg/difficult-colored.svg)`;
+      else this.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
+      this.difficult.setAttribute('data-position', 'left');
+      this.difficult.setAttribute('data-tooltip', 'Сложно!');
+      wordImgWrap.appendChild(this.difficult);
+    }
 
     this.learn = createElement('div', 'learn tooltipped');
-    if (this.data.optional && this.data.optional.learned === 'yes')
-      this.learn.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
-    else this.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
-    this.learn.setAttribute('data-position', 'right');
-    this.learn.setAttribute('data-tooltip', 'Изучено :)');
-    if (userJSON) wordImgWrap.appendChild(this.learn);
+    if (userJSON && level !== 6) {
+      if (this.data.optional && this.data.optional.learned === 'yes')
+        this.learn.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
+      else this.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
+      this.learn.setAttribute('data-position', 'right');
+      this.learn.setAttribute('data-tooltip', 'Изучено :)');
+      wordImgWrap.appendChild(this.learn);
+    }
+
+    this.learnDifficultLevel = createElement('div', 'learn-difficult-level tooltipped');
+    if (userJSON && level === 6) {
+      this.learnDifficultLevel.style.backgroundImage = `url(../assets/svg/learn.svg)`;
+      this.learnDifficultLevel.setAttribute('data-position', 'right');
+      this.learnDifficultLevel.setAttribute('data-tooltip', 'Изучено :)');
+      wordImgWrap.appendChild(this.learnDifficultLevel);
+    }
 
     const wordWrap = createElement('div', 'word-wrap');
     wordImgWrap.appendChild(wordWrap);
@@ -83,7 +98,7 @@ class Card {
     // audio.play();
 
     const cardContent = createElement('div', 'card-content');
-    card.appendChild(cardContent);
+    this.card.appendChild(cardContent);
 
     // const divider = createElement('div', 'divider divider-lang');
     // cardContent.appendChild(divider);
@@ -144,6 +159,8 @@ class Card {
     this.difficult.onclick = () => this.onDifficult?.();
 
     this.learn.onclick = () => this.onLearn?.();
+
+    this.learnDifficultLevel.onclick = () => this.onLearnDifficultLevel?.();
 
     //     this.remove.node.onclick = () => {
     //       if (this.remove.node.classList.contains('blocked')) return;

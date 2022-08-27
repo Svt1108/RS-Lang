@@ -1,7 +1,7 @@
 import { BookView } from '../view/BookView';
 import { BookModel } from '../model/BookModel';
 import { UserWordPlus, Word, WordPlusUserWord } from '../types';
-import { getAllUserWords } from '../model/helpers/apiHelpers';
+import { getAllUserWords, getWord } from '../model/helpers/apiHelpers';
 import { LoginData } from '../types/loginTypes';
 import { combineWords } from '../view/helpers/combineArr';
 
@@ -23,14 +23,35 @@ export class BookController {
 
     if (userJSON) {
       const user = JSON.parse(localStorage.getItem('user') as string);
-      res = await this.model.getBookWords(level, page);
+      if (level === 6) {
+        const userWordsTemp: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
+        const userWords = userWordsTemp.filter((item) => item.difficulty === 'difficult');
 
-      const userWords: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
-      const tempObj = combineWords(res, userWords);
-      const userRes: WordPlusUserWord[] = tempObj.combinedArr;
-      const learnAndDifficult: number = tempObj.num;
-      
-      this.view.render(userRes, level, page, user, learnAndDifficult);
+        // for (let i = 0; i < userWords.length; i += 1) {
+        //   // arr.push({ ...getWord(userWords[i].wordId), ...userWords[i] });
+        //   // arr.push({ ...(await getWord(userWords[i].wordId)) });
+        //   arr.push(getWord(userWords[i].wordId));
+        //   // arr.push({ ...userWords[i] });
+        // }
+
+        const arr1 = await Promise.all(userWords.map((item) => getWord(item.wordId)));
+        const tempObj = combineWords(arr1, userWords);
+        const userRes: WordPlusUserWord[] = tempObj.combinedArr.sort(
+          (a, b) => b.optional.learnDate - a.optional.learnDate,
+        );
+        // console.log(userRes);
+        this.view.render(userRes, level, page, user);
+        // console.log(tempObj);
+      } else {
+        res = await this.model.getBookWords(level, page);
+
+        const userWords: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
+        const tempObj = combineWords(res, userWords);
+        const userRes: WordPlusUserWord[] = tempObj.combinedArr;
+        const learnAndDifficult: number = tempObj.num;
+
+        this.view.render(userRes, level, page, user, learnAndDifficult);
+      }
     } else {
       res = await this.model.getBookWords(level, page);
       this.view.render(res, level, page);

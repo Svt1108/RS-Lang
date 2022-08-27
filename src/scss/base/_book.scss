@@ -106,6 +106,11 @@
     }
 }
 
+.non-acceptable .games-btn {
+    background-color: rgba(0, 0, 0, 0.14);
+    // background-color: rgba(243, 252, 64, 0.4);
+}
+
 .game-picture {
     width: 90%;
     height: 90%;
@@ -128,17 +133,17 @@
 }
 
 .learned-message {
-   background-color: rgba(255, 255, 255, 0.7);
-   // background-image: url(../assets/svg/message-1.svg);
-   background-size: contain;
-   background-repeat: no-repeat;
-   background-position: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    // background-image: url(../assets/svg/message-1.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     font-size: 1.1rem;
     font-style: italic;
     font-weight: 600;
     width: fit-content;
-//  width: 20rem;
-//  height: 10rem;
+    //  width: 20rem;
+    //  height: 10rem;
     margin-left: auto;
     margin-right: auto;
     padding: 0.5rem 1rem;
@@ -147,7 +152,6 @@
     position: fixed;
     top: 60px;
     left: 20px;
-
     color: rgba(1, 37, 19, 0.9);
     transform: rotate(-20deg);
     opacity: 0;
@@ -156,4 +160,9 @@
 
 .non-transparent {
     opacity: 1;
+}
+
+.no-difficult-card {
+    font-size: 2rem;
+    font-weight: 600;
 }

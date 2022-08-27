@@ -82,7 +82,8 @@
 }
 
 .difficult,
-.learn {
+.learn,
+.learn-difficult-level {
     width: 1.3rem;
     height: 3rem;
     background-size: contain;
@@ -98,11 +99,15 @@
 }
 
 .difficult {
-    left: 0.4rem;
+    left: 0.6rem;
 }
 
 .learn {
-    left: 2.2rem;
+    left: 2.6rem;
+}
+
+.learn-difficult-level {
+    left: 1.6rem;
 }
 
 .word-progress {
