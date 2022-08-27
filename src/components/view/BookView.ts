@@ -404,9 +404,14 @@ export class BookView {
         res.splice(i, 1);
         (<HTMLElement>this.cards).innerHTML = '';
         this.renderCards(res, user);
-        // card.
-        // res[i].difficulty = 'difficult';
-        // res[i].optional = { learned: 'no' };
+      };
+
+      card.onDiffDifficultLevel = async () => {
+        card.diffDifficultLevel.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
+        await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+        res.splice(i, 1);
+        (<HTMLElement>this.cards).innerHTML = '';
+        this.renderCards(res, user);
       };
     }
     // M.AutoInit();
