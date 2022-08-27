@@ -31,8 +31,6 @@ export class BookView {
   }
 
   render(res: WordPlusUserWord[], level?: number, page?: number, user?: LoginData, learnAndDifficult?: number) {
-    // console.log(user);
-    // console.log(res);
     this.userRes = res;
     if (learnAndDifficult || learnAndDifficult === 0) this.learnAndDifficult = learnAndDifficult;
 
@@ -45,13 +43,6 @@ export class BookView {
     }
 
     this.mainDiv.innerHTML = '';
-
-    // if (user) {
-    // const userWords: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
-    // const tempObj = combineWords(res, userWords);
-    // this.userRes = tempObj.combinedArr;
-    // this.learnAndDifficult = tempObj.num;
-    // }
 
     if (level !== undefined) this.levelNumber = level;
     if (page !== undefined) this.pageNumber = page;
@@ -83,9 +74,11 @@ export class BookView {
     const cardsWrap = createElement('div', 'col s12 m8 cards-wrap');
     row.appendChild(cardsWrap);
 
-    const paginationTop = createElement('div', 'pagination-top');
-    cardsWrap.appendChild(paginationTop);
-    this.renderPagination(paginationTop, 'top');
+    if (this.levelNumber !== 6) {
+      const paginationTop = createElement('div', 'pagination-top');
+      cardsWrap.appendChild(paginationTop);
+      this.renderPagination(paginationTop, 'top');
+    }
 
     const cards = createElement('div', 'cards');
     cardsWrap.appendChild(cards);
@@ -96,9 +89,11 @@ export class BookView {
     row.appendChild(this.games);
     this.renderGames(this.games);
 
-    const pagination = createElement('div', 'pagination');
-    bookWrap.appendChild(pagination);
-    this.renderPagination(pagination, 'bottom');
+    if (this.levelNumber !== 6) {
+      const pagination = createElement('div', 'pagination');
+      bookWrap.appendChild(pagination);
+      this.renderPagination(pagination, 'bottom');
+    }
 
     const bottom = createElement('div', 'parallax-container valign-wrapper bottom-lang');
     bottom.innerHTML = `
@@ -109,14 +104,9 @@ export class BookView {
     if (level && level !== 0) this.switchImages(level);
 
     this.learnedMessage = createElement('div', 'learned-message', 'Cлова на этой странице изучены!');
-    // const learnedMessage = createElement('div', 'learned-message');
     bookWrap.appendChild(this.learnedMessage);
 
-    console.log(this.learnAndDifficult);
-
-    if (user && this.learnAndDifficult === WORD_ON_PAGE) this.changePageStyle('learned');
-
-    // else this.switchImages(0);
+    if (user && this.learnAndDifficult === WORD_ON_PAGE && this.levelNumber !== 6) this.changePageStyle('learned');
   }
 
   renderLevels(levels: HTMLElement, user?: LoginData) {
@@ -376,8 +366,8 @@ export class BookView {
   changePageStyle(mark: string) {
     if (mark === 'learned') {
       this.learnedMessage.classList.add('non-transparent');
-      (<HTMLElement>this.pageNumberViewTop).style.backgroundColor = 'rgba(1, 37, 19, 0.8)';
-      (<HTMLElement>this.pageNumberViewBottom).style.backgroundColor = 'rgba(1, 37, 19, 0.8)';
+      (<HTMLElement>this.pageNumberViewTop).style.color = 'rgba(1, 37, 19, 0.9)';
+      (<HTMLElement>this.pageNumberViewBottom).style.backgroundColor = 'rgba(1, 37, 19, 0.9)';
       this.games.style.pointerEvents = 'none';
       this.games.classList.add('non-acceptable');
     } else {
