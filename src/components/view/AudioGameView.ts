@@ -154,4 +154,33 @@ export class AudioGameView {
 
   }
 
+  private startGameFromBook(data: Word[]): HTMLElement {
+
+    this.stateGame.innerHTML = '';
+    this.pointsResult = [];
+    this.points = 10;
+    this.pointsTotal = 0;
+    this.learnedWords = [];
+    this.unlearnedWords = [];
+    const title: HTMLElement = createElement('h1', 'title-audio h1-lang', 'Аудиовызов');
+    const subTitle: HTMLElement = createElement(
+      'h5',
+      'subtitle-audio h5-lang',
+      'Попробуй угадать как можно больше слов за минуту',
+    );
+
+    const btnStart = createElement('button', `audio-start-btn z-depth-1 waves-effect`, 
+                       'НАЧАТЬ');
+    btnStart.tabIndex = 0                   
+    btnStart.onclick = () => {
+      this.stateGame.innerHTML = '';
+      this.showGame(data)
+    }   
+
+    this.stateGame.append(title);
+    this.stateGame.append(subTitle);
+    this.stateGame.append(btnStart);
+    return this.stateGame;
+  }
+  
 }
