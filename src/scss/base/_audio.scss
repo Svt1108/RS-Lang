@@ -166,6 +166,25 @@
   border-bottom: 2px solid #beb0b0;
 }
 
+.audio_start-btn {
+  margin-top: 20px;
+  width: 150px;
+  height: 35px;
+  border-radius: 3px;
+  border-right: none;
+  border-bottom: none;
+  display: flex;
+  color: #302f2f;
+  font-weight: 600;
+  font-size: 14px;
+  background: #ffffff;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff !important;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
 .audio_list-words {
   margin-left: 3px;
   font-size: 18px;

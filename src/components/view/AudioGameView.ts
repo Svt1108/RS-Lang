@@ -1,5 +1,5 @@
 import { getWords, HOST} from '../model/helpers/apiHelpers';
-import { Word } from '../types';
+import {  Word } from '../types';
 import { getMixWordsForAudio } from './helpers/appMixWords';
 import { createElement } from './helpers/renderHelpers';
 
@@ -68,7 +68,7 @@ export class AudioGameView {
 
     crossImg.onclick = () => {
       window.location.hash = 'main';
-      // this.stopGame();
+      this.stopGame();
     };
 
     this.againGame.tabIndex = 0
@@ -158,10 +158,10 @@ export class AudioGameView {
     const subTitle: HTMLElement = createElement(
       'h5',
       'subtitle-audio h5-lang',
-      'Попробуй угадать как можно больше слов за минуту',
+      'Попробуй угадать как можно больше слов на слух',
     );
 
-    const btnStart = createElement('button', `audio-start-btn z-depth-1 waves-effect`, 
+    const btnStart = createElement('button', `audio_start-btn z-depth-1 waves-effect`, 
                        'НАЧАТЬ');
     btnStart.tabIndex = 0                   
     btnStart.onclick = () => {
@@ -218,4 +218,15 @@ export class AudioGameView {
     return this.stateGame;
   }
 
+  stopGame() {
+    this.sound = false;
+    this.fullscreen = false;
+    this.points = 10;
+    this.pointsTotal = 0;
+    this.pointsTotalResult = [];
+    this.pointsResult = [];
+    this.learnedWords = [];
+    this.unlearnedWords = [];
+    if(document.fullscreenElement) document.exitFullscreen();
+  }
 }

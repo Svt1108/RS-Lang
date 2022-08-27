@@ -38,6 +38,8 @@ export class SprintGameView {
   }
 
   public render(data?: Word[]): void { 
+    console.log(data);
+    
     this.controlBlock.innerHTML = '';
     this.mainDiv.innerHTML = '';
     const sprint = createElement('div', 'sprint');
