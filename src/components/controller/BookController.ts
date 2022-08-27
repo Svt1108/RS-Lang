@@ -39,7 +39,7 @@ export class BookController {
         const userRes: WordPlusUserWord[] = tempObj.combinedArr.sort(
           (a, b) => b.optional.learnDate - a.optional.learnDate,
         );
-        console.log(userRes);
+        // console.log(userRes);
         this.view.render(userRes, level, page, user);
         // console.log(tempObj);
       } else {
