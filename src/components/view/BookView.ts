@@ -337,9 +337,15 @@ export class BookView {
           // card.card.style.border = '1px solid rgba(243, 252, 64, 0.4)';
           if (this.learnAndDifficult >= WORD_ON_PAGE) this.changePageStyle('learned');
         } else if (res[i].difficulty && res[i].difficulty === 'difficult') {
-          await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
-          delete res[i].difficulty;
-          delete res[i].optional;
+          await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
+            difficulty: 'normal',
+            optional: { learned: 'no', learnDate: Date.now() },
+          });
+          res[i].difficulty = 'normal';
+          res[i].optional = { learned: 'no' };
+          // await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+          // delete res[i].difficulty;
+          // delete res[i].optional;
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
 
@@ -372,9 +378,15 @@ export class BookView {
           this.learnAndDifficult += 1;
           if (this.learnAndDifficult >= WORD_ON_PAGE) this.changePageStyle('learned');
         } else if (res[i].optional && res[i].optional?.learned === 'yes') {
-          await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
-          delete res[i].difficulty;
-          delete res[i].optional;
+          await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
+            difficulty: 'normal',
+            optional: { learned: 'no', learnDate: Date.now() },
+          });
+          res[i].difficulty = 'normal';
+          res[i].optional = { learned: 'no' };
+          // await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+          // delete res[i].difficulty;
+          // delete res[i].optional;
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
 

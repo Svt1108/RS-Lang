@@ -9,7 +9,7 @@ export const combineWords = (res, userWords) => {
     // 2 - обходим каждое из userWords. Если id совпал - объединяем
     userWords.forEach(({ wordId, difficulty, optional }) => {
         if (wordId in resToObj) {
-            num += 1;
+            if (difficulty === 'difficult' || difficulty === 'easy') num += 1;
             resToObj[wordId] = {
                 ...resToObj[wordId],
                 difficulty,
