@@ -6,6 +6,7 @@ import { Route } from '../types/appRoutes';
 import { LoginController } from './LoginController';
 import { SprintGameController } from './SprintGameController';
 import { loaderInstance } from '../view/helpers/Loader';
+import { AudioGameController } from './AudioGameController';
 
 export class AppController {
   mainDiv;
@@ -14,7 +15,9 @@ export class AppController {
   book;
   login;
   sprint;
+  audio;
   loader = loaderInstance;
+  prevRoute = '';
 
   constructor() {
     this.mainDiv = createElement('main');
@@ -23,7 +26,7 @@ export class AppController {
     this.main = new MainController(this.mainDiv);
     this.login = new LoginController(this.mainDiv);
     this.book = new BookController(this.mainDiv);
-    // this.audio = new AudioGameController(this.mainDiv);
+    this.audio = new AudioGameController(this.mainDiv);
     this.sprint = new SprintGameController(this.mainDiv);
     // this.drag = new DragAndDropController(this.mainDiv);
     // this.stats = new StatsController(this.mainDiv);
@@ -36,6 +39,7 @@ export class AppController {
     this.loader.init();
     this.enableRouting();
     this.updateLoginStatusOnFocus();
+    this.prevRoute = route;
 
     await this.renderNewPage([route, level, page]);
   }
@@ -43,6 +47,10 @@ export class AppController {
   private enableRouting() {
     window.addEventListener('hashchange', () => {
       const [route, level, page] = window.location.hash.slice(1).split('#');
+
+      if (this.prevRoute === Route.sprint) this.sprint.stopGame();
+      this.prevRoute = route;
+
       this.renderNewPage([route, level, page]);
     });
   }
@@ -55,44 +63,37 @@ export class AppController {
 
     if (route === Route.main || route === '') {
       this.main.show();
-      this.appView.showFooter();
     } else if (route === Route.login || route === Route.register) {
       this.login.show(route);
-      this.appView.showFooter();
     } else if (route === Route.book) {
       if (level !== '') {
         await this.book.show(Number(level), Number(page));
       } else {
         await this.book.show(0, 0);
       }
-      this.appView.showFooter();
     } else if (route === Route.audio) {
-      // level ?
-      // await this.audio.show(Number(level), Number(page)) :
-      // await this.audio.show();
-      //
-      this.appView.hideFooter();
+      if (level !== '') {
+        await this.audio.show(Number(level), Number(page));
+      } else {
+        await this.audio.show();
+      }
     } else if (route === Route.sprint) {
       if (level !== '') {
         await this.sprint.show(Number(level), Number(page));
       } else {
         await this.sprint.show();
       }
-      this.appView.hideFooter();
     } else if (route === Route.drag) {
       // level ?
       // await this.drag.show(Number(level), Number(page)) :
       // await this.drag.show();
-      //
-      this.appView.hideFooter();
     } else if (route === Route.stats) {
       // await this.stats.show();
-      this.appView.showFooter();
     } else {
       // await this.error.show();
-      this.appView.showFooter();
     }
 
+    this.handleFooter(route);
     this.loader.hide();
     document.documentElement.scrollTop = 0;
     M.AutoInit();
@@ -105,5 +106,14 @@ export class AppController {
       this.appView.updateLoginBtnText(status);
       this.loader.hide();
     });
+  }
+
+  private handleFooter(route: string) {
+    const games = ['sprint', 'audio'];
+    if (games.includes(route)) {
+      this.appView.hideFooter();
+    } else {
+      this.appView.showFooter();
+    }
   }
 }
