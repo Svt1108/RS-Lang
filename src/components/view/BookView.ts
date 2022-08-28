@@ -1,4 +1,4 @@
-import { createUserWord, deleteUserWord, updateUserWord } from '../model/helpers/apiHelpers';
+import { createUserWord, deleteUserWord, getUserWord, updateUserWord } from '../model/helpers/apiHelpers';
 import { Optional, WordPlusUserWord } from '../types';
 import { Route } from '../types/appRoutes';
 import { LoginData } from '../types/loginTypes';
@@ -349,17 +349,10 @@ export class BookView {
           (<Optional>res[i].optional).learned = 'no';
           (<Optional>res[i].optional).learnDate = Date.now();
 
-          await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
-            difficulty: res[i].difficulty as string,
-            optional: res[i].optional,
-          });
+          await this.makeWordNormal(res[i], <LoginData>user);
 
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
-
-          this.learnAndDifficult -= 1;
-          card.card.style.border = '1px solid transparent';
-          if (this.learnAndDifficult < WORD_ON_PAGE) this.changePageStyle('not-learned');
         } else if (res[i].difficulty && res[i].difficulty !== 'difficult') {
           res[i].difficulty = 'difficult';
           (<Optional>res[i].optional).learned = 'no';
@@ -406,13 +399,6 @@ export class BookView {
 
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
-
-          // await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
-          //   difficulty: res[i].difficulty as string,
-          //   optional: res[i].optional,
-          // });
-          // this.learnAndDifficult -= 1;
-          // if (this.learnAndDifficult < WORD_ON_PAGE) this.changePageStyle('not-learned');
         } else if (res[i].optional && res[i].optional?.learned === 'no') {
           res[i].difficulty = 'easy';
           (<Optional>res[i].optional).learned = 'yes';
@@ -429,6 +415,7 @@ export class BookView {
       };
 
       card.onLearnDifficultLevel = async () => {
+        console.log(await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token));
         card.learnDifficultLevel.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
         await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
           difficulty: 'easy',
