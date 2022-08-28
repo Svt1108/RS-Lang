@@ -1,9 +1,8 @@
-import { createUserWord, deleteUserWord, getUserWord, updateUserWord } from '../model/helpers/apiHelpers';
-import { Optional, WordPlusUserWord } from '../types';
+import { createUserWord, getUserWord, updateUserWord } from '../model/helpers/apiHelpers';
+import { Optional, UserWordPlus, WordPlusUserWord } from '../types';
 import { Route } from '../types/appRoutes';
 import { LoginData } from '../types/loginTypes';
 import { Card } from './helpers/CardView';
-// import { combineWords } from './helpers/combineArr';
 import { createElement } from './helpers/renderHelpers';
 
 const LAST_PAGE = 29;
@@ -23,7 +22,6 @@ export class BookView {
   games?: HTMLElement;
   cards?: HTMLElement;
   audioElems: HTMLAudioElement[] = [];
-  // user?: LoginData;
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
@@ -36,14 +34,6 @@ export class BookView {
   render(res: WordPlusUserWord[], level?: number, page?: number, user?: LoginData, learnAndDifficult?: number) {
     this.userRes = res;
     if (learnAndDifficult || learnAndDifficult === 0) this.learnAndDifficult = learnAndDifficult;
-
-    // const audioTags = document.querySelectorAll('audio');
-    // const audioArr = [...audioTags];
-    // for (let i = 0; i < audioArr.length; i += 1) {
-    //   audioArr[i].removeAttribute('src');
-    //   audioArr[i].srcObject = null;
-    //   audioArr[i].remove();
-    // }
 
     for (let i = 0; i < this.audioElems.length; i += 1) {
       this.audioElems[i].removeAttribute('src');
@@ -280,13 +270,8 @@ export class BookView {
     if (this.levelNumber === 6 && res.length === 0) {
       const noDifficultCard = createElement('p', 'no-difficult-card', 'Сложных слов нет. Для тебя всё просто :)');
       (<HTMLElement>this.cards).appendChild(noDifficultCard);
-      // this.changePageStyle('learned');
-      // (<HTMLElement>this.games).style.pointerEvents = 'none';
-      // (<HTMLElement>this.games).classList.add('non-acceptable');
       return;
     }
-
-    // (<HTMLElement>this.games).classList.remove('non-acceptable');
 
     for (let i = 0; i < res.length; i += 1) {
       const card = new Card(<HTMLElement>this.cards, res[i], this.levelNumber);
@@ -295,7 +280,6 @@ export class BookView {
       this.audioElems.push(audio, audioMeaning, audioExample);
 
       card.onVolume = () => {
-        // card.audio.addEventListener('canplaythrough', () => card.audio.play());
         if (card.audio.paused === false) {
           card.audio.pause();
           card.audio.currentTime = 0;
@@ -354,6 +338,10 @@ export class BookView {
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
         } else if (res[i].difficulty && res[i].difficulty !== 'difficult') {
+          if (res[i].difficulty === 'normal') {
+            this.learnAndDifficult += 1;
+            if (this.learnAndDifficult >= WORD_ON_PAGE) this.changePageStyle('learned');
+          }
           res[i].difficulty = 'difficult';
           (<Optional>res[i].optional).learned = 'no';
           (<Optional>res[i].optional).learnDate = Date.now();
@@ -400,6 +388,10 @@ export class BookView {
           card.difficult.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
           card.learn.style.backgroundImage = `url(../assets/svg/learn.svg)`;
         } else if (res[i].optional && res[i].optional?.learned === 'no') {
+          if (res[i].difficulty === 'normal') {
+            this.learnAndDifficult += 1;
+            if (this.learnAndDifficult >= WORD_ON_PAGE) this.changePageStyle('learned');
+          }
           res[i].difficulty = 'easy';
           (<Optional>res[i].optional).learned = 'yes';
           (<Optional>res[i].optional).learnDate = Date.now();
@@ -415,11 +407,13 @@ export class BookView {
       };
 
       card.onLearnDifficultLevel = async () => {
-        console.log(await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token));
+        const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+        wordInfo.optional.learned = 'yes';
+        wordInfo.optional.learnDate = Date.now();
         card.learnDifficultLevel.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
         await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
           difficulty: 'easy',
-          // //////          optional: { learned: 'yes', learnDate: Date.now() },
+          optional: wordInfo.optional,
         });
         res.splice(i, 1);
         (<HTMLElement>this.cards).innerHTML = '';
@@ -427,8 +421,12 @@ export class BookView {
       };
 
       card.onDiffDifficultLevel = async () => {
+        const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
         card.diffDifficultLevel.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
-        await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+        await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
+          difficulty: 'normal',
+          optional: wordInfo.optional,
+        });
         res.splice(i, 1);
         (<HTMLElement>this.cards).innerHTML = '';
         this.renderCards(res, user);
