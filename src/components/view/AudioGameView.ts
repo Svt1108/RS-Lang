@@ -1,5 +1,5 @@
 import { getWords, HOST} from '../model/helpers/apiHelpers';
-import {  Word } from '../types';
+import {  MixWordsAudio, Word } from '../types';
 import { getMixWordsForAudio } from './helpers/appMixWords';
 import { createElement } from './helpers/renderHelpers';
 
@@ -16,6 +16,7 @@ export class AudioGameView {
   pointsTotalResult: number[];
   learnedWords: string[][];
   unlearnedWords: string[][];
+  textRes: string;
   test: {n: number, w: string}[]
 
   constructor(mainDiv: HTMLElement) {
@@ -32,7 +33,8 @@ export class AudioGameView {
     this.pointsResult = [];
     this.learnedWords = [];
     this.unlearnedWords = [];
-    this.test = []
+    this.test = [];
+    this.textRes = '';
   }
 
   public render(data?: Word[]): void { 
@@ -63,7 +65,7 @@ export class AudioGameView {
         this.sound = true;
         soundImg.classList.remove('audio_not-sound');
       }
-      // this.createSounds(this.sound);
+      this.createSounds(this.sound);
     };
 
     crossImg.onclick = () => {
@@ -174,40 +176,101 @@ export class AudioGameView {
     this.stateGame.append(btnStart);
     return this.stateGame;
   }
-  
+
   private showGame(data: Word[]): HTMLElement {
     const mixData = getMixWordsForAudio(data);
     const word = createElement('div', 'audio_word card');
     const wordName = createElement('div', 'audio_word-name');
     const audioBlock = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up audio_game-audio', 'volume_up');
     const blockBtn = createElement('div', 'audio_btn-block');
-    const mainBtn = createElement('button', `audio_main-btn z-depth-1 waves-effect`, 
+    const mainBtn = <HTMLButtonElement>createElement('button', `audio_main-btn z-depth-1 waves-effect`, 
       `НЕ ЗНАЮ`);
     const mainBlock =  createElement('div', 'audio_main-block'); 
     const volumeBtn = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up audio_volume', 'volume_up');
     const imgDiv = createElement('div', 'audio_img-word')
     const audio = new Audio()
     const volume = new Audio()
-    
+    let index = 0;
     imgDiv.style.backgroundImage = `url(${HOST}/${mixData[0].image})` 
-    audio.src = `${HOST}/${mixData[0].audio}`
-    volume.src = `${HOST}/${mixData[0].audio}`
+    audio.src = `${HOST}/${mixData[index].audio}`
+    volume.src = `${HOST}/${mixData[index].audio}`
     audioBlock.onclick = () => {audio.play()}
     volumeBtn.onclick = () => {volume.play()}
-    
-    wordName.innerHTML = `${mixData[0].en}  ${mixData[0].tr}`;
+    volume.play()
+    wordName.innerHTML = `${mixData[index].en}  ${mixData[index].tr}`;
+    // const rightAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/cool.mp3');
+    // const wrongAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/bug.mp3');
+    let flag = true;
+    let flagRes = true;
+    const blockWodsArr: HTMLButtonElement[] = []
 
-    for(let i = 0; i < mixData[0].ruRandom.length; i += 1) {
-      const wordContainer = createElement('button', `audio_block-word z-depth-1 waves-effect`, 
-      `${i + 1} ${mixData[0].ruRandom[i]}`);
+    for(let i = 0; i < mixData[index].ruRandom.length; i += 1) {
+      const wordContainer = <HTMLButtonElement>createElement('button', `audio_block-word z-depth-1 waves-effect`, 
+      `${i + 1} ${mixData[index].ruRandom[i]}`);
+      blockWodsArr.push(wordContainer)
       blockBtn.append(wordContainer)
     }
-    
+
     mainBtn.onclick = () => {
-      mainBtn.innerText = 'ДАЛЬШЕ'
-      mainBlock.innerHTML = ''
-      mainBlock.append(word);
+      mainBtn.disabled = true
+      setTimeout(() => { mainBtn.disabled = false}, 500);
+      if (index < mixData.length-1) {
+        if (flag) {
+          mainBtn.innerText = 'ДАЛЬШЕ'
+          mainBlock.innerHTML = ''
+          this.renderWordCard (mixData, index, 
+            imgDiv, wordName, audio)
+          mainBlock.innerHTML = ''  
+          wordName.appendChild(audioBlock)
+          mainBlock.append(word);
+          blockWodsArr.forEach((v) => {
+            if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) v.classList.add('correct')
+          })
+          flag = false
+        } else {
+          blockWodsArr.forEach((el) => {
+          el.classList.remove('correct')
+          el.classList.remove('wrong')
+        })
+          mainBtn.innerText = 'НЕ ЗНАЮ'
+          index += 1
+          this.renderRandomWors(blockWodsArr, mixData, index)
+          volume.src = `${HOST}/${mixData[index].audio}`
+          mainBlock.innerHTML = ''
+          mainBlock.append(volumeBtn)
+          volume.play()
+          flag = true;
+          flagRes = true
+        } 
+      }    
+     
     }
+
+    blockWodsArr.forEach((el) => {
+      const btn = el  
+      btn.onclick = () => {
+        blockWodsArr.forEach((v) => {
+          if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) v.classList.add('correct')
+        })
+        const text = btn.textContent?.split(' ').slice(1).join(' ')
+        if(flagRes) {
+        if(text !== mixData[index].ru) {
+          btn.classList.add('wrong') 
+          this.createSounds(this.sound, 'false')
+        } else this.createSounds(this.sound, 'true')
+        flagRes = false
+      } 
+        mainBtn.innerText = 'ДАЛЬШЕ'
+        mainBlock.innerHTML = ''
+        this.renderWordCard (mixData, index, 
+          imgDiv, wordName, audio)
+        mainBlock.innerHTML = ''  
+        wordName.appendChild(audioBlock)
+        mainBlock.append(word);
+        flag = false 
+      }
+    })
+
     wordName.appendChild(audioBlock)
     word.append(imgDiv);
     word.append(wordName);
@@ -216,6 +279,35 @@ export class AudioGameView {
     this.stateGame.append(blockBtn);
     this.stateGame.append(mainBtn)
     return this.stateGame;
+  }
+  
+  private renderRandomWors (blockWodsArr: HTMLButtonElement[], data: MixWordsAudio[], index: number){
+    for (let i = 0; i < blockWodsArr.length; i += 1) {
+      const word = blockWodsArr[i]
+      word.innerHTML = `${i + 1} ${data[index].ruRandom[i]}`;
+    }
+  }
+
+  private renderWordCard (data: MixWordsAudio[], index: number, 
+    imgDiv: HTMLElement, wordName: HTMLElement, audio: HTMLAudioElement) {
+    const audioEl = audio
+    const wordBlock = wordName
+    const img = imgDiv
+    audioEl.src = `${HOST}/${data[index].audio}`
+    img.style.backgroundImage = `url(${HOST}/${data[index].image})`
+    wordBlock.innerHTML = `${data[index].en}  ${data[index].tr}`;
+  }
+
+  private createSounds(sound: boolean, flag?: string): void {
+    const rightAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/cool.mp3');
+    const wrongAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/bug.mp3');
+    if (!sound) {
+      rightAnswer.pause();
+      wrongAnswer.pause();
+    } else {
+      if (flag === 'true') rightAnswer.play();
+      if (flag === 'false') wrongAnswer.play();
+    }
   }
 
   stopGame() {
