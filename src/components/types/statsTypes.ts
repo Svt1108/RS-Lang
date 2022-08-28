@@ -16,12 +16,15 @@ export type StatWord = {
 
 // HOST / Users/Statistic
 export type Stats = {
-  today: {
-    sprint: { newWords: number; bestSeries: number; wins: number; total: number };
-    audio: { newWords: number; bestSeries: number; wins: number; total: number };
-  };
-  long: {
-    '28.08.2022': { newWords: number; learnedWords: number };
-    '01.09.2022': { newWords: number; learnedWords: number };
+  learnedWords: 0;
+  optional: {
+    today: {
+      sprint: { newWords: number; bestSeries: number; wins: number; total: number };
+      audio: { newWords: number; bestSeries: number; wins: number; total: number };
+    };
+    long: {
+      '28.08.2022': { newWords: number; learnedWords: number };
+      '01.09.2022': { newWords: number; learnedWords: number };
+    };
   };
 };
