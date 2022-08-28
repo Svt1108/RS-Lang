@@ -57,11 +57,20 @@ export interface UserWord {
   optional: { learned: string; learnDate: Date };
 }
 
-export interface MixWords {
+export interface MixWordsSprint {
   audio: string;
   en: string;
   ru: string;
   match: boolean;
+}
+
+export interface MixWordsAudio {
+  image: string,
+  audio: string;
+  en: string;
+  tr: string;
+  ru: string;
+  ruRandom: string[];
 }
 
 export interface UserWordPlus {

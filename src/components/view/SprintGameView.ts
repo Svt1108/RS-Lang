@@ -1,6 +1,6 @@
 import { getRandomWords, HOST} from '../model/helpers/apiHelpers';
-import {  MixWords, Word } from '../types';
-import { getMixWords } from './helpers/appMixWords';
+import {  MixWordsSprint, Word } from '../types';
+import { getMixWordsForSprint } from './helpers/appMixWords';
 import { createElement } from './helpers/renderHelpers';
 
 export class SprintGameView {
@@ -38,6 +38,8 @@ export class SprintGameView {
   }
 
   public render(data?: Word[]): void { 
+    console.log(data);
+    
     this.controlBlock.innerHTML = '';
     this.mainDiv.innerHTML = '';
     const sprint = createElement('div', 'sprint');
@@ -101,7 +103,7 @@ export class SprintGameView {
     this.learnedWords = [];
     this.unlearnedWords = [];
     const randomPageArr: number[] = [];
-    const title: HTMLElement = createElement('h1', 'title-sprint h1-lang', 'Sprint');
+    const title: HTMLElement = createElement('h1', 'title-sprint h1-lang', 'Спринт');
     const subTitle: HTMLElement = createElement(
       'h5',
       'subtitle-sprint h5-lang',
@@ -162,7 +164,7 @@ export class SprintGameView {
     this.pointsTotal = 0;
     this.learnedWords = [];
     this.unlearnedWords = [];
-    const title: HTMLElement = createElement('h1', 'title-sprint h1-lang', 'Sprint');
+    const title: HTMLElement = createElement('h1', 'title-sprint h1-lang', 'Спринт');
     const subTitle: HTMLElement = createElement(
       'h5',
       'subtitle-sprint h5-lang',
@@ -185,7 +187,7 @@ export class SprintGameView {
   
   private showGame(data: Word[]): HTMLElement {
     this.timeleft = 60;
-    const mixData = getMixWords(data);
+    const mixData = getMixWordsForSprint(data);
     const word = createElement('div', 'sprint_word card');
     const wordName = createElement('div', 'sprint_word-name');
     const audioBlock = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up sprint-audio', 'volume_up');
@@ -362,7 +364,7 @@ export class SprintGameView {
     this.stateGame.append(winBlock);
   }
   
-  rightChoice (index: number, mixData: MixWords[], data: Word[], crow1: HTMLElement, 
+  rightChoice (index: number, mixData: MixWordsSprint[], data: Word[], crow1: HTMLElement, 
     crow2: HTMLElement, crow3: HTMLElement, pointsDiv: HTMLElement, totalPointsDiv: HTMLElement, 
     wordNameDiv: HTMLElement, audioTag: HTMLAudioElement, audioBlock: HTMLElement) {
     const points = pointsDiv
@@ -397,7 +399,7 @@ export class SprintGameView {
     wordName.appendChild(audioBlock);
   }
 
-  wrongChoice (index: number, mixData: MixWords[], data: Word[], crow1: HTMLElement, 
+  wrongChoice (index: number, mixData: MixWordsSprint[], data: Word[], crow1: HTMLElement, 
     crow2: HTMLElement, crow3: HTMLElement, pointsDiv: HTMLElement, totalPointsDiv: HTMLElement, 
     wordNameDiv: HTMLElement, audioTag: HTMLAudioElement, audioBlock: HTMLElement) {
     const points = pointsDiv
