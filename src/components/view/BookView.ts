@@ -360,7 +360,6 @@ export class BookView {
 
       card.onLearn = async () => {
         if (!res[i].optional) {
-          //  console.log('create');
           await createUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
             difficulty: 'easy',
             optional: { learned: 'yes', learnDate: Date.now() },
@@ -372,8 +371,6 @@ export class BookView {
 
           this.learnAndDifficult += 1;
           if (this.learnAndDifficult >= WORD_ON_PAGE) this.changePageStyle('learned');
-
-          //  if (this.learnAndDifficult === WORD_ON_PAGE) bookWrap.style.backgroundColor = `#F0E891`;
         } else if (res[i].optional && res[i].optional?.learned === 'yes') {
           await deleteUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
           delete res[i].difficulty;
@@ -414,7 +411,6 @@ export class BookView {
         this.renderCards(res, user);
       };
     }
-    // M.AutoInit();
   }
 
   changePageStyle(mark: string) {
