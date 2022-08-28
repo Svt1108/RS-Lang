@@ -17,29 +17,35 @@ export const getWord = async (wordId: string): Promise<Word> => {
 };
 
 export const getRandomWords = async (randomPageArr: number[], level: number) => {
-  const requests = randomPageArr.map((el) =>  fetch(`${HOST}${Path.words}?page=${el}&group=${level}`));
-  return Promise.all(requests).then(res => res)
-    .then(responses => Promise.all(responses.map(r => r.json())))
-    .then(words => words.reduce((a,b) => {
-      a.push(b)
-      return a.flat(Infinity)
-    }, []))
+  const requests = randomPageArr.map((el) => fetch(`${HOST}${Path.words}?page=${el}&group=${level}`));
+  return Promise.all(requests)
+    .then((res) => res)
+    .then((responses) => Promise.all(responses.map((r) => r.json())))
+    .then((words) =>
+      words.reduce((a, b) => {
+        a.push(b);
+        return a.flat(Infinity);
+      }, []),
+    );
 };
 
 export const getWordsFromBook = async (page: number, level: number) => {
   let i = page;
   const wordArr = [];
-  while(i >= 0){
+  while (i >= 0) {
     wordArr.push(fetch(`${HOST}${Path.words}?page=${i}&group=${level}`));
     i -= 1;
   }
-  return Promise.all(wordArr).then(res => res)
-    .then(responses => Promise.all(responses.map(r => r.json())))
-    .then(words => words.reduce((a,b) => {
-      a.push(b)     
-      return a.flat(Infinity)
-    }, []))
-}
+  return Promise.all(wordArr)
+    .then((res) => res)
+    .then((responses) => Promise.all(responses.map((r) => r.json())))
+    .then((words) =>
+      words.reduce((a, b) => {
+        a.push(b);
+        return a.flat(Infinity);
+      }, []),
+    );
+};
 
 export const getAssets = async (wordId: string): Promise<Assets> => {
   const url = `${HOST}${Path.words}/${wordId}`;
@@ -157,11 +163,11 @@ export const getUserWord = async (userId: string, wordId: string, token: string)
   return userWord;
 };
 
- export const updateUserWord = async (userId: string, wordId: string, token: string, word: UserWord) => {
-// export const updateUserWord = async (userId: string, wordId: string, token: string, word: Partial<UserWord>) => {
+export const updateUserWord = async (userId: string, wordId: string, token: string, word: UserWord) => {
+  // export const updateUserWord = async (userId: string, wordId: string, token: string, word: Partial<UserWord>) => {
   const url = await fetch(`${HOST}${Path.users}/${userId}${Path.words}/${wordId}`, {
     method: Method.update,
-   // method: Method.updatePatch,
+    // method: Method.updatePatch,
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: 'application/json',
@@ -172,6 +178,22 @@ export const getUserWord = async (userId: string, wordId: string, token: string)
   const userWord = await url.json();
   return userWord;
 };
+
+// export const updateUserWordPatch = async (userId: string, wordId: string, token: string) => {
+//   const url = await fetch(`${HOST}${Path.users}/${userId}${Path.words}/${wordId}`, {
+//     method: 'PATCH',
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       difficulty: 'normal',
+//     }),
+//   });
+//   const userWord = url.status !== 404 ? await url.json() : {};
+//   return userWord;
+// };
 
 export const deleteUserWord = async (userId: string, wordId: string, token: string) => {
   await fetch(`${HOST}${Path.users}/${userId}${Path.words}/${wordId}`, {

@@ -132,28 +132,54 @@
     background-image: url(../assets/svg/collection1.svg);
 }
 
+// .learned-message {
+//     background-color: rgba(255, 255, 255, 0.7);
+//     // background-image: url(../assets/svg/message-1.svg);
+//    // background-size: contain;
+//    // background-repeat: no-repeat;
+//    // background-position: center;
+//     font-size: 1.1rem;
+//     font-style: italic;
+//     font-weight: 600;
+//     width: fit-content;
+//     //  width: 20rem;
+//     //  height: 10rem;
+//     margin-left: auto;
+//     margin-right: auto;
+//     padding: 0.5rem 1rem;
+//     border: 1px solid black;
+//     border-radius: 3px;
+//     position: fixed;
+//     top: 60px;
+//     left: 20px;
+//     color: rgba(1, 37, 19, 0.9);
+//     transform: rotate(-20deg);
+//     opacity: 0;
+//     z-index: 1001;
+// }
 .learned-message {
-    background-color: rgba(255, 255, 255, 0.7);
-    // background-image: url(../assets/svg/message-1.svg);
+    // background-color: rgba(255, 255, 255, 0.7);
+    background-image: url(../assets/svg/message-4.svg);
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: top;
     font-size: 1.1rem;
     font-style: italic;
     font-weight: 600;
-    width: fit-content;
-    //  width: 20rem;
-    //  height: 10rem;
+    //   width: fit-content;
+    width: 3.8rem;
+    height: 17rem;
     margin-left: auto;
     margin-right: auto;
     padding: 0.5rem 1rem;
-    border: 1px solid black;
+    // border: 1px solid black;
     border-radius: 3px;
     position: fixed;
-    top: 60px;
-    left: 20px;
-    color: rgba(1, 37, 19, 0.9);
-    transform: rotate(-20deg);
+    top: 0;
+    left: 15%;
+    color: transparent;
+    // transform: rotate(-20deg);
+    transition: 0.5s;
     opacity: 0;
     z-index: 1001;
 }
