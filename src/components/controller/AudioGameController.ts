@@ -1,16 +1,16 @@
+import { AudioGameModel } from '../model/AudioGameModel';
 import { getAllUserWords, getWord } from '../model/helpers/apiHelpers';
-import { SprintGameModel } from '../model/SprintGameModel';
 import { UserWordPlus } from '../types';
 import { LoginData } from '../types/loginTypes';
-import { SprintGameView } from '../view/SprintGameView';
+import { AudioGameView } from '../view/AudioGameView';
 
-export class SprintGameController {
+export class AudioGameController {
   view;
   model;
 
   constructor(main: HTMLElement) {
-    this.view = new SprintGameView(main);
-    this.model = new SprintGameModel();
+    this.view = new AudioGameView(main);
+    this.model = new AudioGameModel();
   }
   
   async show(level?: number, page?: number) {
