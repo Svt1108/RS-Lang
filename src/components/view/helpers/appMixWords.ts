@@ -49,5 +49,5 @@ export const getMixWordsForAudio = (wordsArr: Word[]): MixWordsAudio[] => {
     
   });
   
-  return sortRandom(res);
+  return sortRandom(res).slice(0, 10);
 }
