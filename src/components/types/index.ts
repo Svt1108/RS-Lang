@@ -52,9 +52,22 @@ export enum Method {
   updatePatch = 'PATCH',
 }
 
+// export interface UserWord {
+//   difficulty: string;
+//   optional: { learned: string; learnDate: number };
+// }
+
 export interface UserWord {
   difficulty: string;
-  optional: { learned: string; learnDate: Date };
+  optional?: {
+    learned: 'yes' | 'no';
+    learnDate: number;
+    games: {
+      sprint: { wins: number; total: number };
+      audio: { wins: number; total: number };
+    };
+    markedAsNew: boolean;
+  };
 }
 
 export interface MixWordsSprint {
@@ -65,7 +78,7 @@ export interface MixWordsSprint {
 }
 
 export interface MixWordsAudio {
-  image: string,
+  image: string;
   audio: string;
   en: string;
   tr: string;
@@ -74,12 +87,19 @@ export interface MixWordsAudio {
 }
 
 export interface UserWordPlus {
-  difficulty: string;
-  id: string;
-  optional: { learned: string; learnDate?: Date };
+  id: string; // userId
   wordId: string;
+  difficulty: 'easy' | 'difficult' | 'normal';
+  optional: {
+    learned: 'yes' | 'no';
+    learnDate: number;
+    games: {
+      sprint: { wins: number; total: number };
+      audio: { wins: number; total: number };
+    };
+    markedAsNew: boolean;
+  };
 }
-// export const HOST = 'https://rslang-english-learnwords.herokuapp.com';
 
 export interface WordPlusUserWord {
   id: string;
@@ -96,10 +116,53 @@ export interface WordPlusUserWord {
   textExampleTranslate: string;
   textMeaningTranslate: string;
   wordTranslate: string;
-  optional?: { learned: string; learnDate?: Date };
-  difficulty?: string;
-  //  wordExists?: boolean;
+  difficulty?: 'easy' | 'difficult' | 'normal';
+  optional?: {
+    learned: 'yes' | 'no';
+    learnDate: number;
+    games: {
+      sprint: { wins: number; total: number };
+      audio: { wins: number; total: number };
+    };
+    markedAsNew: boolean;
+  };
 }
+
+export interface Optional {
+  learned: 'yes' | 'no';
+  learnDate: number;
+  games: {
+    sprint: { wins: number; total: number };
+    audio: { wins: number; total: number };
+  };
+  markedAsNew: boolean;
+}
+
+// export interface UserWordPlus {
+//   difficulty: string;
+//   id: string;
+//   optional: { learned: string; learnDate: number };
+//   wordId: string;
+// }
+
+// export interface WordPlusUserWord {
+//   id: string;
+//   group: number;
+//   page: number;
+//   word: string;
+//   image: string;
+//   audio: string;
+//   audioMeaning: string;
+//   audioExample: string;
+//   textMeaning: string;
+//   textExample: string;
+//   transcription: string;
+//   textExampleTranslate: string;
+//   textMeaningTranslate: string;
+//   wordTranslate: string;
+//   optional?: { learned: string; learnDate?: number };
+//   difficulty?: string;
+// }
 
 export enum Difficulty {
   'difficult',

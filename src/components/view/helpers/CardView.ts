@@ -2,7 +2,7 @@ import { HOST } from '../../model/helpers/apiHelpers';
 import { WordPlusUserWord } from '../../types';
 import { createElement } from './renderHelpers';
 
-class Card {
+export class Card {
   public onVolume?: () => void;
   data: WordPlusUserWord;
   volume: HTMLElement;
@@ -15,9 +15,11 @@ class Card {
   public onDifficult?: () => void;
   public onLearn?: () => void;
   public onLearnDifficultLevel?: () => void;
+  public onDiffDifficultLevel?: () => void;
   word: HTMLElement;
   card: HTMLElement;
   learnDifficultLevel: HTMLElement;
+  diffDifficultLevel: HTMLElement;
 
   //   public onRemove?: () => void;
 
@@ -50,6 +52,14 @@ class Card {
       this.learn.setAttribute('data-position', 'right');
       this.learn.setAttribute('data-tooltip', 'Изучено :)');
       wordImgWrap.appendChild(this.learn);
+    }
+
+    this.diffDifficultLevel = createElement('div', 'diff-difficult-level tooltipped');
+    if (userJSON && level === 6) {
+      this.diffDifficultLevel.style.backgroundImage = `url(../assets/svg/difficult-colored.svg)`;
+      this.diffDifficultLevel.setAttribute('data-position', 'right');
+      this.diffDifficultLevel.setAttribute('data-tooltip', 'Не сложно!');
+      wordImgWrap.appendChild(this.diffDifficultLevel);
     }
 
     this.learnDifficultLevel = createElement('div', 'learn-difficult-level tooltipped');
@@ -162,6 +172,8 @@ class Card {
 
     this.learnDifficultLevel.onclick = () => this.onLearnDifficultLevel?.();
 
+    this.diffDifficultLevel.onclick = () => this.onDiffDifficultLevel?.();
+
     //     this.remove.node.onclick = () => {
     //       if (this.remove.node.classList.contains('blocked')) return;
     //       this.onRemove?.();
@@ -181,4 +193,4 @@ class Card {
   }
 }
 
-export default Card;
+// export class Card;

@@ -30,7 +30,7 @@ export class MainView {
       <div class="col s12 center">
         <h3><i class="mdi-content-send brown-text"></i></h3>
         <h4>О приложении</h4>
-        <p class="left-align light main-text-lang">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus. Aliquam eleifend sollicitudin diam, eu mattis nisl maximus sed. Nulla imperdiet semper molestie. Morbi massa odio, condimentum sed ipsum ac, gravida ultrices erat. Nullam eget dignissim mauris, non tristique erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
+        <p class="center-align light main-text-lang">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus. Aliquam eleifend sollicitudin diam, eu mattis nisl maximus sed. Nulla imperdiet semper molestie. Morbi massa odio, condimentum sed ipsum ac, gravida ultrices erat. Nullam eget dignissim mauris, non tristique erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
       </div>
       <div class="row center">
       <a href="#${Route.book}" id="download-button" class="btn-large waves-effect waves-light grey lighten-3 z-depth-3 btn-lang">Поехали!</a>
@@ -57,37 +57,37 @@ export class MainView {
       <h4 class="center">О нас</h4>
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">directions_bike</i></h2>
+            <h2 class="center avatar-wrap"><div class="alexander"></div></h2>
             <h5 class="center main-github">Александр
             <a href="https://github.com/AlexanderKrasovskiy" class = "main-github__link">
             <div class="main-github__image"></div>
             </a>
             </h5>
-            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+            <p class="light team-info">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
             </div>
         </div>
 
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">nature_people</i></h2>
+            <h2 class="center avatar-wrap avatar-wrap-alla"><div class="alla"></div></h2>
             <h5 class="center main-github">Алла
             <a href="https://github.com/ALLaTk" class = "main-github__link">
             <div class="main-github__image"></div>
             </a>
             </h5>
-            <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+            <p class="light team-info">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
             </div>
         </div>
 
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center brown-text"><i class="material-icons">rowing</i></h2>
+            <h2 class="center avatar-wrap"><div class="svetlana"></div></h2>
             <h5 class="center main-github">Светлана
             <a href="https://github.com/Svt1108" class = "main-github__link">
             <div class="main-github__image"></div>
             </a>
             </h5>
-            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+            <p class="light team-info">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
             </div>
         </div>
       </div>
