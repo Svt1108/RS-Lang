@@ -23,10 +23,9 @@ p {
     width: 100%;
 }
 
-.top-img-lang {
-    min-height: 410px;
-}
-
+// .top-img-lang {
+//     min-height: 410px;
+// }
 .parallax {
     overflow: hidden;
 }
@@ -43,6 +42,10 @@ p {
 .main-text-lang {
     font-size: 1.5rem;
     padding: 2rem 0;
+}
+
+.team-info {
+    text-align: justify;
 }
 
 .main-github {
@@ -96,4 +99,41 @@ p {
 
 footer.page-footer {
     margin: 0;
+}
+
+.alexander,
+.svetlana {
+    width: 5rem;
+    height: 5rem;
+}
+
+.alexander {
+    background-image: url(../assets/svg/wizard-1.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.alla {
+    background-image: url(../assets/svg/witch-1.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 6rem;
+    height: 6rem;
+}
+
+.svetlana {
+    background-image: url(../assets/svg/fairy-4.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.avatar-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.6rem;
+}
+
+.avatar-wrap-alla {
+    margin-top: 0.9rem;
+    margin-bottom: 0;
 }
