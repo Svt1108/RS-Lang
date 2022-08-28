@@ -48,7 +48,7 @@ export class AppController {
     window.addEventListener('hashchange', () => {
       const [route, level, page] = window.location.hash.slice(1).split('#');
 
-      if (this.prevRoute === Route.sprint) this.sprint.stopSprintGame();
+      if (this.prevRoute === Route.sprint) this.sprint.stopGame();
       this.prevRoute = route;
 
       this.renderNewPage([route, level, page]);
