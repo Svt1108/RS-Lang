@@ -1,11 +1,11 @@
-// HOST / Users/Words
+// HOST / Users/Words .. УДАЛИТЬ потом этот объект
 export type StatWord = {
   id: string; // userId
   wordId: string;
   difficulty: 'easy' | 'difficult' | 'normal';
   optional: {
     learned: 'yes' | 'no';
-    learnDate: number;
+    learnDate: number; // Date.now()
     games: {
       sprint: { wins: number; total: number };
       audio: { wins: number; total: number };
