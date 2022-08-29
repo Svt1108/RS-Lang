@@ -26,9 +26,13 @@ export class BookController {
       if (level === 6) {
         const userWordsTemp: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
         const userWords = userWordsTemp.filter((item) => item.difficulty === 'difficult');
-        userWords.sort((a, b) => b.optional.learnDate - a.optional.learnDate);
+       // userWords.sort((a, b) => b.optional.learnDate - a.optional.learnDate);
         const arr1 = await Promise.all(userWords.map((item) => getWord(item.wordId)));
-        this.view.render(arr1, level, page, user);
+
+        const tempObj = combineWords(arr1, userWords);
+        const userRes: WordPlusUserWord[] = tempObj.combinedArr.sort((a, b) => b.optional.learnDate - a.optional.learnDate);
+
+        this.view.render(userRes, level, page, user);
       } else {
         res = await this.model.getBookWords(level, page);
 

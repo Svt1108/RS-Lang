@@ -1,5 +1,5 @@
-import { createUserWord, getUserWord, updateUserWord } from '../model/helpers/apiHelpers';
-import { Optional, UserWordPlus, WordPlusUserWord } from '../types';
+import { createUserWord, updateUserWord } from '../model/helpers/apiHelpers';
+import { Optional, WordPlusUserWord } from '../types';
 import { Route } from '../types/appRoutes';
 import { LoginData } from '../types/loginTypes';
 import { Card } from './helpers/CardView';
@@ -407,13 +407,13 @@ export class BookView {
       };
 
       card.onLearnDifficultLevel = async () => {
-        const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
-        wordInfo.optional.learned = 'yes';
-        wordInfo.optional.learnDate = Date.now();
+      //  const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+        (<Optional>res[i].optional).learned = 'yes';
+        (<Optional>res[i].optional).learnDate = Date.now();
         card.learnDifficultLevel.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
         await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
           difficulty: 'easy',
-          optional: wordInfo.optional,
+          optional: res[i].optional,
         });
         res.splice(i, 1);
         (<HTMLElement>this.cards).innerHTML = '';
@@ -421,17 +421,18 @@ export class BookView {
       };
 
       card.onDiffDifficultLevel = async () => {
-        const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+      //  const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
         card.diffDifficultLevel.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
         await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
           difficulty: 'normal',
-          optional: wordInfo.optional,
+          optional: res[i].optional,
         });
         res.splice(i, 1);
         (<HTMLElement>this.cards).innerHTML = '';
         this.renderCards(res, user);
       };
     }
+    M.AutoInit();
   }
 
   changePageStyle(mark: string) {
