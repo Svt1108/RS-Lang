@@ -75,6 +75,14 @@
   }
 }
 
+.audio_block-word.correct {
+  background-color: #84e2d1 !important;
+}
+
+.audio_block-word.wrong {
+  background-color: #fcc2b0 !important;
+}
+
 .audio_main-btn {
   margin-top: 25px;
   width: 150px;

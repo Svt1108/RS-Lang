@@ -26,15 +26,15 @@ const shuffle = (array: string[]): string[] =>  array.sort(() => Math.random() -
 const sortRandom = (array: MixWordsAudio[]): MixWordsAudio[] =>  array.sort(() => Math.random() - 0.5);
 
 export const getMixWordsForAudio = (wordsArr: Word[]): MixWordsAudio[] => {
-
+  
   const res = wordsArr.map((w) => {
 
-    const randomArr: number[] = [];
+    const randomArr: string[] = [w.wordTranslate];
 
-    while (randomArr.length < 4) {
+    while (randomArr.length < 5) {
       const newIdx: number = Math.floor(Math.random() * wordsArr.length);
-      if (!randomArr.includes(newIdx)) {
-        randomArr.push(newIdx)
+      if (!randomArr.includes(wordsArr[newIdx].wordTranslate)) {
+        randomArr.push(wordsArr[newIdx].wordTranslate)
       }
     }
    
@@ -44,14 +44,10 @@ export const getMixWordsForAudio = (wordsArr: Word[]): MixWordsAudio[] => {
       en: w.word,
       tr: w.transcription,
       ru: w.wordTranslate,
-      ruRandom: shuffle([w.wordTranslate, 
-          wordsArr[randomArr[0]].wordTranslate, 
-          wordsArr[randomArr[1]].wordTranslate, 
-          wordsArr[randomArr[2]].wordTranslate, 
-          wordsArr[randomArr[3]].wordTranslate]), 
+      ruRandom: shuffle(randomArr), 
       };
     
   });
   
-  return sortRandom(res);
+  return sortRandom(res).slice(0, 10);
 }

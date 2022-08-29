@@ -17,7 +17,6 @@ export class SprintGameView {
   pointsTotalResult: number[];
   learnedWords: string[][];
   unlearnedWords: string[][];
-  test: {n: number, w: string}[]
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
@@ -34,12 +33,10 @@ export class SprintGameView {
     this.pointsResult = [];
     this.learnedWords = [];
     this.unlearnedWords = [];
-    this.test = []
   }
 
   public render(data?: Word[]): void { 
-    console.log(data);
-    
+
     this.controlBlock.innerHTML = '';
     this.mainDiv.innerHTML = '';
     const sprint = createElement('div', 'sprint');
@@ -157,7 +154,7 @@ export class SprintGameView {
   }
 
   private startGameFromBook(data: Word[]): HTMLElement {
-
+    this.sound = true;
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
@@ -246,12 +243,7 @@ export class SprintGameView {
   }
 
   window.addEventListener('keydown', handleKeypress)
-    btnRight.onclick = () => {
-       const a = {n: 2,
-        w: 'aaa'}
-        this.test.push(a)
-        console.log(a);
-        
+    btnRight.onclick = () => { 
       this.rightChoice (index, mixData, data, crow1, 
         crow2, crow3, points, totalPoints, 
         wordName, audio, audioBlock)
