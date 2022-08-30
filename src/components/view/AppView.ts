@@ -17,7 +17,7 @@ export class AppView {
     this.header.innerHTML = renderHeader();
     this.footer.innerHTML = renderFooter();
 
-    const gamesList = ['audio', 'sprint', 'drag'];
+    const gamesList = ['audio', 'sprint', 'phrase'];
     if (gamesList.includes(route)) {
       this.hideFooter();
     }
