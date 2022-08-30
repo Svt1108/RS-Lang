@@ -1,9 +1,10 @@
 import { BookView } from '../view/BookView';
 import { BookModel } from '../model/BookModel';
-import { UserWordPlus, Word, WordPlusUserWord } from '../types';
-import { getAllUserWords, getWord } from '../model/helpers/apiHelpers';
+import { AggregatedWord, UserWordPlus, Word, WordPlusUserWord } from '../types';
+import { getAggregatedHardWords, getAllUserWords } from '../model/helpers/apiHelpers';
 import { LoginData } from '../types/loginTypes';
 import { combineWords } from '../view/helpers/combineArr';
+import { refactorResponse } from './helpers/controlHelpers';
 
 export class BookController {
   mainDiv;
@@ -24,15 +25,12 @@ export class BookController {
     if (userJSON) {
       const user = JSON.parse(localStorage.getItem('user') as string);
       if (level === 6) {
-        const userWordsTemp: UserWordPlus[] = await getAllUserWords((<LoginData>user).id, (<LoginData>user).token);
-        const userWords = userWordsTemp.filter((item) => item.difficulty === 'difficult');
-       // userWords.sort((a, b) => b.optional.learnDate - a.optional.learnDate);
-        const arr1 = await Promise.all(userWords.map((item) => getWord(item.wordId)));
+        const temp = await getAggregatedHardWords((<LoginData>user).id, (<LoginData>user).token);
+        const userRes: AggregatedWord[] = temp[0].paginatedResults;
 
-        const tempObj = combineWords(arr1, userWords);
-        const userRes: WordPlusUserWord[] = tempObj.combinedArr.sort((a, b) => b.optional.learnDate - a.optional.learnDate);
+        const userResNew = refactorResponse(userRes);
 
-        this.view.render(userRes, level, page, user);
+        this.view.render(userResNew, level, page, user);
       } else {
         res = await this.model.getBookWords(level, page);
 
