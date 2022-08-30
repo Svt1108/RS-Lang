@@ -27,38 +27,23 @@ const shuffle = (array: string[]): string[] => array.sort(() => Math.random() - 
 const sortRandom = (array: MixWordsAudio[]): MixWordsAudio[] => array.sort(() => Math.random() - 0.5);
 
 export const getMixWordsForAudio = (wordsArr: Word[]): MixWordsAudio[] => {
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
   const res = wordsArr.map((w) => {
     const randomArr: string[] = [w.wordTranslate];
-<<<<<<< HEAD
-
-    while (randomArr.length < 5) {
-      const newIdx: number = Math.floor(Math.random() * wordsArr.length);
-      if (!randomArr.includes(wordsArr[newIdx].wordTranslate)) {
-        randomArr.push(wordsArr[newIdx].wordTranslate);
-      }
-    }
-
-=======
-    if(wordsArr.length > 5) { 
+    if (wordsArr.length > 5) {
       while (randomArr.length < 5) {
         const newIdx: number = Math.floor(Math.random() * wordsArr.length);
         if (!randomArr.includes(wordsArr[newIdx].wordTranslate)) {
-          randomArr.push(wordsArr[newIdx].wordTranslate)
+          randomArr.push(wordsArr[newIdx].wordTranslate);
         }
       }
     } else {
       while (randomArr.length < wordsArr.length) {
         const newIdx: number = Math.floor(Math.random() * wordsArr.length);
         if (!randomArr.includes(wordsArr[newIdx].wordTranslate)) {
-          randomArr.push(wordsArr[newIdx].wordTranslate)
+          randomArr.push(wordsArr[newIdx].wordTranslate);
         }
       }
     }
->>>>>>> develop
     return {
       image: w.image,
       audio: w.audio,
@@ -68,14 +53,8 @@ export const getMixWordsForAudio = (wordsArr: Word[]): MixWordsAudio[] => {
       ruRandom: shuffle(randomArr),
     };
   });
-<<<<<<< HEAD
-=======
-  
-  return res.length >= 10 ? sortRandom(res).slice(0, 10): sortRandom(res);
-}
->>>>>>> develop
 
-  return sortRandom(res).slice(0, 10);
+  return res.length >= 10 ? sortRandom(res).slice(0, 10) : sortRandom(res);
 };
 
 export const getMixWordsForPhrase = (wordsArr: WordPlusUserWord[]) => {
