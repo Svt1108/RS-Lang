@@ -1,5 +1,6 @@
 import { HOST } from '../../model/helpers/apiHelpers';
 import { WordPlusUserWord } from '../../types';
+// import { LoginData } from '../../types/loginTypes';
 import { createElement } from './renderHelpers';
 
 export class Card {
@@ -144,23 +145,41 @@ export class Card {
     );
     cardContent.appendChild(textExampleTranslate);
 
+    if(userJSON) {
     const wordProgress = createElement('div', 'word-progress');
     wordProgress.innerHTML = `  <ul class="collapsible collapsible-lang">
     <li>
       <div class="collapsible-header collapsible-header-lang"><i class="material-icons grey-text text-darken-2">add_circle_outline</i>Статистика в играх</div>
-      <div class="collapsible-body collapsible-body-lang"><span>Lorem ipsum dolor sit amet.</span></div>
+      <div class="collapsible-body collapsible-body-lang"><span>Спринт: ${this.data.optional?.games.sprint.wins === undefined ? 0 : 
+        this.data.optional?.games.sprint.wins}/ ${this.data.optional?.games.sprint.total === undefined ? 0 : 
+          this.data.optional?.games.sprint.total}<br>
+      Аудиовызов: ${this.data.optional?.games.audio.wins === undefined ? 0 : 
+        this.data.optional?.games.audio.wins}/ ${this.data.optional?.games.audio.total === undefined ? 0 : 
+          this.data.optional?.games.audio.total}</span></div>
     </li>
-    </ul>`;
-    if (userJSON) cardContent.appendChild(wordProgress);
+    </ul>`; 
+    cardContent.appendChild(wordProgress);
+  }
 
-    //     var elem = document.querySelector('.collapsible.expandable');
-    // var instance = M.Collapsible.init(elem, {
-    //   accordion: false
-    // });
+  // if(userJSON && level === 6) {
+  //   const user = JSON.parse(localStorage.getItem('user') as string);
+  //   const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, this.data.id, (<LoginData>user).token);
+  //   const wordProgress = createElement('div', 'word-progress');
+  //   wordProgress.innerHTML = `  <ul class="collapsible collapsible-lang">
+  //   <li>
+  //     <div class="collapsible-header collapsible-header-lang"><i class="material-icons grey-text text-darken-2">add_circle_outline</i>Статистика в играх</div>
+  //     <div class="collapsible-body collapsible-body-lang"><span>Спринт: ${this.data.optional?.games.sprint.wins === undefined ? 0 : 
+  //       this.data.optional?.games.sprint.wins}/ ${this.data.optional?.games.sprint.total === undefined ? 0 : 
+  //         this.data.optional?.games.sprint.total}<br>
+  //     Аудиовызов: ${this.data.optional?.games.audio.wins === undefined ? 0 : 
+  //       this.data.optional?.games.audio.wins}/ ${this.data.optional?.games.audio.total === undefined ? 0 : 
+  //         this.data.optional?.games.audio.total}</span></div>
+  //   </li>
+  //   </ul>`; 
+  //   cardContent.appendChild(wordProgress);
+  // }
 
     this.setListeners();
-
-    //  M.AutoInit();
   }
 
   private setListeners() {
@@ -170,7 +189,7 @@ export class Card {
 
     this.learn.onclick = () => this.onLearn?.();
 
-    this.learnDifficultLevel.onclick = () => this.onLearnDifficultLevel?.();
+    this.learnDifficultLevel.onclick = () => this.onLearnDifficultLevel?.();         
 
     this.diffDifficultLevel.onclick = () => this.onDiffDifficultLevel?.();
 
