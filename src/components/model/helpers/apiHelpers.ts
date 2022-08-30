@@ -228,3 +228,19 @@ export const updateUserStatistic = async (userId: string, token: string) => {
   const userStatistic = await url.json();
   return userStatistic;
 };
+
+export const getAggregatedHardWords = async (userId: string, token: string) => {
+  const filter = encodeURIComponent(JSON.stringify({ 'userWord.difficulty': 'difficult' }));
+  const url = `${HOST}${Path.users}/${userId}${Path.aggregatedWords}?filter=${filter}`;
+
+  const rawRes = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+    },
+  });
+
+  const res = await rawRes.json(); // as ....Your Type
+
+  return res;
+};

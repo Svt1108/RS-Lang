@@ -173,3 +173,33 @@ export enum Learn {
   'yes',
   'no',
 }
+
+export interface AggregatedWord {
+  // [x: string]: any;
+  word: string;
+  wordTranslate: string;
+  _id?: string;
+  audio: string;
+  audioExample: string;
+  audioMeaning: string;
+  group: number;
+  image: string;
+  page: number;
+  textExample: string;
+  textExampleTranslate: string;
+  textMeaning: string;
+  textMeaningTranslate: string;
+  transcription: string;
+  userWord?: {
+    difficulty?: 'easy' | 'difficult' | 'normal';
+    optional?: {
+      learned: 'yes' | 'no';
+      learnDate: number;
+      games: {
+        sprint: { wins: number; total: number };
+        audio: { wins: number; total: number };
+      };
+      markedAsNew: boolean;
+    };
+  };
+}
