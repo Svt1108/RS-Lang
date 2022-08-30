@@ -41,7 +41,6 @@ export class AudioGameView {
     const soundImg = createElement('button', 'audio_sound');
     const fullscreenImg = createElement('button', 'audio_fullscreen');
     const crossImg = createElement('button', 'audio_cross');
-    mainImg.src = './assets/images/village.jpg';
 
     fullscreenImg.onclick = () => {
       if (!this.fullscreen) {
@@ -206,7 +205,9 @@ export class AudioGameView {
     }
 
     const handleVolumepress = (el: KeyboardEvent)  => {
-      if(el.code === 'Space') {volume.play()}
+      const sound = new Audio 
+      sound.src = `${HOST}/${mixData[index].audio}`
+      if(el.code === 'Space') {sound.play()}
     }
 
     const handleKeypress = (el: KeyboardEvent)  => {
@@ -262,20 +263,20 @@ export class AudioGameView {
           if (flag) {
             this.pressMainButtonAnswer(mainBtn, data, index,
               mixData, mainBlock, imgDiv, wordName, 
-              audio, audioBlock, word, blockWodsArr)
+              audio, audioBlock, word, blockWodsArr, handleKeypress)
             flag = false
           } else {
             index += 1
             flag = true;
             flagRes = true
-            this.pressMainButtonNext (mainBtn, data, index, mixData, mainBlock, imgDiv, 
-              wordName, audio, audioBlock, word, blockWodsArr,
+            this.pressMainButtonNext (mainBtn, index,
+              mixData, mainBlock, blockWodsArr,
               volumeBtn, volume, handleKeypress)
           } 
           } 
           if (index === mixData.length) {
             this.endGame()
-            window.removeEventListener('keydown', handleMainKeypress)
+            window.removeEventListener('keypress', handleMainKeypress)
             index = 0
           } 
         }   
@@ -290,14 +291,14 @@ export class AudioGameView {
         if (flag) {
           this.pressMainButtonAnswer(mainBtn, data, index,
             mixData, mainBlock, imgDiv, wordName, 
-            audio, audioBlock, word, blockWodsArr)
+            audio, audioBlock, word, blockWodsArr, handleKeypress)
           flag = false
         } else {
           index += 1
           flag = true;
           flagRes = true
-          this.pressMainButtonNext (mainBtn, data, index, mixData, mainBlock, imgDiv, 
-            wordName, audio, audioBlock, word, blockWodsArr,
+          this.pressMainButtonNext (mainBtn, index,
+            mixData, mainBlock, blockWodsArr,
             volumeBtn, volume, handleKeypress)
         } 
       }
@@ -345,9 +346,9 @@ export class AudioGameView {
       }
     })
 
-    setTimeout(() => { window.addEventListener('keydown', handleMainKeypress) }, 1000);
-    window.addEventListener('keydown', handleKeypress)
-    window.addEventListener('keydown', handleVolumepress)
+    setTimeout(() => { window.addEventListener('keypress', handleMainKeypress) }, 1000);
+    window.addEventListener('keypress', handleKeypress)
+    window.addEventListener('keypress', handleVolumepress)
     wordName.appendChild(audioBlock)
     word.append(imgDiv);
     word.append(wordName);
@@ -360,7 +361,7 @@ export class AudioGameView {
 
   private pressMainButtonAnswer = (mainBtnDiv: HTMLButtonElement, data: Word[], index: number,
     mixData: MixWordsAudio[], mainBlockDiv: HTMLElement, imgDiv: HTMLElement, wordName: HTMLElement, 
-    audio: HTMLAudioElement, audioBlock: HTMLElement, word:HTMLElement, blockWodsArr: HTMLButtonElement[]) => {
+    audio: HTMLAudioElement, audioBlock: HTMLElement, word:HTMLElement, blockWodsArr: HTMLButtonElement[], handleKeypress: (el: KeyboardEvent) => void) => {
     const mainBlock = mainBlockDiv
     const mainBtn = mainBtnDiv
     mainBtn.innerText = 'ДАЛЬШЕ'
@@ -375,11 +376,11 @@ export class AudioGameView {
         this.createWrongResult(data, mixData[index].en);
       }
     })
+    window.removeEventListener('keypress', handleKeypress)
   }
 
-  private pressMainButtonNext = (mainBtnDiv: HTMLButtonElement, data: Word[], index: number,
-    mixData: MixWordsAudio[], mainBlockDiv: HTMLElement, imgDiv: HTMLElement, wordName: HTMLElement, 
-    audio: HTMLAudioElement, audioBlock: HTMLElement, word:HTMLElement, blockWodsArr: HTMLButtonElement[],
+  private pressMainButtonNext = (mainBtnDiv: HTMLButtonElement, index: number,
+    mixData: MixWordsAudio[], mainBlockDiv: HTMLElement,   blockWodsArr: HTMLButtonElement[],
     volumeBtn: HTMLElement, volume: HTMLAudioElement, handleKeypress: (el: KeyboardEvent) => void) => {
     const mainBlock = mainBlockDiv
     const mainBtn = mainBtnDiv
@@ -398,7 +399,7 @@ export class AudioGameView {
       const btn = v
       btn.disabled = false   
     }) 
-    window.removeEventListener('keypress', handleKeypress)
+    window.addEventListener('keypress', handleKeypress)
   }
 
   private renderRandomWords (blockWodsArr: HTMLButtonElement[], data: MixWordsAudio[], 
