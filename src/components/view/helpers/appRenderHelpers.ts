@@ -6,7 +6,7 @@ export const renderHeader = () => `<div class = "header-lang">
 <li class="divider"></li>
 <li><a href="#${Route.audio}">Аудиовызов</a></li>
 <li class="divider"></li>
-<li><a href="#${Route.drag}">Коллекции</a></li>
+<li><a href="#${Route.phrase}">Фразы</a></li>
 </ul>
 <nav class = "nav-lang">
 <div class="nav-wrapper">

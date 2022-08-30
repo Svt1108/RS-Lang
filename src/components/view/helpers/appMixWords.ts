@@ -1,4 +1,6 @@
-import { MixWordsAudio, MixWordsSprint, Word } from "../../types";
+import { MixWordsAudio, MixWordsSprint, Word, WordPlusUserWord } from "../../types";
+
+const WORDS_FOR_PHRASE = 10;
 
 export const getMixWordsForSprint = (wordsArr: Word[]): MixWordsSprint[] => {
   const res = wordsArr.map((w, i) => {
@@ -57,4 +59,11 @@ export const getMixWordsForAudio = (wordsArr: Word[]): MixWordsAudio[] => {
   });
   
   return res.length >= 10 ? sortRandom(res).slice(0, 10): sortRandom(res);
+}
+
+
+export const getMixWordsForPhrase = (wordsArr: WordPlusUserWord[]) => {
+  const shuffledArr = wordsArr.sort(() => 0.5 - Math.random());
+  const resArr = shuffledArr.slice(0, WORDS_FOR_PHRASE);
+  return resArr;
 }

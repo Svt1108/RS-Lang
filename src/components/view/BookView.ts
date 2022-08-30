@@ -170,9 +170,9 @@ export class BookView {
     game1.appendChild(game1Picture);
 
     const game2 = createElement('a', 'games-btn z-depth-2 waves-effect') as HTMLAnchorElement;
-    game2.href = `#drag#${this.levelNumber}#${this.pageNumber}`;
+    game2.href = `#phrase#${this.levelNumber}#${this.pageNumber}`;
     games.appendChild(game2);
-    const game2Title = createElement('div', 'game-title', 'Коллекции');
+    const game2Title = createElement('div', 'game-title', 'Фразы');
     game2.appendChild(game2Title);
     const game2Picture = createElement('div', 'game-picture btn-collection');
     game2.appendChild(game2Picture);
@@ -274,7 +274,7 @@ export class BookView {
     }
 
     for (let i = 0; i < res.length; i += 1) {
-      const card = new Card(<HTMLElement>this.cards, res[i], this.levelNumber);
+       const card = new Card(<HTMLElement>this.cards, res[i], this.levelNumber);
 
       const { audio, audioMeaning, audioExample } = card;
       this.audioElems.push(audio, audioMeaning, audioExample);
@@ -315,6 +315,7 @@ export class BookView {
             games: {
               sprint: { wins: 0, total: 0 },
               audio: { wins: 0, total: 0 },
+              phrase: { wins: 0, total: 0 },
             },
             markedAsNew: false,
           };
@@ -365,6 +366,7 @@ export class BookView {
             games: {
               sprint: { wins: 0, total: 0 },
               audio: { wins: 0, total: 0 },
+              phrase: { wins: 0, total: 0 },
             },
             markedAsNew: false,
           };
