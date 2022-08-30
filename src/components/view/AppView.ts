@@ -1,5 +1,6 @@
 import { createElement } from './helpers/renderHelpers';
 import { renderHeader, renderFooter } from './helpers/appRenderHelpers';
+import { Route } from '../types/appRoutes';
 
 export class AppView {
   header;
@@ -42,7 +43,12 @@ export class AppView {
       e.preventDefault();
       localStorage.removeItem('user');
       innerText = 'Вход';
-      window.location.hash = '';
+      const [route] = window.location.hash.slice(1).split('#');
+      if (route === Route.main) {
+        window.location.hash = '';
+      } else {
+        window.location.hash = Route.main;
+      }
       M.toast({ html: 'Уже уходишь? Очень жаль :(' });
     }
   }

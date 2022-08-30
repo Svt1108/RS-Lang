@@ -109,7 +109,7 @@ export class AppController {
   }
 
   private handleFooter(route: string) {
-    const games = ['sprint', 'audio'];
+    const games = ['sprint', 'audio', 'phrase'];
     if (games.includes(route)) {
       this.appView.hideFooter();
     } else {

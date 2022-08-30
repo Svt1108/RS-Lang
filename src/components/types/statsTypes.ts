@@ -1,4 +1,4 @@
-// HOST / Users/Words .. УДАЛИТЬ потом этот объект
+// HOST / Users/Words // м.б. УДАЛИТЬ потом этот объект
 export type StatWord = {
   id: string; // userId
   wordId: string;
@@ -7,8 +7,10 @@ export type StatWord = {
     learned: 'yes' | 'no';
     learnDate: number; // Date.now()
     games: {
-      sprint: { wins: number; total: number };
-      audio: { wins: number; total: number };
+      [game: string]: { wins: number; total: number };
+      // sprint: { wins: number; total: number };
+      // audio: { wins: number; total: number };
+      // phrase: { wins: number; total: number };
     };
     markedAsNew: boolean;
   };
@@ -16,15 +18,19 @@ export type StatWord = {
 
 // HOST / Users/Statistic
 export type Stats = {
-  learnedWords: 0;
+  learnedWords: number; // 0
   optional: {
+    dateToday: string; // '29.8.22'
     today: {
-      sprint: { newWords: number; bestSeries: number; wins: number; total: number };
-      audio: { newWords: number; bestSeries: number; wins: number; total: number };
+      [game: string]: { newWords: number; bestSeries: number; wins: number; total: number };
+      // sprint: { newWords: number; bestSeries: number; wins: number; total: number };
+      // audio: { newWords: number; bestSeries: number; wins: number; total: number };
+      // phrase: { newWords: number; bestSeries: number; wins: number; total: number };
     };
     long: {
-      '28.08.2022': { newWords: number; learnedWords: number };
-      '01.09.2022': { newWords: number; learnedWords: number };
+      [date: string]: { newWords: number; learnedWords: number };
+      // '29.8.22': { newWords: 5; learnedWords: 42 };
+      // '1.9.22': { newWords: 3; learnedWords: 15 };
     };
   };
 };
