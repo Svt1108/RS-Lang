@@ -90,6 +90,7 @@ export class AudioGameView {
   }
 
   private startGameFromMenu(): HTMLElement {
+    this.sound = true;
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
@@ -182,6 +183,7 @@ export class AudioGameView {
     const imgDiv = createElement('div', 'audio_img-word')
     const audio = new Audio()
     const volume = new Audio()
+    volumeBtn.tabIndex = 0;
     let index = 0;
     imgDiv.style.backgroundImage = `url(${HOST}/${mixData[0].image})` 
     audio.src = `${HOST}/${mixData[index].audio}`
@@ -193,12 +195,90 @@ export class AudioGameView {
     let flag = true;
     let flagRes = true;
     const blockWodsArr: HTMLButtonElement[] = []
+    const keyCode = ['1', '2', '3', '4', '5']
 
     for(let i = 0; i < mixData[index].ruRandom.length; i += 1) {
       const wordContainer = <HTMLButtonElement>createElement('button', `audio_block-word z-depth-1 waves-effect`, 
       `${i + 1} ${mixData[index].ruRandom[i]}`);
+      wordContainer.id = `${i + 1}`
       blockWodsArr.push(wordContainer)
       blockBtn.append(wordContainer)
+    }
+
+    const handleVolumepress = (el: KeyboardEvent)  => {
+      if(el.code === 'Space') {volume.play()}
+    }
+
+    const handleKeypress = (el: KeyboardEvent)  => {
+      if(index < mixData.length) {
+        keyCode.forEach((key) => {
+          if (el.key === key) {
+            blockWodsArr.forEach((v) => {
+              if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) v.classList.add('correct')
+              const text = v.textContent?.split(' ').slice(1).join(' ')
+              if(flagRes) {
+                if (v.id === el.key) {
+                  if(text !== mixData[index].ru) {
+                   v.classList.add('wrong') 
+                    this.createWrongResult(data, mixData[index].en);
+                    this.createSounds(this.sound, 'false')
+                  } else {
+                    this.createCorrectResult(data, mixData[index].en);
+                    this.createSounds(this.sound, 'true')
+                    this.pointsTotal += 10
+                  }
+                  flagRes = false
+                }
+              } 
+              mainBtn.innerText = 'ДАЛЬШЕ'
+              mainBlock.innerHTML = ''
+              this.renderWordCard (mixData, index, 
+                imgDiv, wordName, audio)
+              mainBlock.innerHTML = ''  
+              wordName.appendChild(audioBlock)
+              mainBlock.append(word);
+              flag = false 
+              if (index === mixData.length) {
+                this.endGame()
+                index = 0
+              } 
+              blockWodsArr.forEach((w) => {
+                const btnActiv = w
+                btnActiv.disabled = true
+              })
+            })
+          }
+        })
+      } else {
+        window.removeEventListener('keypress', handleKeypress)
+      }
+    }
+    
+    const handleMainKeypress = (el: KeyboardEvent)  => {
+        mainBtn.disabled = true
+        setTimeout(() => { mainBtn.disabled = false}, 500);
+        if (index <= mixData.length) {
+          if(el.key === 'Enter') {
+          if (flag) {
+            this.pressMainButtonAnswer(mainBtn, data, index,
+              mixData, mainBlock, imgDiv, wordName, 
+              audio, audioBlock, word, blockWodsArr)
+            flag = false
+          } else {
+            index += 1
+            flag = true;
+            flagRes = true
+            this.pressMainButtonNext (mainBtn, data, index, mixData, mainBlock, imgDiv, 
+              wordName, audio, audioBlock, word, blockWodsArr,
+              volumeBtn, volume, handleKeypress)
+          } 
+          } 
+          if (index === mixData.length) {
+            this.endGame()
+            window.removeEventListener('keydown', handleMainKeypress)
+            index = 0
+          } 
+        }   
     }
 
     setTimeout(() => { mainBtn.disabled = false}, 500);
@@ -208,36 +288,17 @@ export class AudioGameView {
       setTimeout(() => { mainBtn.disabled = false}, 500);
       if (index <= mixData.length) {
         if (flag) {
-          mainBtn.innerText = 'ДАЛЬШЕ'
-          mainBlock.innerHTML = ''
-          this.renderWordCard (mixData, index, 
-            imgDiv, wordName, audio)
-          mainBlock.innerHTML = ''  
-          wordName.appendChild(audioBlock)
-          mainBlock.append(word);
-          blockWodsArr.forEach((v) => {
-            if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) {
-              v.classList.add('correct')
-              this.createWrongResult(data, mixData[index].en);
-            }
-          })
+          this.pressMainButtonAnswer(mainBtn, data, index,
+            mixData, mainBlock, imgDiv, wordName, 
+            audio, audioBlock, word, blockWodsArr)
           flag = false
         } else {
-          blockWodsArr.forEach((el) => {
-          el.classList.remove('correct')
-          el.classList.remove('wrong')
-        })
-          mainBtn.innerText = 'НЕ ЗНАЮ'
           index += 1
-          this.renderRandomWors(blockWodsArr, mixData, index, volume)
-          mainBlock.innerHTML = ''
-          mainBlock.append(volumeBtn)
           flag = true;
           flagRes = true
-          blockWodsArr.forEach((v) => {
-            const btn = v
-            btn.disabled = false   
-          }) 
+          this.pressMainButtonNext (mainBtn, data, index, mixData, mainBlock, imgDiv, 
+            wordName, audio, audioBlock, word, blockWodsArr,
+            volumeBtn, volume, handleKeypress)
         } 
       }
       if (index === mixData.length) {
@@ -284,6 +345,9 @@ export class AudioGameView {
       }
     })
 
+    setTimeout(() => { window.addEventListener('keydown', handleMainKeypress) }, 1000);
+    window.addEventListener('keydown', handleKeypress)
+    window.addEventListener('keydown', handleVolumepress)
     wordName.appendChild(audioBlock)
     word.append(imgDiv);
     word.append(wordName);
@@ -294,7 +358,50 @@ export class AudioGameView {
     return this.stateGame;
   }
 
-  private renderRandomWors (blockWodsArr: HTMLButtonElement[], data: MixWordsAudio[], 
+  private pressMainButtonAnswer = (mainBtnDiv: HTMLButtonElement, data: Word[], index: number,
+    mixData: MixWordsAudio[], mainBlockDiv: HTMLElement, imgDiv: HTMLElement, wordName: HTMLElement, 
+    audio: HTMLAudioElement, audioBlock: HTMLElement, word:HTMLElement, blockWodsArr: HTMLButtonElement[]) => {
+    const mainBlock = mainBlockDiv
+    const mainBtn = mainBtnDiv
+    mainBtn.innerText = 'ДАЛЬШЕ'
+    mainBlock.innerHTML = ''
+    this.renderWordCard (mixData, index, imgDiv, wordName, audio)
+    mainBlock.innerHTML = ''  
+    wordName.appendChild(audioBlock)
+    mainBlock.append(word);
+    blockWodsArr.forEach((v) => {
+      if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) {
+        v.classList.add('correct')
+        this.createWrongResult(data, mixData[index].en);
+      }
+    })
+  }
+
+  private pressMainButtonNext = (mainBtnDiv: HTMLButtonElement, data: Word[], index: number,
+    mixData: MixWordsAudio[], mainBlockDiv: HTMLElement, imgDiv: HTMLElement, wordName: HTMLElement, 
+    audio: HTMLAudioElement, audioBlock: HTMLElement, word:HTMLElement, blockWodsArr: HTMLButtonElement[],
+    volumeBtn: HTMLElement, volume: HTMLAudioElement, handleKeypress: (el: KeyboardEvent) => void) => {
+    const mainBlock = mainBlockDiv
+    const mainBtn = mainBtnDiv
+ 
+    blockWodsArr.forEach((el) => {
+      el.classList.remove('correct')
+      el.classList.remove('wrong')
+    })
+    mainBtn.innerText = 'НЕ ЗНАЮ'
+   
+    this.renderRandomWords(blockWodsArr, mixData, index, volume)
+    mainBlock.innerHTML = ''
+    mainBlock.append(volumeBtn)
+  
+    blockWodsArr.forEach((v) => {
+      const btn = v
+      btn.disabled = false   
+    }) 
+    window.removeEventListener('keypress', handleKeypress)
+  }
+
+  private renderRandomWords (blockWodsArr: HTMLButtonElement[], data: MixWordsAudio[], 
     index: number, volumeEl: HTMLAudioElement){
     const volume = new Audio()
     const volumeBtn = volumeEl
