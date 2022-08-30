@@ -1,4 +1,4 @@
-.audio_game-content {
+.phrase_game-content {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -12,17 +12,17 @@
   right: 0;
   margin: auto;
   height: 450px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(3, 3, 3, 0.3);
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
-.level-audio {
+.level-phrase {
   width: 550px;
   display: flex;
   justify-content: space-between;
 }
 
-.audio-level-btn {
+.phrase-level-btn {
   margin-top: 20px;
   width: 70px;
   height: 35px;
@@ -46,11 +46,11 @@
       box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.14), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
   }
   &:focus {
-      box-shadow: 0 0px 3px 3px rgba(0, 0, 0, 0.53), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.3), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
   }
 }
 
-.audio_block-word {
+.phrase_block-word {
   margin-top: 20px;
   width: fit-content;
   height: 35px;
@@ -71,19 +71,19 @@
       box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.14), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
   }
   &:focus {
-      box-shadow: 0 0px 3px 3px rgba(0, 0, 0, 0.52), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.2), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
   }
 }
 
-.audio_block-word.correct {
+.phrase_block-word.correct {
   background-color: #84e2d1 !important;
 }
 
-.audio_block-word.wrong {
+.phrase_block-word.wrong {
   background-color: #fcc2b0 !important;
 }
 
-.audio_main-btn {
+.phrase_main-btn {
   margin-top: 25px;
   width: 150px;
   height: 35px;
@@ -104,26 +104,29 @@
       box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.14), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
   }
   &:focus {
-      box-shadow: 0 0px 3px 3px rgba(0, 0, 0, 0.53), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 3px 3px 3px rgba(0, 0, 0, 0.2), 0 3px 3px 3px rgba(0, 0, 0, 0.12), 0 3px 3px -3px rgba(0, 0, 0, 0.2);
   }
 }
 
-.title-audio {
+.title-phrase {
   margin-bottom: 80px;
 }
 
-.title-audio,
-.subtitle-audio {
+.title-phrase,
+.subtitle-phrase {
   color: white;
 }
 
-.img-audio {
+.img-phrase {
+  background-image: url('../assets/images/tower.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
   position: absolute;
   width: 100%;
   height: 100vh;
 }
 
-.audio_word {
+.phrase_word {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -142,7 +145,7 @@
   }
 }
 
-.audio_over {
+.phrase_over {
   display: flex;
   align-items: start;
   justify-content: center;
@@ -161,7 +164,7 @@
   }
 }
 
-.audio_header-result {
+.phrase_header-result {
   position: absolute;
   top: 0;
   background-color: #ffe2d9;
@@ -174,7 +177,7 @@
   border-bottom: 2px solid #beb0b0;
 }
 
-.audio_start-btn {
+.phrase_start-btn {
   margin-top: 20px;
   width: 150px;
   height: 35px;
@@ -193,7 +196,7 @@
   cursor: pointer;
 }
 
-.audio_list-words {
+.phrase_list-words {
   margin-left: 3px;
   font-size: 18px;
   font-weight: 500;
@@ -201,7 +204,7 @@
   padding-bottom: 20px;
 }
 
-.audio_list {
+.phrase_list {
   display: flex;
   flex-direction: row-reverse;
   justify-content: start;
@@ -209,7 +212,7 @@
   padding-bottom: 5px;
 }
 
-.audio_all-words {
+.phrase_all-words {
   overflow-y: scroll;
   overflow-x: hidden;
   width: 100%;
@@ -217,7 +220,7 @@
   padding-bottom: 50px;
 }
 
-.audio_header-learn {
+.phrase_header-learn {
   margin-left: 20px;
   color: #04efdb;
   font-size: 18px;
@@ -227,7 +230,7 @@
   border-top: 2px solid #beb0b0;
 }
 
-.audio_header-unlearn {
+.phrase_header-unlearn {
   margin-left: 20px;
   color: #f57096;
   font-size: 18px;
@@ -236,7 +239,7 @@
   padding-top: 10px;
 }
 
-.audio_word-name {
+.phrase_word-name {
   font-weight: 400;
   display: flex;
   flex-direction: row-reverse;
@@ -253,7 +256,7 @@
   margin-right: 15px;
 }
 
-.audio_img-word {
+.phrase_img-word {
   width: 17rem;
   height: 9rem;
   background-size: cover;
@@ -262,21 +265,21 @@
   border-radius: 5px;
 }
 
-.audio_game-audio {
+.phrase_game-phrase {
   font-size: 1.4rem !important;
   margin-top: 4px;
   margin-right: 1px;
 }
 
-.audio_volume {
+.phrase_volume {
   font-size: 5.4rem !important;
   margin-top: 71px;
   border: 2px solid #3e3c3c;
   border-radius: 100%;
-  margin-bottom: 86.5px;
+  margin-bottom: 70px;
 }
 
-.audio_cross {
+.phrase_cross {
   position: absolute;
   right: 0;
   top: 85px;
@@ -294,7 +297,7 @@
   cursor: pointer;
 }
 
-.audio_fullscreen {
+.phrase_fullscreen {
   position: absolute;
   right: 0;
   top: 85px;
@@ -312,7 +315,7 @@
   cursor: pointer;
 }
 
-.audio_sound {
+.phrase_sound {
   position: absolute;
   right: 0;
   top: 84px;
@@ -330,9 +333,9 @@
   cursor: pointer;
 }
 
-.audio_cross,
-.audio_sound,
-.audio_fullscreen {
+.phrase_cross,
+.phrase_sound,
+.phrase_fullscreen {
   transition: 0.4s;
   &:hover {
       transform: scale(1.2);
@@ -343,12 +346,12 @@
   }
 }
 
-.audio_sound.audio_not-sound {
+.phrase_sound.phrase_not-sound {
   background-image: url(../assets/svg/not-sound.svg);
 }
 
 
-.audio_btn-block {
+.phrase_btn-block {
   display: flex;
   justify-content: space-around;
   padding-top: 30px;
@@ -356,8 +359,8 @@
   column-gap: 1.5rem;
 }
 
-.left-audio-btn,
-.right-audio-btn {
+.left-phrase-btn,
+.right-phrase-btn {
   width: 120px;
   font-weight: 500;
   color: #313030;
@@ -369,17 +372,17 @@
   }
 }
 
-.audio-sptint-btn {
+.phrase-sptint-btn {
     // background-color: #B0E8DE!important;
   background-color: #84e2d1 !important;
 }
 
-.audio-sptint-btn {
+.phrase-sptint-btn {
     // background-color: #FFE2D9!important;
   background-color: #fcc2b0 !important;
 }
 
-.audio_btn-block-over {
+.phrase_btn-block-over {
   background-color: #ffffff;
   position: absolute;
   bottom: 0;
@@ -392,14 +395,14 @@
   border-top: 2px solid #beb0b0;
 }
 
-.left-audio-btn.end,
-.right-audio-btn.end {
+.left-phrase-btn.end,
+.right-phrase-btn.end {
   background-color: #b0e8de !important;
   width: 160px;
   font-size: 12px;
   padding-left: 10px;
   padding-right: 10px;
   &:focus {
-      box-shadow: 0 0px 2px 2px rgba(0, 0, 0, 0.53), 0 2px 2px 2px rgba(0, 0, 0, 0.12), 0 2px 2px -2px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.3), 0 2px 2px 2px rgba(0, 0, 0, 0.12), 0 2px 2px -2px rgba(0, 0, 0, 0.2);
   }
 }

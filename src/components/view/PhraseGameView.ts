@@ -1,9 +1,11 @@
-import { getWords, HOST} from '../model/helpers/apiHelpers';
-import {  MixWordsAudio, Word } from '../types';
-import { getMixWordsForAudio } from './helpers/appMixWords';
+import { getAllUserWords, getWords, HOST} from '../model/helpers/apiHelpers';
+import {  MixWordsAudio, UserWordPlus, Word, WordPlusUserWord } from '../types';
+import { LoginData } from '../types/loginTypes';
+import { getMixWordsForAudio, getMixWordsForPhrase } from './helpers/appMixWords';
+import { combineWords } from './helpers/combineArr';
 import { createElement } from './helpers/renderHelpers';
 
-export class AudioGameView {
+export class PhraseGameView {
   mainDiv: HTMLElement;
   stateGame: HTMLElement;
   againGame: HTMLElement;
@@ -19,10 +21,10 @@ export class AudioGameView {
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
-    this.stateGame = createElement('div', 'audio_game-content');
-    this.controlBlock = createElement('div', 'audio_controll');
+    this.stateGame = createElement('div', 'phrase_game-content');
+    this.controlBlock = createElement('div', 'phrase_controll');
     this.againGame = createElement('button', 
-      'waves-effect waves-light btn right-audio-btn end', 'сыграть еще раз');
+      'waves-effect waves-light btn right-phrase-btn end', 'сыграть еще раз');
     this.sound = true;
     this.fullscreen = false;
     this.points = 10;
@@ -33,15 +35,19 @@ export class AudioGameView {
     this.unlearnedWords = [];
   }
 
-  public render(data?: Word[]): void { 
+  public render(data?: WordPlusUserWord[], user?: LoginData): void { 
+
+    console.log('user');
+    console.log(user);
+
     this.controlBlock.innerHTML = '';
     this.mainDiv.innerHTML = '';
-    const adioGame = createElement('div', 'audio-game');
-    const mainImg = <HTMLImageElement>createElement('img', 'img-audio');
-    const soundImg = createElement('button', 'audio_sound');
-    const fullscreenImg = createElement('button', 'audio_fullscreen');
-    const crossImg = createElement('button', 'audio_cross');
-    mainImg.src = './assets/images/village.jpg';
+    const adioGame = createElement('div', 'phrase-game');
+    const mainImg =  createElement('div', 'img-phrase');
+    const soundImg = createElement('button', 'phrase_sound');
+    const fullscreenImg = createElement('button', 'phrase_fullscreen');
+    const crossImg = createElement('button', 'phrase_cross');
+  //  mainImg.src = './assets/images/tower.jpg';
 
     fullscreenImg.onclick = () => {
       if (!this.fullscreen) {
@@ -56,10 +62,10 @@ export class AudioGameView {
     soundImg.onclick = () => {
       if (this.sound) {
         this.sound = false;
-        soundImg.classList.add('audio_not-sound');
+        soundImg.classList.add('phrase_not-sound');
       } else {
         this.sound = true;
-        soundImg.classList.remove('audio_not-sound');
+        soundImg.classList.remove('phrase_not-sound');
       }
       this.createSounds(this.sound);
     };
@@ -79,31 +85,38 @@ export class AudioGameView {
     this.controlBlock.appendChild(crossImg);
     this.mainDiv.append(this.controlBlock);
     this.mainDiv.append(adioGame);
-    if (data) {
+    if (data && user) {
+      this.mainDiv.append(this.startGameFromBook(data, user));
+      this.againGame.onclick = () => {this.startGameFromBook(data, user)}       
+    } 
+    else if (data && !user) {
       this.mainDiv.append(this.startGameFromBook(data));
-      this.againGame.onclick = () => {this.startGameFromBook(data)} 
-      
-    } else {
+      this.againGame.onclick = () => {this.startGameFromBook(data)}  
+    }
+    else if (!data && user) {
+      this.mainDiv.append(this.startGameFromMenu(user));
+      this.againGame.onclick = () => {this.startGameFromMenu(user)} 
+    }    
+    else if (!data && !user){
       this.mainDiv.append(this.startGameFromMenu());
       this.againGame.onclick = () => {this.startGameFromMenu()} 
     }
   }
 
-  private startGameFromMenu(): HTMLElement {
-    this.sound = true;
+  private startGameFromMenu(user?: LoginData): HTMLElement {
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
     this.pointsTotal = 0;
     this.learnedWords = [];
     this.unlearnedWords = [];
-    const title: HTMLElement = createElement('h1', 'title-audio h1-lang', 'Аудиовызов');
+    const title: HTMLElement = createElement('h1', 'title-phrase h1-lang', 'Фразы');
     const subTitle: HTMLElement = createElement(
       'h5',
-      'subtitle-audio h5-lang',
-      'Попробуй угадать как можно больше слов на слух',
+      'subtitle-phrase h5-lang',
+      'Соедини слова и фразы в правильном порядке',
     );
-    const levelBlock: HTMLElement = createElement('div', 'level-audio');
+    const levelBlock: HTMLElement = createElement('div', 'level-phrase');
 
 
     const levelArr: string[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
@@ -120,15 +133,25 @@ export class AudioGameView {
     for (let i = 0; i <= 5; i += 1) {
       const btnLevel = createElement(
         'button',
-        `audio-level-btn z-depth-2 waves-effect ${classArr[i]}`,
+        `phrase-level-btn z-depth-2 waves-effect ${classArr[i]}`,
         `${levelArr[i]}`,
       );
       btnLevel.tabIndex = 0
       btnLevel.onclick = async () => {
         const randomPage = Math.floor(Math.random() * 29)
         const words = await getWords(randomPage, i);
+        console.log('words')
+        console.log(words)
         this.stateGame.innerHTML = '';
-        this.mainDiv.append(this.showGame(words));
+        if(user){
+          const userWords: UserWordPlus[] = await getAllUserWords(user.id, user.token);
+          // console.log('userWords')
+          // console.log(userWords)
+          const tempObj = combineWords(words, userWords);
+          const userRes: WordPlusUserWord[] = tempObj.combinedArr;
+          this.mainDiv.append(this.showGame(userRes, user));
+        }
+        else this.mainDiv.append(this.showGame(words));
       };
 
       levelBlock.append(btnLevel);
@@ -141,7 +164,7 @@ export class AudioGameView {
 
   }
 
-  private startGameFromBook(data: Word[]): HTMLElement {
+  private startGameFromBook(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
     this.sound = true;
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
@@ -149,19 +172,20 @@ export class AudioGameView {
     this.pointsTotal = 0;
     this.learnedWords = [];
     this.unlearnedWords = [];
-    const title: HTMLElement = createElement('h1', 'title-audio h1-lang', 'Аудиовызов');
+    const title: HTMLElement = createElement('h1', 'title-phrase h1-lang', 'Фразы');
     const subTitle: HTMLElement = createElement(
       'h5',
-      'subtitle-audio h5-lang',
-      'Попробуй угадать как можно больше слов на слух',
+      'subtitle-phrase h5-lang',
+      'Соедини слова и фразы в правильном порядке',
     );
 
-    const btnStart = createElement('button', `audio_start-btn z-depth-1 waves-effect`, 
+    const btnStart = createElement('button', `phrase_start-btn z-depth-1 waves-effect`, 
                        'НАЧАТЬ');
     btnStart.tabIndex = 0                   
     btnStart.onclick = () => {
       this.stateGame.innerHTML = '';
-      this.showGame(data)
+      if(user)this.showGame(data, user)
+      else this.showGame(data)
     }   
 
     this.stateGame.append(title);
@@ -170,20 +194,34 @@ export class AudioGameView {
     return this.stateGame;
   }
 
-  private showGame(data: Word[]): HTMLElement {
+  // private showGame (data: WordPlusUserWord[], user?: LoginData): HTMLElement {
+  //   console.log(data);
+  //   console.log(user);
+  //   return 1;
+  // }
+
+  private showGame(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
+    console.log(1111111111111)
+    console.log(user);
+    console.log(data);
+
+    const mixDataPhrase = getMixWordsForPhrase(data);
+
+    console.log(mixDataPhrase);
+
     const mixData = getMixWordsForAudio(data);
-    const word = createElement('div', 'audio_word card');
-    const wordName = createElement('div', 'audio_word-name');
-    const audioBlock = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up audio_game-audio', 'volume_up');
-    const blockBtn = createElement('div', 'audio_btn-block');
-    const mainBtn = <HTMLButtonElement>createElement('button', `audio_main-btn z-depth-1 waves-effect`, 
+
+    const word = createElement('div', 'phrase_word card');
+    const wordName = createElement('div', 'phrase_word-name');
+    const audioBlock = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up phrase_game-phrase', 'volume_up');
+    const blockBtn = createElement('div', 'phrase_btn-block');
+    const mainBtn = <HTMLButtonElement>createElement('button', `phrase_main-btn z-depth-1 waves-effect`, 
       `НЕ ЗНАЮ`);
-    const mainBlock =  createElement('div', 'audio_main-block'); 
-    const volumeBtn = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up audio_volume', 'volume_up');
-    const imgDiv = createElement('div', 'audio_img-word')
+    const mainBlock =  createElement('div', 'phrase_main-block'); 
+    const volumeBtn = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up phrase_volume', 'volume_up');
+    const imgDiv = createElement('div', 'phrase_img-word')
     const audio = new Audio()
     const volume = new Audio()
-    volumeBtn.tabIndex = 0;
     let index = 0;
     imgDiv.style.backgroundImage = `url(${HOST}/${mixData[0].image})` 
     audio.src = `${HOST}/${mixData[index].audio}`
@@ -195,90 +233,12 @@ export class AudioGameView {
     let flag = true;
     let flagRes = true;
     const blockWodsArr: HTMLButtonElement[] = []
-    const keyCode = ['1', '2', '3', '4', '5']
 
     for(let i = 0; i < mixData[index].ruRandom.length; i += 1) {
-      const wordContainer = <HTMLButtonElement>createElement('button', `audio_block-word z-depth-1 waves-effect`, 
+      const wordContainer = <HTMLButtonElement>createElement('button', `phrase_block-word z-depth-1 waves-effect`, 
       `${i + 1} ${mixData[index].ruRandom[i]}`);
-      wordContainer.id = `${i + 1}`
       blockWodsArr.push(wordContainer)
       blockBtn.append(wordContainer)
-    }
-
-    const handleVolumepress = (el: KeyboardEvent)  => {
-      if(el.code === 'Space') {volume.play()}
-    }
-
-    const handleKeypress = (el: KeyboardEvent)  => {
-      if(index < mixData.length) {
-        keyCode.forEach((key) => {
-          if (el.key === key) {
-            blockWodsArr.forEach((v) => {
-              if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) v.classList.add('correct')
-              const text = v.textContent?.split(' ').slice(1).join(' ')
-              if(flagRes) {
-                if (v.id === el.key) {
-                  if(text !== mixData[index].ru) {
-                   v.classList.add('wrong') 
-                    this.createWrongResult(data, mixData[index].en);
-                    this.createSounds(this.sound, 'false')
-                  } else {
-                    this.createCorrectResult(data, mixData[index].en);
-                    this.createSounds(this.sound, 'true')
-                    this.pointsTotal += 10
-                  }
-                  flagRes = false
-                }
-              } 
-              mainBtn.innerText = 'ДАЛЬШЕ'
-              mainBlock.innerHTML = ''
-              this.renderWordCard (mixData, index, 
-                imgDiv, wordName, audio)
-              mainBlock.innerHTML = ''  
-              wordName.appendChild(audioBlock)
-              mainBlock.append(word);
-              flag = false 
-              if (index === mixData.length) {
-                this.endGame()
-                index = 0
-              } 
-              blockWodsArr.forEach((w) => {
-                const btnActiv = w
-                btnActiv.disabled = true
-              })
-            })
-          }
-        })
-      } else {
-        window.removeEventListener('keypress', handleKeypress)
-      }
-    }
-    
-    const handleMainKeypress = (el: KeyboardEvent)  => {
-        mainBtn.disabled = true
-        setTimeout(() => { mainBtn.disabled = false}, 500);
-        if (index <= mixData.length) {
-          if(el.key === 'Enter') {
-          if (flag) {
-            this.pressMainButtonAnswer(mainBtn, data, index,
-              mixData, mainBlock, imgDiv, wordName, 
-              audio, audioBlock, word, blockWodsArr)
-            flag = false
-          } else {
-            index += 1
-            flag = true;
-            flagRes = true
-            this.pressMainButtonNext (mainBtn, data, index, mixData, mainBlock, imgDiv, 
-              wordName, audio, audioBlock, word, blockWodsArr,
-              volumeBtn, volume, handleKeypress)
-          } 
-          } 
-          if (index === mixData.length) {
-            this.endGame()
-            window.removeEventListener('keydown', handleMainKeypress)
-            index = 0
-          } 
-        }   
     }
 
     setTimeout(() => { mainBtn.disabled = false}, 500);
@@ -288,17 +248,36 @@ export class AudioGameView {
       setTimeout(() => { mainBtn.disabled = false}, 500);
       if (index <= mixData.length) {
         if (flag) {
-          this.pressMainButtonAnswer(mainBtn, data, index,
-            mixData, mainBlock, imgDiv, wordName, 
-            audio, audioBlock, word, blockWodsArr)
+          mainBtn.innerText = 'ДАЛЬШЕ'
+          mainBlock.innerHTML = ''
+          this.renderWordCard (mixData, index, 
+            imgDiv, wordName, audio)
+          mainBlock.innerHTML = ''  
+          wordName.appendChild(audioBlock)
+          mainBlock.append(word);
+          blockWodsArr.forEach((v) => {
+            if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) {
+              v.classList.add('correct')
+              this.createWrongResult(data, mixData[index].en);
+            }
+          })
           flag = false
         } else {
+          blockWodsArr.forEach((el) => {
+          el.classList.remove('correct')
+          el.classList.remove('wrong')
+        })
+          mainBtn.innerText = 'НЕ ЗНАЮ'
           index += 1
+          this.renderRandomWors(blockWodsArr, mixData, index, volume)
+          mainBlock.innerHTML = ''
+          mainBlock.append(volumeBtn)
           flag = true;
           flagRes = true
-          this.pressMainButtonNext (mainBtn, data, index, mixData, mainBlock, imgDiv, 
-            wordName, audio, audioBlock, word, blockWodsArr,
-            volumeBtn, volume, handleKeypress)
+          blockWodsArr.forEach((v) => {
+            const btn = v
+            btn.disabled = false   
+          }) 
         } 
       }
       if (index === mixData.length) {
@@ -345,9 +324,6 @@ export class AudioGameView {
       }
     })
 
-    setTimeout(() => { window.addEventListener('keydown', handleMainKeypress) }, 1000);
-    window.addEventListener('keydown', handleKeypress)
-    window.addEventListener('keydown', handleVolumepress)
     wordName.appendChild(audioBlock)
     word.append(imgDiv);
     word.append(wordName);
@@ -358,50 +334,7 @@ export class AudioGameView {
     return this.stateGame;
   }
 
-  private pressMainButtonAnswer = (mainBtnDiv: HTMLButtonElement, data: Word[], index: number,
-    mixData: MixWordsAudio[], mainBlockDiv: HTMLElement, imgDiv: HTMLElement, wordName: HTMLElement, 
-    audio: HTMLAudioElement, audioBlock: HTMLElement, word:HTMLElement, blockWodsArr: HTMLButtonElement[]) => {
-    const mainBlock = mainBlockDiv
-    const mainBtn = mainBtnDiv
-    mainBtn.innerText = 'ДАЛЬШЕ'
-    mainBlock.innerHTML = ''
-    this.renderWordCard (mixData, index, imgDiv, wordName, audio)
-    mainBlock.innerHTML = ''  
-    wordName.appendChild(audioBlock)
-    mainBlock.append(word);
-    blockWodsArr.forEach((v) => {
-      if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) {
-        v.classList.add('correct')
-        this.createWrongResult(data, mixData[index].en);
-      }
-    })
-  }
-
-  private pressMainButtonNext = (mainBtnDiv: HTMLButtonElement, data: Word[], index: number,
-    mixData: MixWordsAudio[], mainBlockDiv: HTMLElement, imgDiv: HTMLElement, wordName: HTMLElement, 
-    audio: HTMLAudioElement, audioBlock: HTMLElement, word:HTMLElement, blockWodsArr: HTMLButtonElement[],
-    volumeBtn: HTMLElement, volume: HTMLAudioElement, handleKeypress: (el: KeyboardEvent) => void) => {
-    const mainBlock = mainBlockDiv
-    const mainBtn = mainBtnDiv
- 
-    blockWodsArr.forEach((el) => {
-      el.classList.remove('correct')
-      el.classList.remove('wrong')
-    })
-    mainBtn.innerText = 'НЕ ЗНАЮ'
-   
-    this.renderRandomWords(blockWodsArr, mixData, index, volume)
-    mainBlock.innerHTML = ''
-    mainBlock.append(volumeBtn)
-  
-    blockWodsArr.forEach((v) => {
-      const btn = v
-      btn.disabled = false   
-    }) 
-    window.removeEventListener('keypress', handleKeypress)
-  }
-
-  private renderRandomWords (blockWodsArr: HTMLButtonElement[], data: MixWordsAudio[], 
+  private renderRandomWors (blockWodsArr: HTMLButtonElement[], data: MixWordsAudio[], 
     index: number, volumeEl: HTMLAudioElement){
     const volume = new Audio()
     const volumeBtn = volumeEl
@@ -461,7 +394,7 @@ export class AudioGameView {
         for (let i = 0; i < res.length; i += 1) {
           const audio = new Audio()
           const audioBlock = createElement('i', 
-            'tiny grey-text text-darken-2 material-icons volume-up sprint-audio', 'volume_up');
+            'tiny grey-text text-darken-2 material-icons volume-up sprint-phrase', 'volume_up');
           audioBlock.onclick = () => {audio.play()}
           const list = createElement('li', 'sprint_list', 
             `${res[i][0]} ${res[i][1]} - ${res[i][2]}`)       
@@ -477,7 +410,7 @@ export class AudioGameView {
         for (let i = 0; i < res.length; i += 1) {
           const audio = new Audio()
           const audioBlock = createElement('i', 
-            'tiny grey-text text-darken-2 material-icons volume-up sprint-audio', 'volume_up');
+            'tiny grey-text text-darken-2 material-icons volume-up sprint-phrase', 'volume_up');
           audioBlock.onclick = () => {audio.play()}
           const list = createElement('li', 'sprint_list', 
             `${res[i][0]} ${res[i][1]} - ${res[i][2]}`)

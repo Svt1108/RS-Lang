@@ -93,6 +93,7 @@ export class SprintGameView {
   }
 
   private startGameFromMenu(): HTMLElement {
+    this.sound = true;
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
