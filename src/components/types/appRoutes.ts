@@ -5,6 +5,6 @@ export enum Route {
   book = 'book',
   audio = 'audio',
   sprint = 'sprint',
-  drag = 'drag',
+  phrase = 'phrase',
   stats = 'stats',
 }

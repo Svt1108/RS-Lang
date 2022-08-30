@@ -65,6 +65,7 @@ export interface UserWord {
     games: {
       sprint: { wins: number; total: number };
       audio: { wins: number; total: number };
+      phrase: { wins: number; total: number };
     };
     markedAsNew: boolean;
   };
@@ -96,6 +97,7 @@ export interface UserWordPlus {
     games: {
       sprint: { wins: number; total: number };
       audio: { wins: number; total: number };
+      phrase: { wins: number; total: number };
     };
     markedAsNew: boolean;
   };
@@ -123,6 +125,7 @@ export interface WordPlusUserWord {
     games: {
       sprint: { wins: number; total: number };
       audio: { wins: number; total: number };
+      phrase: { wins: number; total: number };
     };
     markedAsNew: boolean;
   };
@@ -134,6 +137,7 @@ export interface Optional {
   games: {
     sprint: { wins: number; total: number };
     audio: { wins: number; total: number };
+    phrase: { wins: number; total: number };
   };
   markedAsNew: boolean;
 }
@@ -198,6 +202,7 @@ export interface AggregatedWord {
       games: {
         sprint: { wins: number; total: number };
         audio: { wins: number; total: number };
+        phrase: { wins: number; total: number };
       };
       markedAsNew: boolean;
     };

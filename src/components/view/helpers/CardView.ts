@@ -155,29 +155,14 @@ export class Card {
           this.data.optional?.games.sprint.total}<br>
       Аудиовызов: ${this.data.optional?.games.audio.wins === undefined ? 0 : 
         this.data.optional?.games.audio.wins}/ ${this.data.optional?.games.audio.total === undefined ? 0 : 
-          this.data.optional?.games.audio.total}</span></div>
+          this.data.optional?.games.audio.total}<br>
+      Фразы: ${this.data.optional?.games.phrase.wins === undefined ? 0 : 
+            this.data.optional?.games.phrase.wins}/ ${this.data.optional?.games.phrase.total === undefined ? 0 : 
+              this.data.optional?.games.phrase.total}</span></div>
     </li>
     </ul>`; 
     cardContent.appendChild(wordProgress);
   }
-
-  // if(userJSON && level === 6) {
-  //   const user = JSON.parse(localStorage.getItem('user') as string);
-  //   const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, this.data.id, (<LoginData>user).token);
-  //   const wordProgress = createElement('div', 'word-progress');
-  //   wordProgress.innerHTML = `  <ul class="collapsible collapsible-lang">
-  //   <li>
-  //     <div class="collapsible-header collapsible-header-lang"><i class="material-icons grey-text text-darken-2">add_circle_outline</i>Статистика в играх</div>
-  //     <div class="collapsible-body collapsible-body-lang"><span>Спринт: ${this.data.optional?.games.sprint.wins === undefined ? 0 : 
-  //       this.data.optional?.games.sprint.wins}/ ${this.data.optional?.games.sprint.total === undefined ? 0 : 
-  //         this.data.optional?.games.sprint.total}<br>
-  //     Аудиовызов: ${this.data.optional?.games.audio.wins === undefined ? 0 : 
-  //       this.data.optional?.games.audio.wins}/ ${this.data.optional?.games.audio.total === undefined ? 0 : 
-  //         this.data.optional?.games.audio.total}</span></div>
-  //   </li>
-  //   </ul>`; 
-  //   cardContent.appendChild(wordProgress);
-  // }
 
     this.setListeners();
   }
@@ -193,23 +178,7 @@ export class Card {
 
     this.diffDifficultLevel.onclick = () => this.onDiffDifficultLevel?.();
 
-    //     this.remove.node.onclick = () => {
-    //       if (this.remove.node.classList.contains('blocked')) return;
-    //       this.onRemove?.();
-    //     };
-    //     this.startBtn.node.onclick = () => {
-    //       if (this.startBtn.node.classList.contains('blocked')) return;
-    //       this.onStart?.();
-    //     };
-    //     this.pauseBtn.node.onclick = () => {
-    //       if (this.pauseBtn.node.classList.contains('blocked')) return;
-    //       this.onPause?.();
-    //     };
-    //     this.stopBtn.node.onclick = () => {
-    //       if (this.stopBtn.node.classList.contains('blocked')) return;
-    //       this.onStop?.();
-    //     };
   }
 }
 
-// export class Card;
+

@@ -230,8 +230,10 @@ export const updateUserStatistic = async (userId: string, token: string) => {
 };
 
 export const getAggregatedHardWords = async (userId: string, token: string) => {
+  const page = 0;
+  const wordsPerPage = 3600;
   const filter = encodeURIComponent(JSON.stringify({ 'userWord.difficulty': 'difficult' }));
-  const url = `${HOST}${Path.users}/${userId}${Path.aggregatedWords}?filter=${filter}`;
+  const url = `${HOST}${Path.users}/${userId}${Path.aggregatedWords}?page=${page}&wordsPerPage=${wordsPerPage}&filter=${filter}`;
 
   const rawRes = await fetch(url, {
     headers: {
