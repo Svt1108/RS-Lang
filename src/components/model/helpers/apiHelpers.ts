@@ -1,4 +1,4 @@
-import { Assets, Method, ObjType, Path, UserWord, Word } from '../../types';
+import { Assets, Method, Path, UserWord, Word } from '../../types';
 
 export const HOST = 'https://rslang-english-learnwords.herokuapp.com';
 
@@ -111,18 +111,18 @@ export const getAssets = async (wordId: string): Promise<Assets> => {
 //   return { ok, status, data };
 // };
 
-export const getUser = async (userId: string, token: string): Promise<ObjType> => {
-  const url = `${HOST}${Path.users}/${userId}`;
-  const res: Response = await fetch(url, {
-    method: Method.get,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const user: ObjType = await res.json();
-  return user;
-};
+// export const getUser = async (userId: string, token: string): Promise<ObjType> => {
+//   const url = `${HOST}${Path.users}/${userId}`;
+//   const res: Response = await fetch(url, {
+//     method: Method.get,
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//       'Content-Type': 'application/json',
+//     },
+//   });
+//   const user: ObjType = await res.json();
+//   return user;
+// };
 
 export const createUserWord = async (userId: string, wordId: string, token: string, word: UserWord) => {
   const url = await fetch(`${HOST}${Path.users}/${userId}${Path.words}/${wordId}`, {
@@ -195,39 +195,39 @@ export const updateUserWord = async (userId: string, wordId: string, token: stri
 //   return userWord;
 // };
 
-export const deleteUserWord = async (userId: string, wordId: string, token: string) => {
-  await fetch(`${HOST}${Path.users}/${userId}${Path.words}/${wordId}`, {
-    method: Method.delete,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
-};
+// export const deleteUserWord = async (userId: string, wordId: string, token: string) => {
+//   await fetch(`${HOST}${Path.users}/${userId}${Path.words}/${wordId}`, {
+//     method: Method.delete,
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//       Accept: 'application/json',
+//     },
+//   });
+// };
 
-export const getUserStatistic = async (userId: string, token: string) => {
-  const url = await fetch(`${HOST}${Path.users}/${userId}${Path.statistics}`, {
-    method: Method.get,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
-  const userStatistic = await url.json();
-  return userStatistic;
-};
+// export const getUserStatistic = async (userId: string, token: string) => {
+//   const url = await fetch(`${HOST}${Path.users}/${userId}${Path.statistics}`, {
+//     method: Method.get,
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//       Accept: 'application/json',
+//     },
+//   });
+//   const userStatistic = await url.json();
+//   return userStatistic;
+// };
 
-export const updateUserStatistic = async (userId: string, token: string) => {
-  const url = await fetch(`${HOST}${Path.users}/${userId}${Path.statistics}`, {
-    method: Method.update,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-    },
-  });
-  const userStatistic = await url.json();
-  return userStatistic;
-};
+// export const updateUserStatistic = async (userId: string, token: string) => {
+//   const url = await fetch(`${HOST}${Path.users}/${userId}${Path.statistics}`, {
+//     method: Method.update,
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//       Accept: 'application/json',
+//     },
+//   });
+//   const userStatistic = await url.json();
+//   return userStatistic;
+// };
 
 export const getAggregatedHardWords = async (userId: string, token: string) => {
   const page = 0;
