@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: column;
   justify-content: start;
-  padding-top: 20px;
   align-items: center;
   width: 100%;
   top: 0;
@@ -14,6 +13,20 @@
   height: 450px;
   background: rgba(255, 255, 255, 0.3);
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.nav-audio {
+  color: #ffffff;
+  font-size: 18px;
+  list-style-type: disc !important;
+  padding-left: 7px !important;
+  font-weight: 500;
+  margin: 5px 0;
+}
+
+.nav_list-audio {
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .level-audio {
@@ -29,9 +42,6 @@
   border-radius: 3px;
   border-right: none;
   border-bottom: none;
-  // отключение-включение границ кнопки
-  // border-top: none;
-  // border-left: none;
   display: flex;
   color: #302f2f;
   font-weight: 600;
@@ -108,10 +118,6 @@
   }
 }
 
-.title-audio {
-  margin-bottom: 80px;
-}
-
 .title-audio,
 .subtitle-audio {
   color: white;
@@ -140,6 +146,7 @@
   height: 220px;
   border-radius: 3px;
   transition: 0.3s;
+  margin-top: 25px;
   &:hover {
       box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.14), 0 2px 2px 2px rgba(0, 0, 0, 0.12), 0 2px 2px -2px rgba(0, 0, 0, 0.2);
   }
@@ -273,7 +280,7 @@
 
 .audio_volume {
   font-size: 5.4rem !important;
-  margin-top: 71px;
+  margin-top: 89px;
   border: 2px solid #3e3c3c;
   border-radius: 100%;
   margin-bottom: 86.5px;
