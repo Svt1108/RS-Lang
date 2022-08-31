@@ -8,6 +8,7 @@ import { SprintGameController } from './SprintGameController';
 import { loaderInstance } from '../view/helpers/Loader';
 import { AudioGameController } from './AudioGameController';
 import { PhraseGameController } from './PhraseGameController';
+import { StatsController } from './StatsController';
 
 export class AppController {
   mainDiv;
@@ -20,6 +21,7 @@ export class AppController {
   phrase;
   loader = loaderInstance;
   prevRoute = '';
+  stats;
 
   constructor() {
     this.mainDiv = createElement('main');
@@ -31,7 +33,7 @@ export class AppController {
     this.audio = new AudioGameController(this.mainDiv);
     this.sprint = new SprintGameController(this.mainDiv);
     this.phrase = new PhraseGameController(this.mainDiv);
-    // this.stats = new StatsController(this.mainDiv);
+    this.stats = new StatsController(this.mainDiv);
   }
 
   public async start() {
@@ -93,7 +95,7 @@ export class AppController {
         await this.phrase.show();
       }
     } else if (route === Route.stats) {
-      // await this.stats.show();
+      await this.stats.show();
     } else {
       // await this.error.show();
     }

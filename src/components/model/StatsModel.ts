@@ -172,7 +172,6 @@ class StatsModel {
   private async getOrCreateUserStats() {
     const { id, token } = this.getStorageUserData();
     const { stats } = await getUserStats(id, token);
-
     let newStats: Stats;
     if (stats) {
       newStats = stats;
@@ -194,6 +193,15 @@ class StatsModel {
       stats.optional.long[today] = { newWords: 0, learnedWords: 0 };
     }
     stats.optional.dateToday = today;
+  }
+  // StatsView_______________________________________
+  public async getStats() {
+    const stats = await this.getOrCreateUserStats();
+    return stats;
+  }
+
+  public getDefaultStats() {
+    return this.createDefaultStatsObj();
   }
 }
 
