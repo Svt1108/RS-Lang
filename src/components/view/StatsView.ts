@@ -28,18 +28,56 @@ export class StatView {
 <div id="day-stat" class="container scrollspy">
   <div class="center stat-day-wrap section-stat">
     <div class = "card z-depth-2 center stat-day">
-      <div class = "cards-stat-wrap">
-          <div class = "card card-stat card-stat-small">Text example</div>
-          <div class = "card card-stat card-stat-large">Text example</div>
+
+
+
+      <div class="stat_card">
+        <div class="stat_card_heading">
+          <span class="stat_card_img"><div class="game-picture stat_btn-total"></div></span>
+          <span class="stat_card_title">Итого по словам</span>
+        </div>
+        <div class="stats_list">
+          <div class="stat_text_container"><span>Изученных слов</span><span class="stat_num orange-text text-darken-3">5</span></div>
+          <div class="stat_text_container"><span>Новых слов</span><span class="stat_num">10</span></div>
+          <div class="stat_text_container"><span>Правильных ответов</span><span class="stat_num">21%</span></div>
+        </div>
       </div>
-      <div class = "cards-stat-wrap">
-          <div class = "card card-stat">Text example</div>
-          <div class = "card card-stat">Text example</div>
+      <div class="stat_card">
+        <div class="stat_card_heading">
+          <span class="stat_card_img"><div class="game-picture btn-sprint"></div></span>
+          <span class="stat_card_title">Спринт</span>
+        </div>
+        <div class="stats_list">
+        <div class="stat_text_container"><span>Лучшая серия</span><span class="stat_num light-green-text text-darken-3">8</span></div>
+        <div class="stat_text_container"><span>Новых слов</span><span class="stat_num">10</span></div>
+        <div class="stat_text_container"><span>Правильных ответов</span><span class="stat_num">47%</span></div>
+        </div>
       </div>
-      <div class = "cards-stat-wrap">
-          <div class = "card card-stat">Text example</div>
-          <div class = "card card-stat">Text example</div>
+      <div class="stat_card">
+        <div class="stat_card_heading">
+          <span class="stat_card_img"><div class="game-picture btn-audio"></div></span>
+          <span class="stat_card_title">Аудио-Вызов</span>
+        </div>
+        <div class="stats_list">
+        <div class="stat_text_container"><span>Лучшая серия</span><span class="stat_num light-green-text text-darken-3">8</span></div>
+          <div class="stat_text_container"><span>Новых слов</span><span class="stat_num">10</span></div>
+          <div class="stat_text_container"><span>Правильных ответов</span><span class="stat_num">47%</span></div>
+        </div>
       </div>
+      <div class="stat_card">
+        <div class="stat_card_heading">
+          <span class="stat_card_img"><div class="game-picture btn-collection"></div></span>
+          <span class="stat_card_title">Фразы</span>
+        </div>
+        <div class="stats_list">
+        <div class="stat_text_container"><span>Лучшая серия</span><span class="stat_num light-green-text text-darken-3">8</span></div>
+          <div class="stat_text_container"><span>Новых слов</span><span class="stat_num">10</span></div>
+          <div class="stat_text_container"><span>Правильных ответов</span><span class="stat_num">47%</span></div>
+        </div>
+      </div>
+     
+
+
     </div>
   </div>
 </div>
@@ -60,6 +98,9 @@ export class StatView {
 <div id="all-stat" class="container scrollspy">
   <div class="center stat-day-wrap section-stat">
     <div class = "card z-depth-2 center stat-day">
+
+
+
       <div class = "cards-stat-wrap">
           <div class = "card card-stat card-stat-small">Text example</div>
           <div class = "card card-stat card-stat-large">Text example</div>
@@ -72,6 +113,9 @@ export class StatView {
           <div class = "card card-stat">Text example</div>
           <div class = "card card-stat">Text example</div>
       </div>
+
+
+
     </div>
   </div>
 </div>
