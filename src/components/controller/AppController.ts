@@ -51,6 +51,7 @@ export class AppController {
       const [route, level, page] = window.location.hash.slice(1).split('#');
 
       if (this.prevRoute === Route.sprint) this.sprint.stopGame();
+      if (this.prevRoute === Route.audio) this.audio.stopGame();
       this.prevRoute = route;
 
       this.renderNewPage([route, level, page]);
