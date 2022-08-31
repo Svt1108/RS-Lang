@@ -1,4 +1,4 @@
-import { getAllUserWords, getWordsFromBook } from '../model/helpers/apiHelpers';
+import { getAllUserWords, getWordsFromBook, HOST } from '../model/helpers/apiHelpers';
 import { UserWordPlus, WordPlusUserWord } from '../types';
 import { LoginData } from '../types/loginTypes';
 import { getMixWordForDrag, getMixWordsForPhrase } from './helpers/appMixWords';
@@ -67,7 +67,7 @@ export class PhraseGameView {
         this.sound = true;
         soundImg.classList.remove('phrase_not-sound');
       }
-      this.createSounds(this.sound);
+      //   this.createSounds(this.sound);
     };
 
     crossImg.onclick = () => {
@@ -202,7 +202,11 @@ export class PhraseGameView {
 
     if (data.length < 10) {
       // console.log('Недостаточно слов для игры!');
-      const noDifficultCard = createElement('p', 'no-difficult-card', 'Недостаточно слов для игры! :)');
+      const noDifficultCard = createElement(
+        'p',
+        'no-words-card',
+        'Недостаточно слов для игры! :)\n Попробуйте зайти с другой страницы',
+      );
       this.stateGame.appendChild(noDifficultCard);
       return this.stateGame;
     }
@@ -252,8 +256,9 @@ export class PhraseGameView {
         }
         phrase.back.classList.remove('hovered');
         if (itemArr.filter((value, index) => value === index).length === 10) {
-          console.log('Вы выиграли!');
-          phraseTitle.style.border = '2px solid #ff85e4';
+          // console.log('Вы выиграли!');
+          // phraseTitle.style.border = '2px solid #ff85e4';
+          this.endGame(mixDataPhrase);
         }
       };
 
@@ -270,7 +275,7 @@ export class PhraseGameView {
             // console.log(itemArr[j])
             // console.log(numbItem)
             if (itemArr[j] === numbItem) {
-              console.log(11111);
+              // console.log(11111);
               itemArr[j] = undefined;
             }
           }
@@ -292,104 +297,78 @@ export class PhraseGameView {
     return this.stateGame;
   }
 
-  // private endGame(): void {
-  //   this.stateGame.innerHTML = '';
-  //   const winBlock = createElement('div', 'sprint_over card');
-  //   const showTotalRes = createElement('div', 'sprint_result');
-  //   const showExperience = createElement('div', 'sprint_show-resultexperience');
-  //   const gameOver = <HTMLAudioElement>new Audio('../../assets/images/audio/over.mp3');
-  //   const learnWords = createElement('ul', 'sprint_list-words');
-  //   const unlearnWords = createElement('ul', 'sprint_list-words');
-  //   const headerBlock = createElement('div', 'sprint_header-result');
-  //   const allWords = createElement('ul', 'sprint_all-words');
-  //   const headerListLerned = createElement(
-  //     'div',
-  //     'sprint_header-learn',
-  //     `Изученные слова - ${this.learnedWords.length}`,
-  //   );
-  //   const headerListUnlerned = createElement(
-  //     'div',
-  //     'sprint_header-unlearn',
-  //     `Слова с ошибками - ${this.unlearnedWords.length}`,
-  //   );
-  //   showTotalRes.innerHTML = `Набрано ${this.pointsTotal} очков`;
-  //   showExperience.innerHTML = `Получено +${this.learnedWords.length + this.unlearnedWords.length} опыта`;
-  //   const blockBtn = createElement('div', 'sprint_btn-block-over');
-  //   const endGame = createElement('button', 'waves-effect waves-light btn left-sptint-btn end', 'перейти в учебник');
-  //   gameOver.pause();
-  //   endGame.tabIndex = 0;
+  private endGame(mixDataPhrase: WordPlusUserWord[]): void {
+    this.stateGame.innerHTML = '';
+    const winBlock = createElement('div', 'phrase_over card');
+    const showTotalRes = createElement('div', 'sprint_result');
+    const showExperience = createElement('div', 'sprint_show-resultexperience');
+    const gameOver = <HTMLAudioElement>new Audio('../../assets/images/audio/over.mp3');
+    const learnWords = createElement('ul', 'sprint_list-words');
+    // const unlearnWords = createElement('ul', 'sprint_list-words');
+    const headerBlock = createElement('div', 'sprint_header-result');
+    const allWords = createElement('ul', 'sprint_all-words');
+    const headerListLerned = createElement('div', 'phrase_header-learn', `Изученные слова - 10`);
+    learnWords.append(headerListLerned);
+    showTotalRes.innerHTML = `Набрано 100 очков`;
+    showExperience.innerHTML = `Получено +100 опыта`;
+    const blockBtn = createElement('div', 'sprint_btn-block-over');
+    const endGame = createElement('button', 'waves-effect waves-light btn left-sptint-btn end', 'перейти в учебник');
+    gameOver.pause();
+    endGame.tabIndex = 0;
 
-  //   if (this.learnedWords.length) {
-  //     Promise.all(this.learnedWords).then((res) => {
-  //       for (let i = 0; i < res.length; i += 1) {
-  //         const audio = new Audio();
-  //         const audioBlock = createElement(
-  //           'i',
-  //           'tiny grey-text text-darken-2 material-icons volume-up sprint-phrase',
-  //           'volume_up',
-  //         );
-  //         audioBlock.onclick = () => {
-  //           audio.play();
-  //         };
-  //         const list = createElement('li', 'sprint_list', `${res[i][0]} ${res[i][1]} - ${res[i][2]}`);
-  //         audio.src = `${HOST}/${res[i][3]}`;
-  //         list.append(audioBlock);
-  //         learnWords.append(list);
-  //       }
-  //     });
-  //   }
-
-  //   if (this.unlearnedWords.length) {
-  //     Promise.all(this.unlearnedWords).then((res) => {
-  //       for (let i = 0; i < res.length; i += 1) {
-  //         const audio = new Audio();
-  //         const audioBlock = createElement(
-  //           'i',
-  //           'tiny grey-text text-darken-2 material-icons volume-up sprint-phrase',
-  //           'volume_up',
-  //         );
-  //         audioBlock.onclick = () => {
-  //           audio.play();
-  //         };
-  //         const list = createElement('li', 'sprint_list', `${res[i][0]} ${res[i][1]} - ${res[i][2]}`);
-  //         audio.src = `${HOST}/${res[i][3]}`;
-  //         list.append(audioBlock);
-  //         unlearnWords.append(list);
-  //       }
-  //     });
-  //   }
-
-  //   endGame.onclick = () => {
-  //     window.location.hash = 'book';
-  //     this.stopGame();
-  //   };
-
-  //   if (this.sound) gameOver.play();
-  //   blockBtn.append(endGame);
-  //   blockBtn.append(this.againGame);
-  //   headerBlock.append(showTotalRes);
-  //   headerBlock.append(showExperience);
-  //   winBlock.append(headerBlock);
-  //   learnWords.append(headerListLerned);
-  //   unlearnWords.append(headerListUnlerned);
-  //   allWords.append(unlearnWords);
-  //   allWords.append(learnWords);
-  //   winBlock.append(allWords);
-  //   winBlock.append(blockBtn);
-  //   this.stateGame.append(winBlock);
-  // }
-
-  private createSounds(sound: boolean, flag?: string): void {
-    const rightAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/cool.mp3');
-    const wrongAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/bug.mp3');
-    if (!sound) {
-      rightAnswer.pause();
-      wrongAnswer.pause();
-    } else {
-      if (flag === 'true') rightAnswer.play();
-      if (flag === 'false') wrongAnswer.play();
+    // if (this.learnedWords.length) {
+    // Promise.all(mixDataPhrase).then((res) => {
+    for (let i = 0; i < mixDataPhrase.length; i += 1) {
+      const audio = new Audio();
+      const audioBlock = createElement(
+        'i',
+        'tiny grey-text text-darken-2 material-icons volume-up sprint-phrase',
+        'volume_up',
+      );
+      audioBlock.onclick = () => {
+        audio.play();
+      };
+      const list = createElement(
+        'li',
+        'sprint_list',
+        `${mixDataPhrase[i].word} ${mixDataPhrase[i].transcription} - ${mixDataPhrase[i].wordTranslate}`,
+      );
+      audio.src = `${HOST}/${mixDataPhrase[i].audio}`;
+      list.append(audioBlock);
+      learnWords.append(list);
     }
+    // });
+    // }
+
+    endGame.onclick = () => {
+      window.location.hash = 'book';
+      this.stopGame();
+    };
+
+    if (this.sound) gameOver.play();
+    blockBtn.append(endGame);
+    blockBtn.append(this.againGame);
+    headerBlock.append(showTotalRes);
+    headerBlock.append(showExperience);
+    winBlock.append(headerBlock);
+    //    allWords.append(unlearnWords);
+    allWords.append(learnWords);
+    winBlock.append(allWords);
+    winBlock.append(blockBtn);
+    this.stateGame.append(winBlock);
   }
+
+  // private createSounds(sound: boolean, flag?: string): void {
+  //   const rightAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/cool.mp3');
+  //   const wrongAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/bug.mp3');
+  //   if (!sound) {
+  //     rightAnswer.pause();
+  //     wrongAnswer.pause();
+  //   } else {
+  //     if (flag === 'true') rightAnswer.play();
+  //     if (flag === 'false') wrongAnswer.play();
+  //   }
+  // }
 
   stopGame() {
     this.sound = false;
