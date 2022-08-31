@@ -19,6 +19,7 @@ export class PhraseGameView {
   pointsTotalResult: number[];
   learnedWords: string[][];
   unlearnedWords: string[][];
+  itemT?: HTMLElement;
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
@@ -36,8 +37,8 @@ export class PhraseGameView {
   }
 
   public render(data?: WordPlusUserWord[], user?: LoginData): void {
-    console.log('user');
-    console.log(user);
+    // console.log('user');
+    // console.log(user);
 
     this.controlBlock.innerHTML = '';
     this.mainDiv.innerHTML = '';
@@ -143,8 +144,8 @@ export class PhraseGameView {
       btnLevel.onclick = async () => {
         const randomPage = Math.floor(Math.random() * 29);
         const words = await getWordsFromBook(randomPage, i);
-        console.log('words');
-        console.log(words);
+        // console.log('words');
+        // console.log(words);
         this.stateGame.innerHTML = '';
         if (user) {
           const userWords: UserWordPlus[] = await getAllUserWords(user.id, user.token);
@@ -195,9 +196,9 @@ export class PhraseGameView {
   }
 
   private showGame(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
-    console.log(1111111111111);
+    // console.log(1111111111111);
     console.log(user);
-    console.log(data);
+    // console.log(data);
 
     if (data.length < 10) {
       // console.log('Недостаточно слов для игры!');
@@ -208,13 +209,16 @@ export class PhraseGameView {
 
     const mixDataPhrase = getMixWordsForPhrase(data);
 
-    const phraseTitle = createElement('h5', 'h5-lang', 'Перетащи слова в правильные фразы');
+    const phraseTitle = createElement('h5', 'h5-lang phrase-all-title', 'Перетяни слова в правильные фразы');
     this.stateGame.appendChild(phraseTitle);
 
     const content = createElement('div', 'phrase-all-wrap');
     this.stateGame.appendChild(content);
 
     const wordArr = [];
+
+    const itemArr = new Array(10);
+    itemArr.fill(undefined);
 
     for (let i = 0; i < mixDataPhrase.length; i += 1) {
       wordArr.push({ numb: i, word: mixDataPhrase[i].word });
@@ -224,8 +228,63 @@ export class PhraseGameView {
 
     for (let i = 0; i < mixDataPhrase.length; i += 1) {
       const phrase = new Phrase(content, mixDataPhrase[i].textExample, mixWordForDrag[i], i);
+      // phrase.onLearn = () => {};
 
-      phrase.onLearn = () => {};
+      phrase.onDragenter = () => phrase.back.classList.add('hovered');
+
+      phrase.onDragleave = () => phrase.back.classList.remove('hovered');
+      phrase.onDrop = () => {
+        // const flag = phrase.back.getAttribute("data-occupate");
+        if (this.itemT) {
+          // phrase.back.setAttribute("data-occupate", `yes`);
+          const numbBack = Number(phrase.back.getAttribute('data-numb'));
+          const numbItem = Number(this.itemT.getAttribute('data-numb'));
+          if (itemArr[numbBack] === undefined) {
+            for (let j = 0; j < itemArr.length; j += 1) {
+              if (itemArr[j] === numbItem) itemArr[j] = undefined;
+            }
+            itemArr[numbBack] = numbItem;
+            phrase.back.append(this.itemT);
+          }
+
+          // console.log(numbBack, numbItem)
+          // console.log(itemArr);
+        }
+        phrase.back.classList.remove('hovered');
+        if (itemArr.filter((value, index) => value === index).length === 10) {
+          console.log('Вы выиграли!');
+          phraseTitle.style.border = '2px solid #ff85e4';
+        }
+      };
+
+      phrase.onDragenterS = () => phrase.backStart.classList.add('hovered');
+      phrase.onDragleaveS = () => phrase.backStart.classList.remove('hovered');
+      phrase.onDropS = () => {
+        // const flag = phrase.backStart.getAttribute("data-occupate");
+        if (this.itemT) {
+          // phrase.backStart.setAttribute("data-occupate", `yes`);
+          const numbItem = Number(this.itemT.getAttribute('data-numb'));
+          // console.log(numbItem)
+          // console.log(itemArr)
+          for (let j = 0; j < itemArr.length; j += 1) {
+            // console.log(itemArr[j])
+            // console.log(numbItem)
+            if (itemArr[j] === numbItem) {
+              console.log(11111);
+              itemArr[j] = undefined;
+            }
+          }
+          phrase.backStart.append(this.itemT);
+        }
+        phrase.backStart.classList.remove('hovered');
+      };
+
+      phrase.onDragstart = () => {
+        this.itemT = phrase.item;
+        phrase.item.classList.add('hold');
+        setTimeout(() => phrase.item.classList.add('hide'), 0);
+      };
+      phrase.onDragend = () => phrase.item.classList.remove('hide', 'hold');
     }
 
     // console.log(mixDataPhrase);
