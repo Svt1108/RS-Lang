@@ -284,6 +284,9 @@
   border: 2px solid #3e3c3c;
   border-radius: 100%;
   margin-bottom: 86.5px;
+  &:focus {
+    scale: (1.1);
+  }
 }
 
 .audio_cross {
