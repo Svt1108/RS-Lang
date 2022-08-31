@@ -44,7 +44,6 @@ export class SprintGameView {
     const soundImg = createElement('button', 'sprint_sound');
     const fullscreenImg = createElement('button', 'sprint_fullscreen');
     const crossImg = createElement('button', 'sprint_cross');
-    mainImg.src = './assets/images/bridge.jpg';
 
     fullscreenImg.onclick = () => {
       if (!this.fullscreen) {
