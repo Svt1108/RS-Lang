@@ -58,11 +58,23 @@ export const getMixWordsForAudio = (wordsArr: Word[]): MixWordsAudio[] => {
 };
 
 export const getMixWordsForPhrase = (wordsArr: WordPlusUserWord[]) => {
-  // const shuffledArr = wordsArr.sort(() => 0.5 - Math.random());
-  console.log(wordsArr);
-  // const indexArray = [...Array(WORDS_FOR_PHRASE).keys()].map((item) => ++item);
-  // const resArr = shuffledArr.slice(0, WORDS_FOR_PHRASE);
-  // // var N = 10;
-  //  Array.apply(null, { length: N }).map(Number.call, Number);
-  return [...Array(WORDS_FOR_PHRASE).keys()];
+  const resArr = [];
+  const indexArray = [...Array(wordsArr.length).keys()];
+  for (let i = 0; i < WORDS_FOR_PHRASE; i += 1) {
+    const index = Math.floor(Math.random() * indexArray.length);
+    resArr.push(wordsArr[indexArray[index]]);
+    indexArray.splice(index, 1);
+  }
+  return resArr;
+};
+
+export const getMixWordForDrag = (wordsArr: { numb: number; word: string }[]) => {
+  const resArr = [];
+  const indexArray = [...Array(wordsArr.length).keys()];
+  for (let i = 0; i < WORDS_FOR_PHRASE; i += 1) {
+    const index = Math.floor(Math.random() * indexArray.length);
+    resArr.push(wordsArr[indexArray[index]]);
+    indexArray.splice(index, 1);
+  }
+  return resArr;
 };
