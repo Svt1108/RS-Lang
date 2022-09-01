@@ -18,7 +18,10 @@ export class AudioGameView {
   pointsTotalResult: number[];
   learnedWords: string[][];
   unlearnedWords: string[][];
-  audio: HTMLAudioElement
+  audio: HTMLAudioElement;
+  handleVolumepress: (el: KeyboardEvent) => void;
+  handleKeypress: (el: KeyboardEvent) => void;
+  handleMainKeypress: (el: KeyboardEvent) => void;
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
@@ -34,10 +37,14 @@ export class AudioGameView {
     this.pointsResult = [];
     this.learnedWords = [];
     this.unlearnedWords = [];
-    this.audio = new Audio()
+    this.audio = new Audio();
+    this.handleVolumepress = () => {};
+    this.handleKeypress = () => {};
+    this.handleMainKeypress = () => {};
   }
 
   public render(data?: Word[], user?: LoginData): void { 
+
     this.controlBlock.innerHTML = '';
     this.mainDiv.innerHTML = '';
     const adioGame = createElement('div', 'audio-game');
@@ -91,14 +98,12 @@ export class AudioGameView {
     if (data && user) {
       this.mainDiv.append(this.startGameFromBook(data, user));
       this.againGame.onclick = () => {
-      window.location.reload()
       this.startGameFromBook(data, user)
       }       
     } 
     else if (data && !user) {
       this.mainDiv.append(this.startGameFromBook(data));
       this.againGame.onclick = () => {
-        window.location.reload()
         this.startGameFromBook(data)
         this.audio.remove()
       }  
@@ -106,7 +111,6 @@ export class AudioGameView {
     else if (!data && user) {
       this.mainDiv.append(this.startGameFromMenu(user));
       this.againGame.onclick = () => {
-        window.location.reload()
         this.startGameFromMenu(user)
         this.audio.remove()
       } 
@@ -114,7 +118,6 @@ export class AudioGameView {
     else if (!data && !user){
       this.mainDiv.append(this.startGameFromMenu());
       this.againGame.onclick = () => {
-        window.location.reload()
         this.startGameFromMenu()
         this.audio.remove()
       } 
@@ -122,6 +125,7 @@ export class AudioGameView {
   }
 
   private startGameFromMenu(user?: LoginData): HTMLElement {
+    
     this.sound = true;
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
@@ -193,6 +197,7 @@ export class AudioGameView {
   }
 
   private startGameFromBook(data: Word[], user?: LoginData): HTMLElement {
+
     this.sound = true;
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
@@ -214,12 +219,13 @@ export class AudioGameView {
     const navList2: HTMLElement = createElement('li', 'nav_list-audio ul-lang',
       ' - клавиша Enter для подсказки или для перехода к следующему слову');   
     const navList3: HTMLElement = createElement('li', 'nav_list-audio ul-lang', 
-      ' - пробел для повтроного звучания слова');
+      ' - пробел для повторного звучания слова');
 
     const btnStart = createElement('button', `audio_start-btn z-depth-1 waves-effect`, 
                        'НАЧАТЬ');
     btnStart.tabIndex = 0                   
     btnStart.onclick = () => {
+      if(!data.length) window.location.hash = 'book'
       this.stateGame.innerHTML = '';
       if(user)this.showGame(data, user)
       else this.showGame(data)
@@ -236,8 +242,7 @@ export class AudioGameView {
   }
 
   private showGame(data: Word[], user?: LoginData): HTMLElement {
-    console.log(data, user);
-    
+
     const mixData = getMixWordsForAudio(data);
     const word = createElement('div', 'audio_word card');
     const wordName = createElement('div', 'audio_word-name');
@@ -269,16 +274,16 @@ export class AudioGameView {
       blockBtn.append(wordContainer)
     }
 
-    const handleVolumepress = (el: KeyboardEvent)  => { 
+    this.handleVolumepress = (el: KeyboardEvent)  => { 
       if(el.code === 'Space') {this.audio.play()}
-      if (index === mixData.length) window.removeEventListener('keyup', handleVolumepress)
+      if (index === mixData.length) window.removeEventListener('keyup', this.handleVolumepress)
     }
 
-    const handleKeypress = (el: KeyboardEvent)  => {
+    this.handleKeypress = (el: KeyboardEvent)  => {
       if(index < mixData.length) {
         keyCode.forEach((key) => {
           if (el.key === key) {
-            window.removeEventListener('keyup', handleKeypress)
+            window.removeEventListener('keyup', this.handleKeypress)
             blockWodsArr.forEach(async (v) => {
               if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) v.classList.add('correct')
               const text = v.textContent?.split(' ').slice(1).join(' ')
@@ -310,7 +315,7 @@ export class AudioGameView {
               flag = false 
               if (index === mixData.length) {
                 this.endGame()
-                window.removeEventListener('keyup', handleKeypress)
+                window.removeEventListener('keyup', this.handleKeypress)
                 index = 0
               } 
               blockWodsArr.forEach((w) => {
@@ -321,19 +326,19 @@ export class AudioGameView {
           }
         })
       } else {
-        window.removeEventListener('keyup', handleKeypress)
+        window.removeEventListener('keyup', this.handleKeypress)
       }
     }
     
-    const handleMainKeypress = async (el: KeyboardEvent)  => {
+    this.handleMainKeypress = async (el: KeyboardEvent)  => {
       mainBtn.disabled = false
-      window.removeEventListener('keyup', handleMainKeypress)
-      const interval  = setTimeout(() => {window.addEventListener('keyup', handleMainKeypress)}, 400)
+      window.removeEventListener('keyup', this.handleMainKeypress)
+      const interval  = setTimeout(() => {window.addEventListener('keyup', this.handleMainKeypress)}, 400)
       let int;
       if (index <= mixData.length) {
         if(el.key === 'Enter') {   
           if (flag) {
-            window.removeEventListener('keyup', handleKeypress)
+            window.removeEventListener('keyup', this.handleKeypress)
             const userWord = this.findWord(data, mixData[index].en);
             if (userWord && user) { 
               await this.createNewUserWord(userWord, user) 
@@ -343,7 +348,7 @@ export class AudioGameView {
               mixData, mainBlock, imgDiv, wordName, audioBlock, word, blockWodsArr)
             flag = false
           } else {
-            int = setTimeout(() => {window.addEventListener('keyup', handleKeypress)}, 400)
+            int = setTimeout(() => {window.addEventListener('keyup', this.handleKeypress)}, 400)
             index += 1
             flag = true;
             flagRes = true
@@ -356,8 +361,8 @@ export class AudioGameView {
           clearInterval(interval)
           clearInterval(int)
           this.endGame()
-          window.removeEventListener('keyup', handleKeypress)
-          window.removeEventListener('keyup', handleMainKeypress)
+          window.removeEventListener('keyup', this.handleKeypress)
+          window.removeEventListener('keyup', this.handleMainKeypress)
           index = 0
         } 
       }   
@@ -377,7 +382,7 @@ export class AudioGameView {
       }, 500);
       if (index <= mixData.length) { 
         if (flag) {
-          window.removeEventListener('keyup', handleKeypress)
+          window.removeEventListener('keyup', this.handleKeypress)
           const userWord = this.findWord(data, mixData[index].en);
           if (userWord && user) { 
             await this.createNewUserWord(userWord, user) 
@@ -387,7 +392,7 @@ export class AudioGameView {
             mixData, mainBlock, imgDiv, wordName, audioBlock, word, blockWodsArr)
           flag = false
         } else {
-          window.addEventListener('keyup', handleKeypress)
+          window.addEventListener('keyup', this.handleKeypress)
           index += 1
           flag = true;
           flagRes = true
@@ -397,8 +402,8 @@ export class AudioGameView {
         } 
       }
       if (index === mixData.length) {
-        window.removeEventListener('keyup', handleKeypress)
-        window.removeEventListener('keyup', handleMainKeypress)
+        window.removeEventListener('keyup', this.handleKeypress)
+        window.removeEventListener('keyup', this.handleMainKeypress)
         this.endGame()
         index = 0
         // clearTimeout(interval)
@@ -414,7 +419,7 @@ export class AudioGameView {
           click.disabled = true
         })
         const text = btn.textContent?.split(' ').slice(1).join(' ')
-        window.removeEventListener('keyup', handleKeypress)
+        window.removeEventListener('keyup', this.handleKeypress)
         if(flagRes) {
           const userWord = this.findWord(data, mixData[index].en);
           if (userWord && user) await this.createNewUserWord(userWord, user)
@@ -449,9 +454,9 @@ export class AudioGameView {
     mainBtn.onmouseout = () => {
       mainBtn.blur()
     }
-    setTimeout(() => {window.addEventListener('keyup', handleMainKeypress)}, 500);
-    window.addEventListener('keyup', handleKeypress)
-    window.addEventListener('keyup', handleVolumepress)
+    setTimeout(() => {window.addEventListener('keyup', this.handleMainKeypress)}, 500);
+    window.addEventListener('keyup', this.handleKeypress)
+    window.addEventListener('keyup', this.handleVolumepress)
     wordName.appendChild(audioBlock)
     word.append(imgDiv);
     word.append(wordName);
@@ -547,7 +552,6 @@ export class AudioGameView {
   }
 
   private async correctUserWord(word: Word | UserWordPlus, user: LoginData) {
-    console.log(word);
     const userWord = word;
     (<UserWordPlus>userWord).optional.games.audio.wins += 1;
     (<UserWordPlus>userWord).optional.games.audio.total += 1;
@@ -572,7 +576,6 @@ export class AudioGameView {
   }
 
   private async incorrectUserWord(word: Word | UserWordPlus, user: LoginData) {
-    console.log(word);
     const userWord = word;
     
     (<UserWordPlus>userWord).optional.games.audio.total += 1;
@@ -715,6 +718,9 @@ export class AudioGameView {
     this.pointsResult = [];
     this.learnedWords = [];
     this.unlearnedWords = [];
+    window.removeEventListener('keyup', this.handleMainKeypress)
+    window.removeEventListener('keyup', this.handleKeypress)
+    window.removeEventListener('keyup', this.handleVolumepress)
     if(document.fullscreenElement) document.exitFullscreen();
   }
 }
