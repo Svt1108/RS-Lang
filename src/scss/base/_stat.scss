@@ -21,7 +21,7 @@
 
 .stat-day {
   width: 100%;
-  height: 68vh;
+  min-height: 68vh;
   border: 1px solid rgb(153, 153, 153);
   display: flex;
   flex-wrap: wrap;
@@ -50,6 +50,7 @@
   justify-content: center;
   // padding-bottom: 5px;
   border-bottom: 5px double darkgray;
+  // border-right: 5px double darkgray;
   // border-bottom: 5px double #ef6c00;
 }
 
@@ -91,6 +92,19 @@
 .stat_num {
   // font-weight: bold;
   font-size: 25px;
+}
+
+.stats_charts_container {
+  width: 100%;
+}
+
+.stat_long_heading {
+  font-size: 25px;
+}
+
+.stats_chart {
+  width: 100%;
+  height: 250px;
 }
 
 // .cards-stat-wrap {

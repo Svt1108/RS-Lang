@@ -1,3 +1,5 @@
+/* eslint-disable no-new */
+import { BarChart, LineChart, easings } from 'chartist';
 import { Stats } from '../types/statsTypes';
 
 export class StatView {
@@ -100,18 +102,11 @@ export class StatView {
     <div class = "card z-depth-2 center stat-day">
 
 
-
-      <div class = "cards-stat-wrap">
-          <div class = "card card-stat card-stat-small">Text example</div>
-          <div class = "card card-stat card-stat-large">Text example</div>
-      </div>
-      <div class = "cards-stat-wrap">
-          <div class = "card card-stat">Text example</div>
-          <div class = "card card-stat">Text example</div>
-      </div>
-      <div class = "cards-stat-wrap">
-          <div class = "card card-stat">Text example</div>
-          <div class = "card card-stat">Text example</div>
+      <div class="stats_charts_container">
+        <h4 class="stat_long_heading">Новых (уникальных) слов по дням</h4>
+        <div id="stats_bar_chart" class="stats_chart"></div>
+        <h4 class="stat_long_heading">Всего изучено слов (прогресс)</h4>
+        <div id="stats_line_chart" class="stats_chart"></div>
       </div>
 
 
@@ -140,5 +135,116 @@ export class StatView {
   </ul>
 </div>
 `;
+
+    new BarChart(
+      '#stats_bar_chart',
+      {
+        labels: [
+          '28.08.22',
+          '29.08.22',
+          '30.08.22',
+          '31.08.22',
+          '01.09.22',
+          '02.09.22',
+          '03.09.22',
+          '04.09.22',
+          '05.09.22',
+          '06.09.22',
+          '07.09.22',
+          '08.09.22',
+          '09.09.22',
+          '10.09.22',
+        ],
+        series: [20, 60, 120, 200, 180, 20, 10, 20, 60, 120, 200, 180, 20, 10],
+      },
+      {
+        distributeSeries: true,
+        chartPadding: {
+          right: 40,
+        },
+        axisX: {
+          labelInterpolationFnc: (value, index) => (index % 3 === 0 ? value : null),
+        },
+      },
+    );
+
+    // 1-5 -> 1
+    // 6-10 -> 2
+    // 7-15 -> 3
+    // 16-20 -> 4
+
+    // (len - 1) % 5 === 0 && len > 1
+    // len 6 / 5 = Math.ceil(1.2) = 2 denominator
+    // len 11 / 5 = Math.ceil(2.2) = 3 divider
+    // len 16 / 5 = Math.ceil(3.2) = 4 divisor
+
+    const chart = new LineChart(
+      '#stats_line_chart',
+      {
+        labels: [
+          '28.08.22',
+          '29.08.22',
+          '30.08.22',
+          '31.08.22',
+          '01.09.22',
+          '02.09.22',
+          '03.09.22',
+          '04.09.22',
+          '05.09.22',
+          '06.09.22',
+          '07.09.22',
+          '08.09.22',
+          '09.09.22',
+          '10.09.22',
+        ],
+        series: [[12, 9, 7, 8, 5, 12, 9, 7, 8, 5, 3, 4, 5, 6]],
+      },
+      {
+        fullWidth: true,
+        chartPadding: {
+          right: 40,
+        },
+        axisX: {
+          labelInterpolationFnc: (value, index) => (index % 2 === 0 ? value : null),
+        },
+        low: 0,
+      },
+    );
+
+    let seq = 0;
+
+    chart.on('created', () => {
+      seq = 0;
+    });
+
+    chart.on('draw', (data) => {
+      if (data.type === 'point') {
+        data.element.animate({
+          opacity: {
+            begin: (seq += 1 * 80),
+            dur: 500,
+            from: 0,
+            to: 1,
+          },
+          x1: {
+            begin: (seq += 1 * 80),
+            dur: 500,
+            from: data.x - 100,
+            to: data.x,
+            easing: easings.easeOutQuart,
+          },
+        });
+      }
+    });
+
+    let timerId: NodeJS.Timeout;
+
+    chart.on('created', () => {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+
+      timerId = setTimeout(chart.update.bind(chart), 8000);
+    });
   }
 }

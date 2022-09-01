@@ -46,6 +46,7 @@
         "webpack-dev-server": "^4.8.1"
     },
     "dependencies": {
+        "chartist": "^1.1.2",
         "materialize-css": "^1.0.0-rc.2"
     }
 }
