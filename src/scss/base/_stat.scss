@@ -22,6 +22,7 @@
 .stat-day {
   width: 100%;
   min-height: 68vh;
+  max-width: 900px;
   border: 1px solid rgb(153, 153, 153);
   display: flex;
   flex-wrap: wrap;
@@ -96,6 +97,8 @@
 
 .stats_charts_container {
   width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 .stat_long_heading {

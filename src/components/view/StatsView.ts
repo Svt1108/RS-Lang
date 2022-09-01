@@ -7,7 +7,7 @@ import {
   createBottomImg,
   createScrollSpy,
 } from './helpers/statRenderHelpers';
-import { Stats } from '../types/statsTypes';
+import { Stats, SortedStatsArr } from '../types/statsTypes';
 
 export class StatView {
   mainDiv;
@@ -16,8 +16,8 @@ export class StatView {
     this.mainDiv = mainDiv;
   }
 
-  render(stats: Stats) {
-    console.log(stats);
+  public render(stats: Stats) {
+    // console.log('Response: ', stats);
 
     // Render_Page
     const topImg = createTopImg();
@@ -31,206 +31,125 @@ export class StatView {
     this.mainDiv.append(topImg, todayStats, midImg, longStats, bottomImg, scrollSpy);
 
     // Handle_Graphs
-    // sortLong
-    // makeDateLabelsArr
-    // makeDataSeriesArr ?
-    // count divider
-    // enable BarSeries(labels, dataArr?, divider);
-    // enable BarSeries(labels, dataArr?, divider);
+    const sortedLongStats = this.sortLongStatsToArr(stats);
 
-    //     this.mainDiv.innerHTML = `
-    // <div id="index-banner" class="parallax-container valign-wrapper top-img-stat">
+    const labels = this.makeLabels(sortedLongStats);
+    const labelsToShow = this.generateLabelIdsToShow(labels);
 
-    //   <div class="section no-pad-bot ">
-    //     <div class="container">
-    //       <h4 class="header center white-text h4-lang">Статистика за сегодня</h4>
-    //     </div>
-    //   </div>
+    const barGraphData = this.makeBarGraphData(sortedLongStats); // New Words
+    const lineGraphData = this.makeLineGraphData(sortedLongStats); // Learned
 
-    //   <div class="parallax">
-    //     <img src="assets/images/stat/circles-1.jpg" alt="circles" class = "img-parallax">
-    //   </div>
+    this.activateBarChart(labels, barGraphData, labelsToShow);
+    this.activateLineChart(labels, lineGraphData, labelsToShow);
+  }
 
-    // </div>
+  private sortLongStatsToArr(stats: Stats) {
+    const { long } = stats.optional;
+    const entriesLong = Object.entries(long);
 
-    // <div id="day-stat" class="container scrollspy">
-    //   <div class="center stat-day-wrap section-stat">
-    //     <div class = "card z-depth-2 center stat-day">
+    function dateToNum(date: string) {
+      const dateArr = date.split('.');
+      const day = Number(dateArr[0]);
+      const month = Number(dateArr[1]);
+      const year = Number(dateArr[2]);
+      return year * 12 * 31 + month * 31 + day;
+    }
 
-    //       <div class="stat_card">
-    //         <div class="stat_card_heading">
-    //           <span class="stat_card_img"><div class="game-picture stat_btn-total"></div></span>
-    //           <span class="stat_card_title">Итого по словам</span>
-    //         </div>
-    //         <div class="stats_list">
-    //           <div class="stat_text_container"><span>Изученных слов</span><span class="stat_num orange-text text-darken-3">5</span></div>
-    //           <div class="stat_text_container"><span>Новых слов</span><span class="stat_num">10</span></div>
-    //           <div class="stat_text_container"><span>Правильных ответов</span><span class="stat_num">21%</span></div>
-    //         </div>
-    //       </div>
-    //       <div class="stat_card">
-    //         <div class="stat_card_heading">
-    //           <span class="stat_card_img"><div class="game-picture btn-sprint"></div></span>
-    //           <span class="stat_card_title">Спринт</span>
-    //         </div>
-    //         <div class="stats_list">
-    //         <div class="stat_text_container"><span>Лучшая серия</span><span class="stat_num light-green-text text-darken-3">8</span></div>
-    //         <div class="stat_text_container"><span>Новых слов</span><span class="stat_num">10</span></div>
-    //         <div class="stat_text_container"><span>Правильных ответов</span><span class="stat_num">47%</span></div>
-    //         </div>
-    //       </div>
-    //       <div class="stat_card">
-    //         <div class="stat_card_heading">
-    //           <span class="stat_card_img"><div class="game-picture btn-audio"></div></span>
-    //           <span class="stat_card_title">Аудио-Вызов</span>
-    //         </div>
-    //         <div class="stats_list">
-    //         <div class="stat_text_container"><span>Лучшая серия</span><span class="stat_num light-green-text text-darken-3">8</span></div>
-    //           <div class="stat_text_container"><span>Новых слов</span><span class="stat_num">10</span></div>
-    //           <div class="stat_text_container"><span>Правильных ответов</span><span class="stat_num">47%</span></div>
-    //         </div>
-    //       </div>
-    //       <div class="stat_card">
-    //         <div class="stat_card_heading">
-    //           <span class="stat_card_img"><div class="game-picture btn-collection"></div></span>
-    //           <span class="stat_card_title">Фразы</span>
-    //         </div>
-    //         <div class="stats_list">
-    //         <div class="stat_text_container"><span>Лучшая серия</span><span class="stat_num light-green-text text-darken-3">8</span></div>
-    //           <div class="stat_text_container"><span>Новых слов</span><span class="stat_num">10</span></div>
-    //           <div class="stat_text_container"><span>Правильных ответов</span><span class="stat_num">47%</span></div>
-    //         </div>
-    //       </div>
+    entriesLong.sort((a, b) => dateToNum(a[0]) - dateToNum(b[0]));
+    // console.log('Sorted: ', entriesLong);
+    return entriesLong;
+  }
 
-    //     </div>
-    //   </div>
-    // </div>
+  private makeLabels(sortedLongStats: SortedStatsArr) {
+    function normalizeDate(date: string) {
+      const dateArr = date.split('.');
+      const day = dateArr[0].length > 1 ? dateArr[0] : `0${dateArr[0]}`;
+      const month = dateArr[1].length > 1 ? dateArr[1] : `0${dateArr[1]}`;
+      dateArr[0] = day;
+      dateArr[1] = month;
+      return dateArr.join('.');
+    }
 
-    // <div class="parallax-container valign-wrapper center-img-stat">
-    //   <div class="section no-pad-bot">
-    //     <div class="container">
-    //       <div class="row center">
-    //         <h4 class="header center white-text h4-lang">Статистика за все время</h4>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div class="parallax">
-    //     <img src="assets/images/stat/houses.jpg" alt="big ben" class = "img-parallax">
-    //   </div>
-    // </div>
+    const labels = sortedLongStats.map((e) => normalizeDate(e[0]));
+    // console.log('Labels: ', labels);
+    return labels;
+  }
 
-    // <div id="all-stat" class="container scrollspy">
-    //   <div class="center stat-day-wrap section-stat">
-    //     <div class = "card z-depth-2 center stat-day">
+  private makeBarGraphData(sortedLongStats: SortedStatsArr) {
+    const newWordsArr = sortedLongStats.map((e) => e[1].newWords);
+    // console.log('NewWords: ', newWordsArr);
+    return newWordsArr;
+  }
 
-    //       <div class="stats_charts_container">
-    //         <h4 class="stat_long_heading">Новых (уникальных) слов по дням</h4>
-    //         <div id="stats_bar_chart" class="stats_chart"></div>
-    //         <h4 class="stat_long_heading">Всего изучено слов (прогресс)</h4>
-    //         <div id="stats_line_chart" class="stats_chart"></div>
-    //       </div>
+  private makeLineGraphData(sortedLongStats: SortedStatsArr) {
+    const learnedArr = sortedLongStats.map((e) => e[1].learnedWords);
+    // console.log('LearnedWords: ', learnedArr);
 
-    //     </div>
-    //   </div>
-    // </div>
+    const progressArr: number[] = [];
+    learnedArr.forEach((e, i) => {
+      if (i === 0) {
+        progressArr.push(e);
+      } else {
+        progressArr.push(e + (progressArr.at(-1) as number));
+      }
+    });
+    // console.log('ProgressArr: ', progressArr);
+    return progressArr;
+  }
 
-    // <div class="parallax-container valign-wrapper">
-    //   <div class="section no-pad-bot">
-    //     <div class="container">
-    //       <div class="row center">
-    //         <h5 class="header light h5-lang">А теперь на тренировку :)</h5>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div class="parallax">
-    //     <img src="assets/images/stat/hogwards.jpg" alt="castle" class = "img-parallax">
-    //   </div>
-    // </div>
+  private generateLabelIdsToShow(labels: string[]) {
+    const MAX_LABELS = 7;
+    const len = labels.length;
 
-    // <div class="col m3 l2 scroll-stat">
-    //   <ul class="section table-of-contents">
-    //     <li><a href="#day-stat">За сегодня</a></li>
-    //     <li><a href="#all-stat">За все время</a></li>
-    //   </ul>
-    // </div>
-    // `;
+    if (len <= MAX_LABELS)
+      return Array(len)
+        .fill(0)
+        .map((_, i) => i);
 
+    const step = Math.ceil(len / MAX_LABELS);
+    return labels.map((_, i) => (i % step === 0 ? i : '')).filter((e) => e !== '') as number[];
+  }
+
+  private activateBarChart(labels: string[], dataArr: number[], labelsToShow: number[]) {
     // eslint-disable-next-line no-new
     new BarChart(
       '#stats_bar_chart',
       {
-        labels: [
-          '28.08.22',
-          '29.08.22',
-          '30.08.22',
-          '31.08.22',
-          '01.09.22',
-          '02.09.22',
-          '03.09.22',
-          '04.09.22',
-          '05.09.22',
-          '06.09.22',
-          '07.09.22',
-          '08.09.22',
-          '09.09.22',
-          '10.09.22',
-        ],
-        series: [20, 60, 120, 200, 180, 20, 10, 20, 60, 120, 200, 180, 20, 10],
+        labels,
+        series: dataArr,
       },
       {
         distributeSeries: true,
         chartPadding: {
-          right: 40,
+          right: 50,
         },
         axisX: {
-          labelInterpolationFnc: (value, index) => (index % 3 === 0 ? value : null),
+          labelInterpolationFnc: (value, index) => (labelsToShow.includes(index) ? value : null),
         },
       },
     );
+  }
 
-    // 1-5 -> 1
-    // 6-10 -> 2
-    // 7-15 -> 3
-    // 16-20 -> 4
-
-    // if (len - 1) % 5 === 0 && len > 1
-    // len 6 / 5 = Math.ceil(1.2) = 2 denominator
-    // len 11 / 5 = Math.ceil(2.2) = 3 divider
-    // len 16 / 5 = Math.ceil(3.2) = 4 divisor
-
+  private activateLineChart(labels: string[], dataArr: number[], labelsToShow: number[]) {
     const chart = new LineChart(
       '#stats_line_chart',
       {
-        labels: [
-          '28.08.22',
-          '29.08.22',
-          '30.08.22',
-          '31.08.22',
-          '01.09.22',
-          '02.09.22',
-          '03.09.22',
-          '04.09.22',
-          '05.09.22',
-          '06.09.22',
-          '07.09.22',
-          '08.09.22',
-          '09.09.22',
-          '10.09.22',
-        ],
-        series: [[12, 9, 7, 8, 5, 12, 9, 7, 8, 5, 3, 4, 5, 6]],
+        labels,
+        series: [dataArr],
       },
       {
         fullWidth: true,
         chartPadding: {
-          right: 40,
+          right: 50,
         },
         axisX: {
-          labelInterpolationFnc: (value, index) => (index % 2 === 0 ? value : null),
+          labelInterpolationFnc: (value, index) => (labelsToShow.includes(index) ? value : null),
         },
         low: 0,
       },
     );
 
+    // Animation
     let seq = 0;
 
     chart.on('created', () => {
