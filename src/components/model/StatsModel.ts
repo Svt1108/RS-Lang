@@ -33,21 +33,20 @@ class StatsModel {
     let dateStr: string; // oldDate / today
     let wordIsNew = true;
 
+    const newStats = await this.getOrCreateUserStats();
+
     if (oldWord) {
       const { optional } = oldWord;
       if (!optional) return;
-      const { learnDate, markedAsNew } = optional;
+      const { learnDate, markedAsNew, learned } = optional;
 
       dateStr = this.createDateStr(learnDate); // oldDate
       if (markedAsNew) wordIsNew = false;
+      if (learned === 'yes') newStats.optional.long[dateStr].learnedWords -= 1;
     } else {
       dateStr = this.createDateStr(); // today
       // wordIsNew = true;
     }
-
-    const newStats = await this.getOrCreateUserStats();
-
-    newStats.optional.long[dateStr].learnedWords -= 1;
 
     const [game] = window.location.hash.slice(1).split('#');
     if (wordIsNew) {
@@ -173,7 +172,6 @@ class StatsModel {
   private async getOrCreateUserStats() {
     const { id, token } = this.getStorageUserData();
     const { stats } = await getUserStats(id, token);
-
     let newStats: Stats;
     if (stats) {
       newStats = stats;
@@ -195,6 +193,15 @@ class StatsModel {
       stats.optional.long[today] = { newWords: 0, learnedWords: 0 };
     }
     stats.optional.dateToday = today;
+  }
+  // StatsView_______________________________________
+  public async getStats() {
+    const stats = await this.getOrCreateUserStats();
+    return stats;
+  }
+
+  public getDefaultStats() {
+    return this.createDefaultStatsObj();
   }
 }
 

@@ -34,3 +34,11 @@ export type Stats = {
     };
   };
 };
+
+export type SortedStatsArr = [
+  string,
+  {
+    newWords: number;
+    learnedWords: number;
+  },
+][];
