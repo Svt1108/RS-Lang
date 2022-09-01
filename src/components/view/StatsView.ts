@@ -145,7 +145,7 @@ export class StatView {
         axisX: {
           labelInterpolationFnc: (value, index) => (labelsToShow.includes(index) ? value : null),
         },
-        low: 0,
+        // low: 0,
       },
     );
 
