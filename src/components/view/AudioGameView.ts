@@ -1,4 +1,4 @@
-import { getAllUserWords, getWords, HOST} from '../model/helpers/apiHelpers';
+import { createUserWord, getAllUserWords, getWords, HOST, updateUserWord} from '../model/helpers/apiHelpers';
 import {  MixWordsAudio, UserWordPlus, Word, WordPlusUserWord } from '../types';
 import { LoginData } from '../types/loginTypes';
 import { getMixWordsForAudio } from './helpers/appMixWords';
@@ -71,7 +71,13 @@ export class AudioGameView {
       window.location.hash = 'main';
       this.stopGame();
     };
-
+     
+    soundImg.onmouseout = () => {
+      soundImg.blur()
+    }
+    fullscreenImg.onmouseout = () => {
+      fullscreenImg.blur()
+    }
     this.againGame.tabIndex = 0
     crossImg.tabIndex = 0
     soundImg.tabIndex = 0
@@ -85,13 +91,14 @@ export class AudioGameView {
     if (data && user) {
       this.mainDiv.append(this.startGameFromBook(data, user));
       this.againGame.onclick = () => {
-        this.startGameFromBook(data, user)
-        this.audio.remove()
+      window.location.reload()
+      this.startGameFromBook(data, user)
       }       
     } 
     else if (data && !user) {
       this.mainDiv.append(this.startGameFromBook(data));
       this.againGame.onclick = () => {
+        window.location.reload()
         this.startGameFromBook(data)
         this.audio.remove()
       }  
@@ -99,6 +106,7 @@ export class AudioGameView {
     else if (!data && user) {
       this.mainDiv.append(this.startGameFromMenu(user));
       this.againGame.onclick = () => {
+        window.location.reload()
         this.startGameFromMenu(user)
         this.audio.remove()
       } 
@@ -106,6 +114,7 @@ export class AudioGameView {
     else if (!data && !user){
       this.mainDiv.append(this.startGameFromMenu());
       this.againGame.onclick = () => {
+        window.location.reload()
         this.startGameFromMenu()
         this.audio.remove()
       } 
@@ -134,7 +143,7 @@ export class AudioGameView {
     const navList2: HTMLElement = createElement('li', 'nav_list-audio ul-lang',
       ' - клавиша Enter для подсказки или для перехода к следующему слову');   
     const navList3: HTMLElement = createElement('li', 'nav_list-audio ul-lang', 
-      ' - пробел для повтроного звучания слова');
+      ' - пробел для повторного звучания слова');
     
     const levelBlock: HTMLElement = createElement('div', 'level-audio');
 
@@ -198,6 +207,15 @@ export class AudioGameView {
       'Попробуй угадать как можно больше слов на слух',
     );
 
+    const navHeader: HTMLElement = createElement('ul', 'nav-audio h6-lang',
+      'Инструкция для игры на клавиатуре:');
+    const navList1: HTMLElement = createElement('li', 'nav_list-audio ul-lang', 
+      ' - цифровые клавиши от 1 до 5 для выбора ответа');
+    const navList2: HTMLElement = createElement('li', 'nav_list-audio ul-lang',
+      ' - клавиша Enter для подсказки или для перехода к следующему слову');   
+    const navList3: HTMLElement = createElement('li', 'nav_list-audio ul-lang', 
+      ' - пробел для повтроного звучания слова');
+
     const btnStart = createElement('button', `audio_start-btn z-depth-1 waves-effect`, 
                        'НАЧАТЬ');
     btnStart.tabIndex = 0                   
@@ -206,9 +224,13 @@ export class AudioGameView {
       if(user)this.showGame(data, user)
       else this.showGame(data)
     }   
-
+    
+    navHeader.append(navList1)
+    navHeader.append(navList2)
+    navHeader.append(navList3)
     this.stateGame.append(title);
     this.stateGame.append(subTitle);
+    this.stateGame.append(navHeader);
     this.stateGame.append(btnStart);
     return this.stateGame;
   }
@@ -233,7 +255,6 @@ export class AudioGameView {
     audioBlock.onclick = () => {this.audio.play()}
     volumeBtn.onclick = () => {this.audio.play()}
     this.audio.play()
-    this.audio.remove()
     wordName.innerHTML = `${mixData[index].en}  ${mixData[index].tr}`;
     let flag = true;
     let flagRes = true;
@@ -250,23 +271,28 @@ export class AudioGameView {
 
     const handleVolumepress = (el: KeyboardEvent)  => { 
       if(el.code === 'Space') {this.audio.play()}
-      if (index === mixData.length) window.removeEventListener('keypress', handleVolumepress)
+      if (index === mixData.length) window.removeEventListener('keyup', handleVolumepress)
     }
 
     const handleKeypress = (el: KeyboardEvent)  => {
       if(index < mixData.length) {
         keyCode.forEach((key) => {
           if (el.key === key) {
-            blockWodsArr.forEach((v) => {
+            window.removeEventListener('keyup', handleKeypress)
+            blockWodsArr.forEach(async (v) => {
               if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) v.classList.add('correct')
               const text = v.textContent?.split(' ').slice(1).join(' ')
               if(flagRes) {
                 if (v.id === el.key) {
+                  const userWord = this.findWord(data, mixData[index].en);
+                  if (userWord && user) await this.createNewUserWord(userWord, user)
                   if(text !== mixData[index].ru) {
-                   v.classList.add('wrong') 
+                    v.classList.add('wrong') 
+                    if (userWord && user) await this.incorrectUserWord(userWord, user)
                     this.createWrongResult(data, mixData[index].en);
                     this.createSounds(this.sound, 'false')
                   } else {
+                    if (userWord && user) await this.correctUserWord(userWord, user)
                     this.createCorrectResult(data, mixData[index].en);
                     this.createSounds(this.sound, 'true')
                     this.pointsTotal += 10
@@ -277,14 +303,14 @@ export class AudioGameView {
               mainBtn.innerText = 'ДАЛЬШЕ'
               mainBlock.innerHTML = ''
               this.renderWordCard (mixData, index, 
-                imgDiv, wordName, this.audio)
+                imgDiv, wordName)
               mainBlock.innerHTML = ''  
               wordName.appendChild(audioBlock)
               mainBlock.append(word);
               flag = false 
               if (index === mixData.length) {
                 this.endGame()
-                window.removeEventListener('keypress', handleKeypress)
+                window.removeEventListener('keyup', handleKeypress)
                 index = 0
               } 
               blockWodsArr.forEach((w) => {
@@ -295,82 +321,110 @@ export class AudioGameView {
           }
         })
       } else {
-        window.removeEventListener('keypress', handleKeypress)
+        window.removeEventListener('keyup', handleKeypress)
       }
     }
     
-    const handleMainKeypress = (el: KeyboardEvent)  => {
-      
-        mainBtn.disabled = true
-        setTimeout(() => { mainBtn.disabled = false}, 500);
-        if (index <= mixData.length) {
-          if(el.key === 'Enter') {
+    const handleMainKeypress = async (el: KeyboardEvent)  => {
+      mainBtn.disabled = false
+      window.removeEventListener('keyup', handleMainKeypress)
+      const interval  = setTimeout(() => {window.addEventListener('keyup', handleMainKeypress)}, 400)
+      let int;
+      if (index <= mixData.length) {
+        if(el.key === 'Enter') {   
           if (flag) {
+            window.removeEventListener('keyup', handleKeypress)
+            const userWord = this.findWord(data, mixData[index].en);
+            if (userWord && user) { 
+              await this.createNewUserWord(userWord, user) 
+              await this.incorrectUserWord(userWord, user)
+            }
             this.pressMainButtonAnswer(mainBtn, data, index,
-              mixData, mainBlock, imgDiv, wordName, 
-              this.audio, audioBlock, word, blockWodsArr, handleKeypress)
+              mixData, mainBlock, imgDiv, wordName, audioBlock, word, blockWodsArr)
             flag = false
           } else {
+            int = setTimeout(() => {window.addEventListener('keyup', handleKeypress)}, 400)
             index += 1
             flag = true;
             flagRes = true
             this.pressMainButtonNext (mainBtn, index,
               mixData, mainBlock, blockWodsArr,
-              volumeBtn, this.audio, handleKeypress)
+              volumeBtn, this.audio)
           } 
-          } 
-          if (index === mixData.length) {
-            this.endGame()
-            window.removeEventListener('keypress', handleKeypress)
-            window.removeEventListener('keypress', handleMainKeypress)
-            index = 0
-          } 
-        }   
+        } 
+        if (index === mixData.length) {
+          clearInterval(interval)
+          clearInterval(int)
+          this.endGame()
+          window.removeEventListener('keyup', handleKeypress)
+          window.removeEventListener('keyup', handleMainKeypress)
+          index = 0
+        } 
+      }   
     }
 
     setTimeout(() => { mainBtn.disabled = false}, 500);
     mainBtn.disabled = true
-    mainBtn.onclick = () => {
+    mainBtn.onclick = async () => {
+      // window.removeEventListener('keyup', handleMainKeypress)
+      // const interval =  setTimeout(() => {
+      //   window.addEventListener('keyup', handleMainKeypress)
+      //   mainBtn.disabled = false
+      // }, 2000);
       mainBtn.disabled = true
       setTimeout(() => { 
         mainBtn.disabled = false
-        window.removeEventListener('keypress', handleMainKeypress)
       }, 500);
-      window.addEventListener('keypress', handleMainKeypress)
-      if (index <= mixData.length) {
+      if (index <= mixData.length) { 
         if (flag) {
-          this.pressMainButtonAnswer(mainBtn, data, index,
-            mixData, mainBlock, imgDiv, wordName, 
-            this.audio, audioBlock, word, blockWodsArr, handleKeypress)
+          window.removeEventListener('keyup', handleKeypress)
+          const userWord = this.findWord(data, mixData[index].en);
+          if (userWord && user) { 
+            await this.createNewUserWord(userWord, user) 
+            await this.incorrectUserWord(userWord, user)
+          }  
+            this.pressMainButtonAnswer(mainBtn, data, index,
+            mixData, mainBlock, imgDiv, wordName, audioBlock, word, blockWodsArr)
           flag = false
         } else {
+          window.addEventListener('keyup', handleKeypress)
           index += 1
           flag = true;
           flagRes = true
           this.pressMainButtonNext (mainBtn, index,
             mixData, mainBlock, blockWodsArr,
-            volumeBtn, this.audio, handleKeypress)
+            volumeBtn, this.audio)
         } 
       }
       if (index === mixData.length) {
+        window.removeEventListener('keyup', handleKeypress)
+        window.removeEventListener('keyup', handleMainKeypress)
         this.endGame()
         index = 0
-      } 
+        // clearTimeout(interval)
+      }  
     }
-
+    
     blockWodsArr.forEach((el) => {
       const btn = el  
-      btn.onclick = () => {
+      btn.onclick = async () => {
         blockWodsArr.forEach((v) => {
-          if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) v.classList.add('correct')
+          const click = v
+          if (click.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) v.classList.add('correct')
+          click.disabled = true
         })
         const text = btn.textContent?.split(' ').slice(1).join(' ')
+        window.removeEventListener('keyup', handleKeypress)
         if(flagRes) {
+          const userWord = this.findWord(data, mixData[index].en);
+          if (userWord && user) await this.createNewUserWord(userWord, user)
           if(text !== mixData[index].ru) {
             btn.classList.add('wrong') 
+            if (userWord && user) await this.incorrectUserWord(userWord, user)
             this.createWrongResult(data, mixData[index].en);
             this.createSounds(this.sound, 'false')
           } else {
+            if (userWord && user) await this.correctUserWord(userWord, user)
             this.createCorrectResult(data, mixData[index].en);
             this.createSounds(this.sound, 'true')
             this.pointsTotal += 10
@@ -380,7 +434,7 @@ export class AudioGameView {
         mainBtn.innerText = 'ДАЛЬШЕ'
         mainBlock.innerHTML = ''
         this.renderWordCard (mixData, index, 
-          imgDiv, wordName, this.audio)
+          imgDiv, wordName)
         mainBlock.innerHTML = ''  
         wordName.appendChild(audioBlock)
         mainBlock.append(word);
@@ -389,16 +443,15 @@ export class AudioGameView {
           this.endGame()
           index = 0
         } 
-        blockWodsArr.forEach((v) => {
-          const btnActiv = v
-          btnActiv.disabled = true
-        })
       }
     })
-
-    setTimeout(() => { window.addEventListener('keypress', handleMainKeypress) }, 1000);
-    window.addEventListener('keypress', handleKeypress)
-    window.addEventListener('keypress', handleVolumepress)
+    
+    mainBtn.onmouseout = () => {
+      mainBtn.blur()
+    }
+    setTimeout(() => {window.addEventListener('keyup', handleMainKeypress)}, 500);
+    window.addEventListener('keyup', handleKeypress)
+    window.addEventListener('keyup', handleVolumepress)
     wordName.appendChild(audioBlock)
     word.append(imgDiv);
     word.append(wordName);
@@ -411,16 +464,16 @@ export class AudioGameView {
 
   private pressMainButtonAnswer = (mainBtnDiv: HTMLButtonElement, data: Word[], index: number,
     mixData: MixWordsAudio[], mainBlockDiv: HTMLElement, imgDiv: HTMLElement, wordName: HTMLElement, 
-    audio: HTMLAudioElement, audioBlock: HTMLElement, word:HTMLElement, blockWodsArr: HTMLButtonElement[], handleKeypress: (el: KeyboardEvent) => void) => {
+    audioBlock: HTMLElement, word:HTMLElement, blockWodsArr: HTMLButtonElement[]) => {
+
     const mainBlock = mainBlockDiv
     const mainBtn = mainBtnDiv
     mainBtn.innerText = 'ДАЛЬШЕ'
-    mainBlock.innerHTML = ''
-    this.renderWordCard (mixData, index, imgDiv, wordName, audio)
+    this.renderWordCard (mixData, index, imgDiv, wordName)
     mainBlock.innerHTML = ''  
     wordName.appendChild(audioBlock)
     mainBlock.append(word);
-    blockWodsArr.forEach((v) => {
+    blockWodsArr.forEach(async (v) => {
       const btn = v
       if (btn.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) {
         btn.classList.add('correct')
@@ -428,15 +481,13 @@ export class AudioGameView {
       }
       btn.disabled = true
     })
-    window.removeEventListener('keypress', handleKeypress)
   }
 
   private pressMainButtonNext = (mainBtnDiv: HTMLButtonElement, index: number,
     mixData: MixWordsAudio[], mainBlockDiv: HTMLElement,   blockWodsArr: HTMLButtonElement[],
-    volumeBtn: HTMLElement, volume: HTMLAudioElement, handleKeypress: (el: KeyboardEvent) => void) => {
+    volumeBtn: HTMLElement, volume: HTMLAudioElement) => {
     const mainBlock = mainBlockDiv
     const mainBtn = mainBtnDiv
- 
     blockWodsArr.forEach((el) => {
       el.classList.remove('correct')
       el.classList.remove('wrong')
@@ -448,8 +499,6 @@ export class AudioGameView {
     this.renderRandomWords(blockWodsArr, mixData, index, volume)
     mainBlock.innerHTML = ''
     mainBlock.append(volumeBtn)
-
-    window.addEventListener('keypress', handleKeypress)
   }
 
   private renderRandomWords (blockWodsArr: HTMLButtonElement[], data: MixWordsAudio[], 
@@ -465,16 +514,85 @@ export class AudioGameView {
       volumeBtn.src = `${HOST}/${data[index].audio}`
       this.audio.src = `${HOST}/${data[index].audio}`
       this.audio.play()
-      this.audio.remove()
+      
     }
   }
 
+  private async createNewUserWord(word: Word | UserWordPlus, user: LoginData) {
+    const userWord = word
+    if((<UserWordPlus>userWord).optional?.markedAsNew === undefined) {
+      (<UserWordPlus>userWord).difficulty = 'normal';
+      (<UserWordPlus>userWord).optional = {
+        learned: 'no',
+        learnDate: Date.now(),
+        games: {
+          sprint: { wins: 0, total: 0 },
+          audio: { wins: 0, total: 0 },
+          phrase: { wins: 0, total: 0 },
+        },
+        markedAsNew: true,
+      };
+      await createUserWord((<LoginData>user).id, (<UserWordPlus>userWord).id, (<LoginData>user).token, {
+        difficulty: (<UserWordPlus>userWord).difficulty as string,
+        optional: (<UserWordPlus>userWord).optional,
+      });
+    }
+    if((<UserWordPlus>userWord).optional?.markedAsNew === false) {
+      (<UserWordPlus>userWord).optional.markedAsNew = true;
+      await updateUserWord((<LoginData>user).id, (<UserWordPlus>userWord).id, (<LoginData>user).token, {
+        difficulty: (<UserWordPlus>userWord).difficulty as string,
+        optional: (<UserWordPlus>userWord).optional,
+      });
+    }
+  }
+
+  private async correctUserWord(word: Word | UserWordPlus, user: LoginData) {
+    console.log(word);
+    const userWord = word;
+    (<UserWordPlus>userWord).optional.games.audio.wins += 1;
+    (<UserWordPlus>userWord).optional.games.audio.total += 1;
+
+    if((<UserWordPlus>userWord).difficulty !== 'difficult' && 
+      ((<UserWordPlus>userWord).optional.games.audio.wins) % 3 === 0) {
+      (<UserWordPlus>userWord).difficulty = 'easy';
+      (<UserWordPlus>userWord).optional.learned = 'yes';
+      (<UserWordPlus>userWord).optional.learnDate = Date.now();
+    }
+    else if((<UserWordPlus>userWord).difficulty === 'difficult' && 
+      ((<UserWordPlus>userWord).optional.games.audio.wins) % 5 === 0) {
+      (<UserWordPlus>userWord).difficulty = 'easy';
+      (<UserWordPlus>userWord).optional.learned = 'yes';
+      (<UserWordPlus>userWord).optional.learnDate = Date.now();
+    }
+    
+    await updateUserWord((<LoginData>user).id, (<UserWordPlus>userWord).id, (<LoginData>user).token, {
+      difficulty: (<UserWordPlus>userWord).difficulty as string,
+      optional: (<UserWordPlus>userWord).optional,
+    });
+  }
+
+  private async incorrectUserWord(word: Word | UserWordPlus, user: LoginData) {
+    console.log(word);
+    const userWord = word;
+    
+    (<UserWordPlus>userWord).optional.games.audio.total += 1;
+    if ((<UserWordPlus>userWord).optional.learned === 'yes') {
+      (<UserWordPlus>userWord).difficulty = 'normal';
+      (<UserWordPlus>userWord).optional.learned = 'no';
+      (<UserWordPlus>userWord).optional.learnDate = Date.now();
+    }
+    
+    await updateUserWord((<LoginData>user).id, (<UserWordPlus>userWord).id, (<LoginData>user).token, {
+      difficulty: (<UserWordPlus>userWord).difficulty as string,
+      optional: (<UserWordPlus>userWord).optional,
+    }); 
+  }
+
   private renderWordCard (data: MixWordsAudio[], index: number, 
-    imgDiv: HTMLElement, wordName: HTMLElement, audio: HTMLAudioElement) {
-    const audioEl = audio
+    imgDiv: HTMLElement, wordName: HTMLElement) {
     const wordBlock = wordName
     const img = imgDiv
-    audioEl.src = `${HOST}/${data[index].audio}`
+    this.audio.src = `${HOST}/${data[index].audio}`
     img.style.backgroundImage = `url(${HOST}/${data[index].image})`
     wordBlock.innerHTML = `${data[index].en}  ${data[index].tr}`;
   }
@@ -506,7 +624,7 @@ export class AudioGameView {
     gameOver.pause();
     endGame.tabIndex = 0
     
-
+    
     if (this.learnedWords.length) {
       Promise.all(this.learnedWords).then((res) => {
         for (let i = 0; i < res.length; i += 1) {
@@ -559,16 +677,20 @@ export class AudioGameView {
     this.stateGame.append(winBlock);
   }
   
-  private createCorrectResult(data: Word[], word: string): void {
+  private createCorrectResult(data: Word[], word: string){
     data.filter((el) =>
       el.word === word ? this.learnedWords.push([el.word, el.transcription, el.wordTranslate, el.audio]) : [],
     );
   }
 
-  private createWrongResult(data: Word[], word: string): void {
+  private createWrongResult(data: Word[], word: string) {
     data.filter((el) =>
       el.word === word ? this.unlearnedWords.push([el.word, el.transcription, el.wordTranslate, el.audio]) : [],
     );
+  }
+
+  private findWord(data: Word[], word: string) {
+    return data.find((el) => el.word === word);
   }
 
   private createSounds(sound: boolean, flag?: string): void {
@@ -585,6 +707,7 @@ export class AudioGameView {
 
   stopGame() {
     this.sound = false;
+    this.audio.remove()
     this.fullscreen = false;
     this.points = 10;
     this.pointsTotal = 0;
