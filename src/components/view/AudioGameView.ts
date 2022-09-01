@@ -91,12 +91,14 @@ export class AudioGameView {
     if (data && user) {
       this.mainDiv.append(this.startGameFromBook(data, user));
       this.againGame.onclick = () => {
+      window.location.reload()
       this.startGameFromBook(data, user)
       }       
     } 
     else if (data && !user) {
       this.mainDiv.append(this.startGameFromBook(data));
       this.againGame.onclick = () => {
+        window.location.reload()
         this.startGameFromBook(data)
         this.audio.remove()
       }  
@@ -104,6 +106,7 @@ export class AudioGameView {
     else if (!data && user) {
       this.mainDiv.append(this.startGameFromMenu(user));
       this.againGame.onclick = () => {
+        window.location.reload()
         this.startGameFromMenu(user)
         this.audio.remove()
       } 
@@ -111,6 +114,7 @@ export class AudioGameView {
     else if (!data && !user){
       this.mainDiv.append(this.startGameFromMenu());
       this.againGame.onclick = () => {
+        window.location.reload()
         this.startGameFromMenu()
         this.audio.remove()
       } 
@@ -139,7 +143,7 @@ export class AudioGameView {
     const navList2: HTMLElement = createElement('li', 'nav_list-audio ul-lang',
       ' - клавиша Enter для подсказки или для перехода к следующему слову');   
     const navList3: HTMLElement = createElement('li', 'nav_list-audio ul-lang', 
-      ' - пробел для повтроного звучания слова');
+      ' - пробел для повторного звучания слова');
     
     const levelBlock: HTMLElement = createElement('div', 'level-audio');
 
@@ -232,6 +236,8 @@ export class AudioGameView {
   }
 
   private showGame(data: Word[], user?: LoginData): HTMLElement {
+    console.log(data, user);
+    
     const mixData = getMixWordsForAudio(data);
     const word = createElement('div', 'audio_word card');
     const wordName = createElement('div', 'audio_word-name');
@@ -360,6 +366,11 @@ export class AudioGameView {
     setTimeout(() => { mainBtn.disabled = false}, 500);
     mainBtn.disabled = true
     mainBtn.onclick = async () => {
+      // window.removeEventListener('keyup', handleMainKeypress)
+      // const interval =  setTimeout(() => {
+      //   window.addEventListener('keyup', handleMainKeypress)
+      //   mainBtn.disabled = false
+      // }, 2000);
       mainBtn.disabled = true
       setTimeout(() => { 
         mainBtn.disabled = false
@@ -390,6 +401,7 @@ export class AudioGameView {
         window.removeEventListener('keyup', handleMainKeypress)
         this.endGame()
         index = 0
+        // clearTimeout(interval)
       }  
     }
     
@@ -397,9 +409,12 @@ export class AudioGameView {
       const btn = el  
       btn.onclick = async () => {
         blockWodsArr.forEach((v) => {
-          if (v.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) v.classList.add('correct')
+          const click = v
+          if (click.textContent?.split(' ').slice(1).join(' ') === mixData[index].ru) v.classList.add('correct')
+          click.disabled = true
         })
         const text = btn.textContent?.split(' ').slice(1).join(' ')
+        window.removeEventListener('keyup', handleKeypress)
         if(flagRes) {
           const userWord = this.findWord(data, mixData[index].en);
           if (userWord && user) await this.createNewUserWord(userWord, user)
@@ -428,14 +443,13 @@ export class AudioGameView {
           this.endGame()
           index = 0
         } 
-        blockWodsArr.forEach((v) => {
-          const btnActiv = v
-          btnActiv.disabled = true
-        })
       }
     })
     
-    window.addEventListener('keyup', handleMainKeypress);
+    mainBtn.onmouseout = () => {
+      mainBtn.blur()
+    }
+    setTimeout(() => {window.addEventListener('keyup', handleMainKeypress)}, 500);
     window.addEventListener('keyup', handleKeypress)
     window.addEventListener('keyup', handleVolumepress)
     wordName.appendChild(audioBlock)
@@ -533,15 +547,24 @@ export class AudioGameView {
   }
 
   private async correctUserWord(word: Word | UserWordPlus, user: LoginData) {
+    console.log(word);
     const userWord = word;
+    (<UserWordPlus>userWord).optional.games.audio.wins += 1;
+    (<UserWordPlus>userWord).optional.games.audio.total += 1;
 
-    if((<UserWordPlus>userWord).optional.games.audio.wins === 2) {
+    if((<UserWordPlus>userWord).difficulty !== 'difficult' && 
+      ((<UserWordPlus>userWord).optional.games.audio.wins) % 3 === 0) {
       (<UserWordPlus>userWord).difficulty = 'easy';
       (<UserWordPlus>userWord).optional.learned = 'yes';
       (<UserWordPlus>userWord).optional.learnDate = Date.now();
     }
-    (<UserWordPlus>userWord).optional.games.audio.wins += 1;
-    (<UserWordPlus>userWord).optional.games.audio.total += 1;
+    else if((<UserWordPlus>userWord).difficulty === 'difficult' && 
+      ((<UserWordPlus>userWord).optional.games.audio.wins) % 5 === 0) {
+      (<UserWordPlus>userWord).difficulty = 'easy';
+      (<UserWordPlus>userWord).optional.learned = 'yes';
+      (<UserWordPlus>userWord).optional.learnDate = Date.now();
+    }
+    
     await updateUserWord((<LoginData>user).id, (<UserWordPlus>userWord).id, (<LoginData>user).token, {
       difficulty: (<UserWordPlus>userWord).difficulty as string,
       optional: (<UserWordPlus>userWord).optional,
@@ -549,14 +572,16 @@ export class AudioGameView {
   }
 
   private async incorrectUserWord(word: Word | UserWordPlus, user: LoginData) {
+    console.log(word);
     const userWord = word;
-
+    
+    (<UserWordPlus>userWord).optional.games.audio.total += 1;
     if ((<UserWordPlus>userWord).optional.learned === 'yes') {
+      (<UserWordPlus>userWord).difficulty = 'normal';
       (<UserWordPlus>userWord).optional.learned = 'no';
       (<UserWordPlus>userWord).optional.learnDate = Date.now();
     }
-    if((<UserWordPlus>userWord).optional.games.audio.wins) (<UserWordPlus>userWord).optional.games.audio.wins -= 1;
-    if((<UserWordPlus>userWord).optional.games.audio.total) (<UserWordPlus>userWord).optional.games.audio.total -= 1;
+    
     await updateUserWord((<LoginData>user).id, (<UserWordPlus>userWord).id, (<LoginData>user).token, {
       difficulty: (<UserWordPlus>userWord).difficulty as string,
       optional: (<UserWordPlus>userWord).optional,
