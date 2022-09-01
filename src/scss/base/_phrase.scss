@@ -11,8 +11,7 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    //  padding-top: 1rem;
+    justify-content: center;
     align-items: center;
     width: 80vw;
     top: 0;
@@ -21,10 +20,11 @@
     right: 0;
     margin: auto;
     height: 75vh;
-    background: rgba(3, 3, 3, 0.3);
+    // background: rgba(0, 0, 0, 0.3);
+    background: rgba(201, 201, 201, 0.4);
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
     margin-top: 8rem;
-    // border: 1px solid red;
+    padding-bottom: 1rem;
 }
 
 .phrase-all-wrap {
@@ -38,9 +38,9 @@
 }
 
 .phrase-all-title {
-    height: 4vh;
+    // height: 4vh;
     margin-bottom: 2vh;
-    padding: 0;
+    padding: 0.5rem;
 }
 
 .level-phrase {
@@ -136,7 +136,7 @@
 }
 
 .title-phrase {
-    margin-bottom: 80px;
+    margin-bottom: 10vh;
 }
 
 .title-phrase,
@@ -183,7 +183,7 @@
     bottom: 0;
     background: #ffffff;
     width: 450px;
-    height: 90%;
+    height: fit-content;
     border-radius: 3px;
     transition: 0.3s;
     &:hover {
@@ -249,7 +249,7 @@
 
 .phrase_header-learn {
     margin-left: 20px;
-    color: #026d64;
+    color: #018b80;
     // color: rgb(82, 82, 82);
     font-size: 18px;
     font-weight: 700;

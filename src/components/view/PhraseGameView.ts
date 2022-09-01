@@ -1,10 +1,12 @@
-import { getAllUserWords, getWordsFromBook, HOST } from '../model/helpers/apiHelpers';
-import { UserWordPlus, WordPlusUserWord } from '../types';
+import { createUserWord, getAllUserWords, getWordsFromBook, HOST, updateUserWord } from '../model/helpers/apiHelpers';
+import { Optional, UserWordPlus, WordPlusUserWord } from '../types';
 import { LoginData } from '../types/loginTypes';
 import { getMixWordForDrag, getMixWordsForPhrase } from './helpers/appMixWords';
 import { combineWords } from './helpers/combineArr';
 import { Phrase } from './helpers/PhraseView';
 import { createElement } from './helpers/renderHelpers';
+
+const WORDS_FOR_PHRASE = 10;
 
 export class PhraseGameView {
   mainDiv: HTMLElement;
@@ -23,7 +25,7 @@ export class PhraseGameView {
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
-    this.stateGame = createElement('div', 'phrase_game-content');
+    this.stateGame = createElement('div', 'phrase_game-content z-depth-2');
     this.controlBlock = createElement('div', 'phrase_controll');
     this.againGame = createElement('button', 'waves-effect waves-light btn right-phrase-btn end', 'сыграть еще раз');
     this.sound = true;
@@ -73,6 +75,13 @@ export class PhraseGameView {
     crossImg.onclick = () => {
       window.location.hash = 'main';
       this.stopGame();
+    };
+
+    soundImg.onmouseout = () => {
+      soundImg.blur();
+    };
+    fullscreenImg.onmouseout = () => {
+      fullscreenImg.blur();
     };
 
     this.againGame.tabIndex = 0;
@@ -232,15 +241,12 @@ export class PhraseGameView {
 
     for (let i = 0; i < mixDataPhrase.length; i += 1) {
       const phrase = new Phrase(content, mixDataPhrase[i].textExample, mixWordForDrag[i], i);
-      // phrase.onLearn = () => {};
 
       phrase.onDragenter = () => phrase.back.classList.add('hovered');
 
       phrase.onDragleave = () => phrase.back.classList.remove('hovered');
       phrase.onDrop = () => {
-        // const flag = phrase.back.getAttribute("data-occupate");
         if (this.itemT) {
-          // phrase.back.setAttribute("data-occupate", `yes`);
           const numbBack = Number(phrase.back.getAttribute('data-numb'));
           const numbItem = Number(this.itemT.getAttribute('data-numb'));
           if (itemArr[numbBack] === undefined) {
@@ -250,14 +256,13 @@ export class PhraseGameView {
             itemArr[numbBack] = numbItem;
             phrase.back.append(this.itemT);
           }
-
-          // console.log(numbBack, numbItem)
-          // console.log(itemArr);
         }
         phrase.back.classList.remove('hovered');
-        if (itemArr.filter((value, index) => value === index).length === 10) {
+        if (itemArr.filter((value, index) => value === index).length === WORDS_FOR_PHRASE) {
           // console.log('Вы выиграли!');
           // phraseTitle.style.border = '2px solid #ff85e4';
+          if (user) this.sendInfoToServer(mixDataPhrase, user);
+
           this.endGame(mixDataPhrase);
         }
       };
@@ -265,17 +270,10 @@ export class PhraseGameView {
       phrase.onDragenterS = () => phrase.backStart.classList.add('hovered');
       phrase.onDragleaveS = () => phrase.backStart.classList.remove('hovered');
       phrase.onDropS = () => {
-        // const flag = phrase.backStart.getAttribute("data-occupate");
         if (this.itemT) {
-          // phrase.backStart.setAttribute("data-occupate", `yes`);
           const numbItem = Number(this.itemT.getAttribute('data-numb'));
-          // console.log(numbItem)
-          // console.log(itemArr)
           for (let j = 0; j < itemArr.length; j += 1) {
-            // console.log(itemArr[j])
-            // console.log(numbItem)
             if (itemArr[j] === numbItem) {
-              // console.log(11111);
               itemArr[j] = undefined;
             }
           }
@@ -291,8 +289,6 @@ export class PhraseGameView {
       };
       phrase.onDragend = () => phrase.item.classList.remove('hide', 'hold');
     }
-
-    // console.log(mixDataPhrase);
 
     return this.stateGame;
   }
@@ -358,17 +354,50 @@ export class PhraseGameView {
     this.stateGame.append(winBlock);
   }
 
-  // private createSounds(sound: boolean, flag?: string): void {
-  //   const rightAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/cool.mp3');
-  //   const wrongAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/bug.mp3');
-  //   if (!sound) {
-  //     rightAnswer.pause();
-  //     wrongAnswer.pause();
-  //   } else {
-  //     if (flag === 'true') rightAnswer.play();
-  //     if (flag === 'false') wrongAnswer.play();
-  //   }
-  // }
+  private sendInfoToServer = async (mixDataPhrase: WordPlusUserWord[], user: LoginData) => {
+    await Promise.all(
+      mixDataPhrase.map((item) => {
+        const item1 = item;
+        if (!item1.difficulty) {
+          item1.difficulty = 'normal';
+          item1.optional = {
+            learned: 'no',
+            learnDate: Date.now(),
+            games: {
+              sprint: { wins: 0, total: 0 },
+              audio: { wins: 0, total: 0 },
+              phrase: { wins: 1, total: 1 },
+            },
+            markedAsNew: true,
+          };
+          return createUserWord(user.id, item1.id, user.token, {
+            difficulty: item1.difficulty as string,
+            optional: item1.optional,
+          });
+        }
+        if (item1.difficulty === 'difficult' && ((<Optional>item1.optional).games.phrase.wins + 1) % 5 === 0) {
+          item1.difficulty = 'easy';
+          (<Optional>item1.optional).learned = 'yes';
+          (<Optional>item1.optional).learnDate = Date.now();
+        }
+
+        if (item1.difficulty !== 'difficult' && ((<Optional>item1.optional).games.phrase.wins + 1) % 3 === 0) {
+          item1.difficulty = 'easy';
+          (<Optional>item1.optional).learned = 'yes';
+          (<Optional>item1.optional).learnDate = Date.now();
+        }
+
+        (<Optional>item1.optional).markedAsNew = true;
+        (<Optional>item1.optional).games.phrase.total += 1;
+        (<Optional>item1.optional).games.phrase.wins += 1;
+
+        return updateUserWord((<LoginData>user).id, item1.id, (<LoginData>user).token, {
+          difficulty: item1.difficulty as string,
+          optional: item1.optional,
+        });
+      }),
+    );
+  };
 
   stopGame() {
     this.sound = false;

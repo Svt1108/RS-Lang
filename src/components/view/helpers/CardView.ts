@@ -71,7 +71,7 @@ export class Card {
       wordImgWrap.appendChild(this.learnDifficultLevel);
     }
 
-    const wordWrap = createElement('div', 'word-wrap');
+    const wordWrap = createElement('div', 'words-wrap');
     wordImgWrap.appendChild(wordWrap);
 
     // const wordWrap = createElement('div', 'word-wrap');
@@ -145,24 +145,24 @@ export class Card {
     );
     cardContent.appendChild(textExampleTranslate);
 
-    if(userJSON) {
-    const wordProgress = createElement('div', 'word-progress');
-    wordProgress.innerHTML = `  <ul class="collapsible collapsible-lang">
+    if (userJSON) {
+      const wordProgress = createElement('div', 'word-progress');
+      wordProgress.innerHTML = `  <ul class="collapsible collapsible-lang">
     <li>
       <div class="collapsible-header collapsible-header-lang"><i class="material-icons grey-text text-darken-2">add_circle_outline</i>Статистика в играх</div>
-      <div class="collapsible-body collapsible-body-lang"><span>Спринт: ${this.data.optional?.games.sprint.wins === undefined ? 0 : 
-        this.data.optional?.games.sprint.wins}/ ${this.data.optional?.games.sprint.total === undefined ? 0 : 
-          this.data.optional?.games.sprint.total}<br>
-      Аудиовызов: ${this.data.optional?.games.audio.wins === undefined ? 0 : 
-        this.data.optional?.games.audio.wins}/ ${this.data.optional?.games.audio.total === undefined ? 0 : 
-          this.data.optional?.games.audio.total}<br>
-      Фразы: ${this.data.optional?.games.phrase.wins === undefined ? 0 : 
-            this.data.optional?.games.phrase.wins}/ ${this.data.optional?.games.phrase.total === undefined ? 0 : 
-              this.data.optional?.games.phrase.total}</span></div>
+      <div class="collapsible-body collapsible-body-lang"><span>Спринт: ${
+        this.data.optional?.games.sprint.wins === undefined ? 0 : this.data.optional?.games.sprint.wins
+      }/ ${this.data.optional?.games.sprint.total === undefined ? 0 : this.data.optional?.games.sprint.total}<br>
+      Аудиовызов: ${this.data.optional?.games.audio.wins === undefined ? 0 : this.data.optional?.games.audio.wins}/ ${
+        this.data.optional?.games.audio.total === undefined ? 0 : this.data.optional?.games.audio.total
+      }<br>
+      Фразы: ${this.data.optional?.games.phrase.wins === undefined ? 0 : this.data.optional?.games.phrase.wins}/ ${
+        this.data.optional?.games.phrase.total === undefined ? 0 : this.data.optional?.games.phrase.total
+      }</span></div>
     </li>
-    </ul>`; 
-    cardContent.appendChild(wordProgress);
-  }
+    </ul>`;
+      cardContent.appendChild(wordProgress);
+    }
 
     this.setListeners();
   }
@@ -174,11 +174,8 @@ export class Card {
 
     this.learn.onclick = () => this.onLearn?.();
 
-    this.learnDifficultLevel.onclick = () => this.onLearnDifficultLevel?.();         
+    this.learnDifficultLevel.onclick = () => this.onLearnDifficultLevel?.();
 
     this.diffDifficultLevel.onclick = () => this.onDiffDifficultLevel?.();
-
   }
 }
-
-
