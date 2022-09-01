@@ -101,33 +101,3 @@ export class Phrase {
   }
 }
 
-// function dragenter(event) {
-//   if(event.target.classList.contains('back')){
-//   event.target.classList.add('hovered')}
-// }
-
-// function dragover(event) {
-//  event.preventDefault()  
-// }
-
-// function dragleave(event) {
-//   event.target.classList.remove('hovered')
-// }
-
-// function dragdrop(event) {
-    
-//   if(event.target.classList.contains('back')){ 
-//   event.target.append(itemT)
-//     }
-//     event.target.classList.remove('hovered')
-//  }
-
-// function dragstart(event) {
-//   event.target.classList.add('hold');
-//   setTimeout(() => event.target.classList.add('hide'), 0)   
-//   }
-
-// function dragend(event) {
-//   event.target.classList.remove('hide', 'hold')
-//   // setTimeout(() => event.target.classList.remove('hold'), 2000);
-// }
