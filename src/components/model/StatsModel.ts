@@ -124,6 +124,9 @@ class StatsModel {
   // }
 
   public async postBestSeries(num: number) {
+    const userJSON = localStorage.getItem('user');
+    if (!userJSON) return
+    
     const stats = await this.getOrCreateUserStats();
 
     stats.optional.dateToday = this.createDateStr();
@@ -133,6 +136,9 @@ class StatsModel {
     stats.optional.today[game].bestSeries = max;
 
     const { id, token } = this.getStorageUserData();
+    delete stats.id
+    console.log('лучшая серия', num);
+    
     await postUserStats(id, token, stats);
   }
 

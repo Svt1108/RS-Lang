@@ -42,13 +42,13 @@ export class AudioGameView {
     this.unlearnedWords = [];
     this.audio = new Audio();
     this.countBestRes = 0;
-    this.bestResult = [];
+    this.bestResult = [0];
     this.handleVolumepress = () => {};
     this.handleKeypress = () => {};
     this.handleMainKeypress = () => {};
   }
 
-  public render(data?: Word[], user?: LoginData): void { 
+  public render(data?: WordPlusUserWord[], user?: LoginData): void { 
 
     this.controlBlock.innerHTML = '';
     this.mainDiv.innerHTML = '';
@@ -235,10 +235,10 @@ export class AudioGameView {
     ); 
 
     btnStart.onclick = () => {
-      if(!data1.length) window.location.hash = 'book'
       this.stateGame.innerHTML = '';
-      if(user)this.showGame(data1, user)
-      else this.showGame(data1)
+      if(!data1.length) window.location.hash = 'book'
+      if(data1.length && user)this.showGame(data1, user)
+      if(data1.length && !user) this.showGame(data1)
     }   
     
     navHeader.append(navList1)
@@ -313,6 +313,7 @@ export class AudioGameView {
                   } else {
                     if (userWord && user) {
                       this.countBestRes += 1;
+                      this.bestResult.push(this.countBestRes)
                       await this.correctUserWord(userWord, user)
                     }
                     this.createCorrectResult(data, mixData[index].en);
@@ -456,6 +457,7 @@ export class AudioGameView {
           } else {
             if (userWord && user) {
               this.countBestRes += 1;
+              this.bestResult.push(this.countBestRes)
               await this.correctUserWord(userWord, user)
             }
             this.createCorrectResult(data, mixData[index].en);
@@ -630,6 +632,9 @@ export class AudioGameView {
   }
 
   private endGame(): void {
+    statsModel.postBestSeries(Math.max(...this.bestResult))
+    this.countBestRes = 0;
+    this.bestResult = [];
     this.stateGame.innerHTML = '';
     const winBlock = createElement('div', 'sprint_over card');
     const showTotalRes = createElement('div', 'sprint_result');
@@ -741,6 +746,8 @@ export class AudioGameView {
     this.sound = false;
     this.audio.remove()
     this.fullscreen = false;
+    this.countBestRes = 0;
+    this.bestResult = [0];
     this.points = 10;
     this.pointsTotal = 0;
     this.pointsTotalResult = [];

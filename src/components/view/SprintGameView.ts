@@ -17,7 +17,7 @@ export class SprintGameView {
   pointsTotal: number;
   controlBlock: HTMLElement;
   pointsResult: number[];
-  counBestRes: number;
+  countBestRes: number;
   bestResult: number[];
   pointsTotalResult: number[];
   learnedWords: string[][];
@@ -39,7 +39,7 @@ export class SprintGameView {
     this.pointsResult = [];
     this.learnedWords = [];
     this.unlearnedWords = [];
-    this.counBestRes = 0;
+    this.countBestRes = 0;
     this.bestResult = [];
     this.handleKeypress = () => {};
   }
@@ -225,10 +225,10 @@ export class SprintGameView {
     ); 
 
     btnStart.onclick = () => {
-      if(!data1.length) window.location.hash = 'book'
       this.stateGame.innerHTML = '';
-      if(user)this.showGame(data1, user)
-      else this.showGame(data1)
+      if(!data1.length) window.location.hash = 'book'
+      if(data1.length && user)this.showGame(data1, user)
+      if(data1.length && !user) this.showGame(data1)
     }   
     
     navHeader.append(navList)
@@ -274,7 +274,6 @@ export class SprintGameView {
     const downloadTimer = setInterval(() => {
       seconds.innerHTML = `:${this.timeleft}`;
       if (this.timeleft <= 0) {
-        this.endGame();
         clearInterval(downloadTimer);
       }
       this.timeleft -= 1;
@@ -341,14 +340,13 @@ export class SprintGameView {
     const wordName = wordNameDiv
     const audio = audioTag
 
-    const userWord = this.findWord(data, mixData[index].en);
-    if (userWord && user) await this.createNewUserWord(userWord, user)
-
     if(index < mixData.length) { 
+      const userWord = this.findWord(data, mixData[index].en);
+      if (userWord && user) await this.createNewUserWord(userWord, user)
       if(!mixData[index].match) {
         if (userWord && user) {
-          this.bestResult.push(this.counBestRes)
-          this.counBestRes = 0;
+          this.bestResult.push(this.countBestRes)
+          this.countBestRes = 0;
           await this.incorrectUserWord(userWord, user)
         }
         this.createSounds(this.sound, 'false');
@@ -359,7 +357,8 @@ export class SprintGameView {
         points.innerHTML = `+${this.points} очков за слово`;
       } else {
         if (userWord && user) {
-          this.counBestRes += 1;
+          this.countBestRes += 1;
+          this.bestResult.push(this.countBestRes)
           await this.correctUserWord(userWord, user)
         }
         this.createSounds(this.sound, 'true');
@@ -374,6 +373,7 @@ export class SprintGameView {
      }
     if (index === mixData.length - 1) {
       setTimeout(() => {
+        this.endGame()
         this.timeleft = 0;
       }, 700);
     } 
@@ -387,14 +387,14 @@ export class SprintGameView {
     const totalPoints = totalPointsDiv
     const wordName = wordNameDiv
     const audio = audioTag
-    
-    const userWord = this.findWord(data, mixData[index].en);
-    if (userWord && user) await this.createNewUserWord(userWord, user)
 
     if(index < mixData.length) {
+      const userWord = this.findWord(data, mixData[index].en);
+      if (userWord && user) await this.createNewUserWord(userWord, user)
       if(!mixData[index].match) {
         if (userWord && user) {
-          this.counBestRes += 1;
+          this.countBestRes += 1;
+          this.bestResult.push(this.countBestRes)
           await this.correctUserWord(userWord, user)
         }
         this.createSounds(this.sound, 'true');
@@ -403,8 +403,8 @@ export class SprintGameView {
         this.styleCrow([crow1, crow2, crow3]);
       } else {
         if (userWord && user) {
-          this.bestResult.push(this.counBestRes)
-          this.counBestRes = 0;
+          this.bestResult.push(this.countBestRes)
+          this.countBestRes = 0;
           await this.incorrectUserWord(userWord, user)
         }
         this.createSounds(this.sound, 'false');
@@ -421,6 +421,7 @@ export class SprintGameView {
      }
     if (index === mixData.length - 1) {
       setTimeout(() => {
+        this.endGame()
         this.timeleft = 0;
       }, 700);
     } 
@@ -497,6 +498,7 @@ export class SprintGameView {
   }
 
   private endGame(): void {
+    statsModel.postBestSeries(Math.max(...this.bestResult))
     this.stateGame.innerHTML = '';
     const winBlock = createElement('div', 'sprint_over card');
     const showTotalRes = createElement('div', 'sprint_result');
@@ -637,6 +639,8 @@ export class SprintGameView {
   stopGame() {
     this.sound = false;
     this.fullscreen = false;
+    this.bestResult = [0]
+    this.countBestRes = 0
     this.timeleft = 60;
     this.points = 10;
     this.pointsTotal = 0;
