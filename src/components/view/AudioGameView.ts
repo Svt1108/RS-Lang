@@ -4,6 +4,7 @@ import { LoginData } from '../types/loginTypes';
 import { getMixWordsForAudio } from './helpers/appMixWords';
 import { combineWords } from './helpers/combineArr';
 import { createElement } from './helpers/renderHelpers';
+import { statsModel } from '../model/StatsModel';
 
 export class AudioGameView {
   mainDiv: HTMLElement;
@@ -553,6 +554,7 @@ export class AudioGameView {
 
   private async correctUserWord(word: Word | UserWordPlus, user: LoginData) {
     const userWord = word;
+    await statsModel.postCorrect(userWord);
     (<UserWordPlus>userWord).optional.games.audio.wins += 1;
     (<UserWordPlus>userWord).optional.games.audio.total += 1;
 
@@ -577,7 +579,7 @@ export class AudioGameView {
 
   private async incorrectUserWord(word: Word | UserWordPlus, user: LoginData) {
     const userWord = word;
-    
+    await statsModel.postWrong(userWord);
     (<UserWordPlus>userWord).optional.games.audio.total += 1;
     if ((<UserWordPlus>userWord).optional.learned === 'yes') {
       (<UserWordPlus>userWord).difficulty = 'normal';
