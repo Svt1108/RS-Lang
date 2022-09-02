@@ -192,10 +192,15 @@ export class PhraseGameView {
 
     const btnStart = createElement('button', `phrase_start-btn z-depth-1 waves-effect`, 'НАЧАТЬ');
     btnStart.tabIndex = 0;
+
+    const data1 = data.filter(
+      (item) => !(<Optional>item.optional) || (<Optional>item.optional && <Optional>item.optional).learned === 'no',
+    );
+
     btnStart.onclick = () => {
       this.stateGame.innerHTML = '';
-      if (user) this.showGame(data, user);
-      else this.showGame(data);
+      if (user) this.showGame(data1, user);
+      else this.showGame(data1);
     };
 
     this.stateGame.append(title);
@@ -207,7 +212,7 @@ export class PhraseGameView {
   private showGame(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
     // console.log(1111111111111);
     console.log(user);
-    // console.log(data);
+    console.log(data);
 
     if (data.length < 10) {
       // console.log('Недостаточно слов для игры!');
@@ -270,6 +275,7 @@ export class PhraseGameView {
       phrase.onDragenterS = () => phrase.backStart.classList.add('hovered');
       phrase.onDragleaveS = () => phrase.backStart.classList.remove('hovered');
       phrase.onDropS = () => {
+        if (phrase.backStart.firstElementChild) return;
         if (this.itemT) {
           const numbItem = Number(this.itemT.getAttribute('data-numb'));
           for (let j = 0; j < itemArr.length; j += 1) {
@@ -298,7 +304,7 @@ export class PhraseGameView {
     const winBlock = createElement('div', 'phrase_over card');
     const showTotalRes = createElement('div', 'sprint_result');
     const showExperience = createElement('div', 'sprint_show-resultexperience');
-    const gameOver = <HTMLAudioElement>new Audio('../../assets/images/audio/over.mp3');
+    const gameOver = <HTMLAudioElement>new Audio('../../assets/audio/over.mp3');
     const learnWords = createElement('ul', 'sprint_list-words');
     // const unlearnWords = createElement('ul', 'sprint_list-words');
     const headerBlock = createElement('div', 'sprint_header-result');
