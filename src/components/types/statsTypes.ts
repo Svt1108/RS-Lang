@@ -1,23 +1,24 @@
 // HOST / Users/Words // м.б. УДАЛИТЬ потом этот объект
-export type StatWord = {
-  id: string; // userId
-  wordId: string;
-  difficulty: 'easy' | 'difficult' | 'normal';
-  optional: {
-    learned: 'yes' | 'no';
-    learnDate: number; // Date.now()
-    games: {
-      [game: string]: { wins: number; total: number };
-      // sprint: { wins: number; total: number };
-      // audio: { wins: number; total: number };
-      // phrase: { wins: number; total: number };
-    };
-    markedAsNew: boolean;
-  };
-};
+// export type StatWord = {
+//   id: string; // userId
+//   wordId: string;
+//   difficulty: 'easy' | 'difficult' | 'normal';
+//   optional: {
+//     learned: 'yes' | 'no';
+//     learnDate: number; // Date.now()
+//     games: {
+//       [game: string]: { wins: number; total: number };
+//       // sprint: { wins: number; total: number };
+//       // audio: { wins: number; total: number };
+//       // phrase: { wins: number; total: number };
+//     };
+//     markedAsNew: boolean;
+//   };
+// };
 
 // HOST / Users/Statistic
 export type Stats = {
+  id?: string;
   learnedWords: number; // 0
   optional: {
     dateToday: string; // '29.8.22'

@@ -1,7 +1,7 @@
 import { getUserStats, postUserStats } from './helpers/apiStats';
 import { LoginData } from '../types/loginTypes';
 import { Stats } from '../types/statsTypes';
-import { WordPlusUserWord } from '../types';
+import { WordPlusUserWord, Word, UserWordPlus } from '../types';
 
 class StatsModel {
   // BOOK_________________________________________
@@ -28,91 +28,100 @@ class StatsModel {
     await postUserStats(id, token, stats);
   }
 
-  // GAMES_Sprint_Audio_Phrase_____________________
-  public async postWrong(oldWord?: WordPlusUserWord) {
-    let dateStr: string; // oldDate / today
-    let wordIsNew = true;
+  // GAMES_Sprint_Audio____________________________
+  public async postWrong(word: Word | UserWordPlus) {
+    const oldWord = word as UserWordPlus;
+    const { optional } = oldWord;
+    const { learnDate, learned, games } = optional;
 
     const newStats = await this.getOrCreateUserStats();
-
-    if (oldWord) {
-      const { optional } = oldWord;
-      if (!optional) return;
-      const { learnDate, markedAsNew, learned } = optional;
-
-      dateStr = this.createDateStr(learnDate); // oldDate
-      if (markedAsNew) wordIsNew = false;
-      if (learned === 'yes') newStats.optional.long[dateStr].learnedWords -= 1;
-    } else {
-      dateStr = this.createDateStr(); // today
-      // wordIsNew = true;
+    
+    if (learned === 'yes') {
+      console.log('СТАТ: МИНУС ИЗУЧЕННОЕ')
+      const dateStr= this.createDateStr(learnDate); // oldDate
+      newStats.optional.long[dateStr].learnedWords -= 1;
     }
+    
+    const game = window.location.hash.slice(1).split('#')[0] as 'sprint' | 'audio' | 'phrase';
+    const { total } = games[game];
+    
+    let wordIsNew = true;
+    if (total > 0) wordIsNew = false;
 
-    const [game] = window.location.hash.slice(1).split('#');
     if (wordIsNew) {
       const dateToday = this.createDateStr(); // today
       newStats.optional.today[game].newWords += 1;
       newStats.optional.long[dateToday].newWords += 1;
     }
+
     newStats.optional.today[game].total += 1; // wins += 0
 
     const { id, token } = this.getStorageUserData();
+    delete newStats.id;
     await postUserStats(id, token, newStats);
   }
 
-  public async postCorrectLearned(oldWord?: WordPlusUserWord) {
+  public async postCorrect(word: Word | UserWordPlus) {
+    const oldWord = word as UserWordPlus;
+    const { optional, difficulty } = oldWord;
+    const { games, learned } = optional;
+
     const dateToday = this.createDateStr(); // today
-    let wordIsNew = true;
-
-    if (oldWord) {
-      const { optional } = oldWord;
-      if (!optional) return;
-      const { markedAsNew } = optional;
-
-      if (markedAsNew) wordIsNew = false;
-    }
-
     const newStats = await this.getOrCreateUserStats();
 
-    newStats.optional.long[dateToday].learnedWords += 1; // Learned
-
-    const [game] = window.location.hash.slice(1).split('#');
+    const game = window.location.hash.slice(1).split('#')[0] as 'sprint' | 'audio' | 'phrase';
+    const { total, wins } = games[game];
+    
+    if ((wins + 1) % 5 === 0 && difficulty === 'difficult' && learned === 'no') {
+      newStats.optional.long[dateToday].learnedWords += 1; // Learned
+      console.log('СТАТ: ИЗУЧЕНО СЛОЖНОЕ');
+    }
+    if ((wins + 1) % 3 === 0 && difficulty !== 'difficult' && learned === 'no') {
+      newStats.optional.long[dateToday].learnedWords += 1; // Learned
+      console.log('СТАТ: ИЗУЧЕНО обычное');
+    }
+    
+    let wordIsNew = true;
+    if (total > 0) wordIsNew = false;
+        
     if (wordIsNew) {
       newStats.optional.today[game].newWords += 1;
       newStats.optional.long[dateToday].newWords += 1;
     }
+
     newStats.optional.today[game].wins += 1;
     newStats.optional.today[game].total += 1;
 
     const { id, token } = this.getStorageUserData();
+    delete newStats.id;
     await postUserStats(id, token, newStats);
   }
 
-  public async postCorrect(oldWord?: WordPlusUserWord) {
-    const dateToday = this.createDateStr(); // today
-    let wordIsNew = true;
+  // public async postCorrect(oldWord?: WordPlusUserWord) {
+  //   const dateToday = this.createDateStr(); // today
+  //   let wordIsNew = true;
 
-    if (oldWord) {
-      const { optional } = oldWord;
-      if (!optional) return;
-      const { markedAsNew } = optional;
+  //   if (oldWord) {
+  //     const { optional } = oldWord;
+  //     if (!optional) return;
+  //     const { markedAsNew } = optional;
 
-      if (markedAsNew) wordIsNew = false;
-    }
+  //     if (markedAsNew) wordIsNew = false;
+  //   }
 
-    const newStats = await this.getOrCreateUserStats();
+  //   const newStats = await this.getOrCreateUserStats();
 
-    const [game] = window.location.hash.slice(1).split('#');
-    if (wordIsNew) {
-      newStats.optional.today[game].newWords += 1;
-      newStats.optional.long[dateToday].newWords += 1;
-    }
-    newStats.optional.today[game].wins += 1;
-    newStats.optional.today[game].total += 1;
+  //   const [game] = window.location.hash.slice(1).split('#');
+  //   if (wordIsNew) {
+  //     newStats.optional.today[game].newWords += 1;
+  //     newStats.optional.long[dateToday].newWords += 1;
+  //   }
+  //   newStats.optional.today[game].wins += 1;
+  //   newStats.optional.today[game].total += 1;
 
-    const { id, token } = this.getStorageUserData();
-    await postUserStats(id, token, newStats);
-  }
+  //   const { id, token } = this.getStorageUserData();
+  //   await postUserStats(id, token, newStats);
+  // }
 
   public async postBestSeries(num: number) {
     const stats = await this.getOrCreateUserStats();
