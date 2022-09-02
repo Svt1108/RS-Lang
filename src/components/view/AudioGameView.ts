@@ -1,5 +1,5 @@
 import { createUserWord, getAllUserWords, getWords, HOST, updateUserWord} from '../model/helpers/apiHelpers';
-import {  MixWordsAudio, UserWordPlus, Word, WordPlusUserWord } from '../types';
+import {  MixWordsAudio, Optional, UserWordPlus, Word, WordPlusUserWord } from '../types';
 import { LoginData } from '../types/loginTypes';
 import { getMixWordsForAudio } from './helpers/appMixWords';
 import { combineWords } from './helpers/combineArr';
@@ -19,6 +19,8 @@ export class AudioGameView {
   pointsTotalResult: number[];
   learnedWords: string[][];
   unlearnedWords: string[][];
+  countBestRes: number;
+  bestResult: number[];
   audio: HTMLAudioElement;
   handleVolumepress: (el: KeyboardEvent) => void;
   handleKeypress: (el: KeyboardEvent) => void;
@@ -39,6 +41,8 @@ export class AudioGameView {
     this.learnedWords = [];
     this.unlearnedWords = [];
     this.audio = new Audio();
+    this.countBestRes = 0;
+    this.bestResult = [];
     this.handleVolumepress = () => {};
     this.handleKeypress = () => {};
     this.handleMainKeypress = () => {};
@@ -197,7 +201,7 @@ export class AudioGameView {
     return this.stateGame;
   }
 
-  private startGameFromBook(data: Word[], user?: LoginData): HTMLElement {
+  private startGameFromBook(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
 
     this.sound = true;
     this.stateGame.innerHTML = '';
@@ -224,12 +228,17 @@ export class AudioGameView {
 
     const btnStart = createElement('button', `audio_start-btn z-depth-1 waves-effect`, 
                        'НАЧАТЬ');
-    btnStart.tabIndex = 0                   
+    btnStart.tabIndex = 0 
+                      
+    const data1 = data.filter(
+      (item) => !(<Optional>item.optional) || (<Optional>item.optional && <Optional>item.optional).learned === 'no',
+    ); 
+
     btnStart.onclick = () => {
-      if(!data.length) window.location.hash = 'book'
+      if(!data1.length) window.location.hash = 'book'
       this.stateGame.innerHTML = '';
-      if(user)this.showGame(data, user)
-      else this.showGame(data)
+      if(user)this.showGame(data1, user)
+      else this.showGame(data1)
     }   
     
     navHeader.append(navList1)
@@ -242,7 +251,7 @@ export class AudioGameView {
     return this.stateGame;
   }
 
-  private showGame(data: Word[], user?: LoginData): HTMLElement {
+  private showGame(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
 
     const mixData = getMixWordsForAudio(data);
     const word = createElement('div', 'audio_word card');
@@ -294,11 +303,18 @@ export class AudioGameView {
                   if (userWord && user) await this.createNewUserWord(userWord, user)
                   if(text !== mixData[index].ru) {
                     v.classList.add('wrong') 
-                    if (userWord && user) await this.incorrectUserWord(userWord, user)
+                    if (userWord && user) {
+                      this.bestResult.push(this.countBestRes)
+                      this.countBestRes = 0;
+                      await this.incorrectUserWord(userWord, user)
+                    }
                     this.createWrongResult(data, mixData[index].en);
                     this.createSounds(this.sound, 'false')
                   } else {
-                    if (userWord && user) await this.correctUserWord(userWord, user)
+                    if (userWord && user) {
+                      this.countBestRes += 1;
+                      await this.correctUserWord(userWord, user)
+                    }
                     this.createCorrectResult(data, mixData[index].en);
                     this.createSounds(this.sound, 'true')
                     this.pointsTotal += 10
@@ -342,6 +358,8 @@ export class AudioGameView {
             window.removeEventListener('keyup', this.handleKeypress)
             const userWord = this.findWord(data, mixData[index].en);
             if (userWord && user) { 
+              this.bestResult.push(this.countBestRes)
+              this.countBestRes = 0;
               await this.createNewUserWord(userWord, user) 
               await this.incorrectUserWord(userWord, user)
             }
@@ -386,6 +404,8 @@ export class AudioGameView {
           window.removeEventListener('keyup', this.handleKeypress)
           const userWord = this.findWord(data, mixData[index].en);
           if (userWord && user) { 
+            this.bestResult.push(this.countBestRes)
+            this.countBestRes = 0;
             await this.createNewUserWord(userWord, user) 
             await this.incorrectUserWord(userWord, user)
           }  
@@ -426,11 +446,18 @@ export class AudioGameView {
           if (userWord && user) await this.createNewUserWord(userWord, user)
           if(text !== mixData[index].ru) {
             btn.classList.add('wrong') 
-            if (userWord && user) await this.incorrectUserWord(userWord, user)
+            if (userWord && user) {
+              this.bestResult.push(this.countBestRes)
+              this.countBestRes = 0;
+              await this.incorrectUserWord(userWord, user)
+            }
             this.createWrongResult(data, mixData[index].en);
             this.createSounds(this.sound, 'false')
           } else {
-            if (userWord && user) await this.correctUserWord(userWord, user)
+            if (userWord && user) {
+              this.countBestRes += 1;
+              await this.correctUserWord(userWord, user)
+            }
             this.createCorrectResult(data, mixData[index].en);
             this.createSounds(this.sound, 'true')
             this.pointsTotal += 10
@@ -468,7 +495,7 @@ export class AudioGameView {
     return this.stateGame;
   }
 
-  private pressMainButtonAnswer = (mainBtnDiv: HTMLButtonElement, data: Word[], index: number,
+  private pressMainButtonAnswer = (mainBtnDiv: HTMLButtonElement, data: WordPlusUserWord[], index: number,
     mixData: MixWordsAudio[], mainBlockDiv: HTMLElement, imgDiv: HTMLElement, wordName: HTMLElement, 
     audioBlock: HTMLElement, word:HTMLElement, blockWodsArr: HTMLButtonElement[]) => {
 
@@ -682,19 +709,19 @@ export class AudioGameView {
     this.stateGame.append(winBlock);
   }
   
-  private createCorrectResult(data: Word[], word: string){
+  private createCorrectResult(data: WordPlusUserWord[], word: string){
     data.filter((el) =>
       el.word === word ? this.learnedWords.push([el.word, el.transcription, el.wordTranslate, el.audio]) : [],
     );
   }
 
-  private createWrongResult(data: Word[], word: string) {
+  private createWrongResult(data: WordPlusUserWord[], word: string) {
     data.filter((el) =>
       el.word === word ? this.unlearnedWords.push([el.word, el.transcription, el.wordTranslate, el.audio]) : [],
     );
   }
 
-  private findWord(data: Word[], word: string) {
+  private findWord(data: WordPlusUserWord[], word: string) {
     return data.find((el) => el.word === word);
   }
 
