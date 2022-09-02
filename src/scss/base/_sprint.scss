@@ -16,10 +16,25 @@
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
+.nav-sprint {
+    color: #ffffff;
+    font-size: 18px;
+    list-style-type: disc !important;
+    padding-left: 7px !important;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.nav_list-sprint {
+    font-size: 16px;
+    font-weight: 400;
+}
+
 .level-sprint {
     width: 550px;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 30px;
 }
 
 .sprint-level-btn {
@@ -29,9 +44,6 @@
     border-radius: 3px;
     border-right: none;
     border-bottom: none;
-    // отключение-включение границ кнопки
-    // border-top: none;
-    // border-left: none;
     display: flex;
     color: #302f2f;
     font-weight: 600;
@@ -64,6 +76,7 @@
     background: #ffffff;
     align-items: center;
     justify-content: center;
+    margin-bottom: 30px;
     background-color: #ffffff !important;
     transition: 0.3s;
     cursor: pointer;
@@ -76,7 +89,7 @@
 }
 
 .title-sprint {
-    margin-bottom: 80px;
+    margin-bottom: 40px;
 }
 
 .title-sprint,
