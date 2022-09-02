@@ -66,9 +66,7 @@ export class AppController {
     const status = await this.login.updateLoginStatus();
     this.appView.updateLoginBtnText(status);
 
-    if (route === Route.main || route === '') {
-      this.main.show();
-    } else if (route === Route.login || route === Route.register) {
+    if (route === Route.login || route === Route.register) {
       this.login.show(route);
     } else if (route === Route.book) {
       if (level !== '') {
@@ -97,7 +95,7 @@ export class AppController {
     } else if (route === Route.stats) {
       await this.stats.show();
     } else {
-      // await this.error.show();
+      this.main.show();
     }
 
     this.handleFooter(route);
