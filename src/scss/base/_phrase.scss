@@ -20,8 +20,8 @@
     right: 0;
     margin: auto;
     height: 75vh;
-    // background: rgba(0, 0, 0, 0.3);
-    background: rgba(201, 201, 201, 0.4);
+    background: rgba(0, 0, 0, 0.4);
+    //  background: rgba(201, 201, 201, 0.4);
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
     margin-top: 8rem;
     padding-bottom: 1rem;
@@ -145,7 +145,7 @@
 }
 
 .img-phrase {
-    background-image: url('../assets/images/tower.jpg');
+    background-image: url('../assets/images/guardian.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     position: absolute;
