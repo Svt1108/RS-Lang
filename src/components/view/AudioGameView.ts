@@ -634,7 +634,7 @@ export class AudioGameView {
   private endGame(): void {
     statsModel.postBestSeries(Math.max(...this.bestResult))
     this.countBestRes = 0;
-    this.bestResult = [];
+    this.bestResult = [0];
     this.stateGame.innerHTML = '';
     const winBlock = createElement('div', 'sprint_over card');
     const showTotalRes = createElement('div', 'sprint_result');

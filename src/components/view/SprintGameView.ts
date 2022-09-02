@@ -40,7 +40,7 @@ export class SprintGameView {
     this.learnedWords = [];
     this.unlearnedWords = [];
     this.countBestRes = 0;
-    this.bestResult = [];
+    this.bestResult = [0];
     this.handleKeypress = () => {};
   }
 
