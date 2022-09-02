@@ -69,7 +69,7 @@ export class PhraseGameView {
         this.sound = true;
         soundImg.classList.remove('phrase_not-sound');
       }
-      //   this.createSounds(this.sound);
+      // this.createSounds(this.sound);
     };
 
     crossImg.onclick = () => {
@@ -260,6 +260,7 @@ export class PhraseGameView {
             }
             itemArr[numbBack] = numbItem;
             phrase.back.append(this.itemT);
+            this.createSounds(this.sound);
           }
         }
         phrase.back.classList.remove('hovered');
@@ -404,6 +405,15 @@ export class PhraseGameView {
       }),
     );
   };
+
+  private createSounds(sound: boolean): void {
+    const moveCard: HTMLAudioElement = new Audio('../../assets/audio/card-on-place-1.mp3');
+    if (!sound) {
+      moveCard.pause();
+    } else {
+      moveCard.play();
+    }
+  }
 
   stopGame() {
     this.sound = false;
