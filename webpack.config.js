@@ -47,6 +47,10 @@ module.exports = {
                     from: path.resolve(__dirname, './src/assets/svg'),
                     to: path.resolve(__dirname, './dist/assets/svg'),
                 },
+                {
+                    from: path.resolve(__dirname, './src/assets/audio'),
+                    to: path.resolve(__dirname, './dist/assets/audio'),
+                },
             ],
         }),
     ],
