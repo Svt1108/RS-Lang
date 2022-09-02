@@ -28,7 +28,9 @@ export class BookController {
         const temp = await getAggregatedHardWords(user.id, user.token);
         const userRes: AggregatedWord[] = temp[0].paginatedResults;
 
-        const userResNew = refactorResponse(userRes).sort((a, b) => (<Optional>b.optional).learnDate - (<Optional>a.optional).learnDate);
+        const userResNew = refactorResponse(userRes).sort(
+          (a, b) => (<Optional>b.optional).learnDate - (<Optional>a.optional).learnDate,
+        );
 
         this.view.render(userResNew, level, page, user);
       } else {
@@ -38,7 +40,7 @@ export class BookController {
         const tempObj = combineWords(res, userWords);
         const userRes: WordPlusUserWord[] = tempObj.combinedArr;
         const learnAndDifficult: number = tempObj.num;
-        console.log(userRes);
+        //    console.log(userRes);
         this.view.render(userRes, level, page, user, learnAndDifficult);
       }
     } else {
