@@ -1,6 +1,8 @@
-import { getRandomWords, HOST} from '../model/helpers/apiHelpers';
-import {  MixWordsSprint, Word } from '../types';
+import { getAllUserWords, getRandomWords, HOST} from '../model/helpers/apiHelpers';
+import {  MixWordsSprint, UserWordPlus, Word, WordPlusUserWord } from '../types';
+import { LoginData } from '../types/loginTypes';
 import { getMixWordsForSprint } from './helpers/appMixWords';
+import { combineWords } from './helpers/combineArr';
 import { createElement } from './helpers/renderHelpers';
 
 export class SprintGameView {
@@ -35,7 +37,7 @@ export class SprintGameView {
     this.unlearnedWords = [];
   }
 
-  public render(data?: Word[]): void { 
+  public render(data?: Word[], user?: LoginData): void { 
 
     this.controlBlock.innerHTML = '';
     this.mainDiv.innerHTML = '';
@@ -70,6 +72,19 @@ export class SprintGameView {
       window.location.hash = 'main';
       this.stopGame();
     };
+    
+    crossImg.onclick = () => {
+      window.location.hash = 'main';
+      this.stopGame();
+    };
+     
+    soundImg.onmouseout = () => {
+      soundImg.blur()
+    }
+
+    fullscreenImg.onmouseout = () => {
+      fullscreenImg.blur()
+    }
 
     this.againGame.tabIndex = 0
     crossImg.tabIndex = 0
@@ -81,17 +96,33 @@ export class SprintGameView {
     this.controlBlock.appendChild(crossImg);
     this.mainDiv.append(this.controlBlock);
     this.mainDiv.append(sprint);
-    if (data) {
+    if (data && user) {
+      this.mainDiv.append(this.startGameFromBook(data, user));
+      this.againGame.onclick = () => {
+      this.startGameFromBook(data, user)
+      }       
+    } 
+    else if (data && !user) {
       this.mainDiv.append(this.startGameFromBook(data));
-      this.againGame.onclick = () => {this.startGameFromBook(data)} 
-      
-    } else {
+      this.againGame.onclick = () => {
+        this.startGameFromBook(data)
+      }  
+    }
+    else if (!data && user) {
+      this.mainDiv.append(this.startGameFromMenu(user));
+      this.againGame.onclick = () => {
+        this.startGameFromMenu(user)
+      } 
+    }    
+    else if (!data && !user){
       this.mainDiv.append(this.startGameFromMenu());
-      this.againGame.onclick = () => {this.startGameFromMenu()} 
+      this.againGame.onclick = () => {
+        this.startGameFromMenu()
+      } 
     }
   }
 
-  private startGameFromMenu(): HTMLElement {
+  private startGameFromMenu(user?: LoginData): HTMLElement {
     this.sound = true;
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
@@ -117,8 +148,6 @@ export class SprintGameView {
 
     const levelArr: string[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
-    // изменение цветов границ кнопок
-
     const classArr: string[] = [
       'waves-purple violet-border',
       'waves-yellow yellow-border',
@@ -127,20 +156,27 @@ export class SprintGameView {
       'waves-orange orange-border',
       'waves-red red-border',
     ];
-    // const classArr: string[] = ['waves-purple', 'waves-yellow', 'waves-green',
-    //                             'waves-teal', 'waves-orange','waves-red'];
-
+  
     for (let i = 0; i <= 5; i += 1) {
       const btnLevel = createElement(
         'button',
         `sprint-level-btn z-depth-2 waves-effect ${classArr[i]}`,
         `${levelArr[i]}`,
       );
+
       btnLevel.tabIndex = 0
+
       btnLevel.onclick = async () => {
         const words = await getRandomWords(randomPageArr, i);
         this.stateGame.innerHTML = '';
-        this.mainDiv.append(this.showGame(words));
+        this.stateGame.innerHTML = '';
+        if(user){
+          const userWords: UserWordPlus[] = await getAllUserWords(user.id, user.token);
+          const tempObj = combineWords(words, userWords);
+          const userRes: WordPlusUserWord[] = tempObj.combinedArr;
+          this.mainDiv.append(this.showGame(userRes, user));
+        }
+        else this.mainDiv.append(this.showGame(words));
       };
 
       levelBlock.append(btnLevel);
@@ -150,10 +186,9 @@ export class SprintGameView {
     this.stateGame.append(subTitle);
     this.stateGame.append(levelBlock);
     return this.stateGame;
-
   }
 
-  private startGameFromBook(data: Word[]): HTMLElement {
+  private startGameFromBook(data: Word[], user?: LoginData): HTMLElement {
     this.sound = true;
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
@@ -172,8 +207,10 @@ export class SprintGameView {
                        'НАЧАТЬ');
     btnStart.tabIndex = 0                   
     btnStart.onclick = () => {
+      if(!data.length) window.location.hash = 'book'
       this.stateGame.innerHTML = '';
-      this.showGame(data)
+      if(user)this.showGame(data, user)
+      else this.showGame(data)
     }   
 
     this.stateGame.append(title);
@@ -182,7 +219,9 @@ export class SprintGameView {
     return this.stateGame;
   }
   
-  private showGame(data: Word[]): HTMLElement {
+  private showGame(data: Word[], user?: LoginData): HTMLElement {
+    console.log(user);
+    
     this.timeleft = 60;
     const mixData = getMixWordsForSprint(data);
     const word = createElement('div', 'sprint_word card');
