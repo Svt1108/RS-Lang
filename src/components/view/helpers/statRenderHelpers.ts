@@ -40,7 +40,7 @@ export const createTodayStats = (stats: Stats) => {
   <div class="center stat-day-wrap section-stat">
     <div class = "card z-depth-2 center stat-day">
 
-      <div class="stat_card">
+      <div class="stat_card stat_card_total">
         <div class="stat_card_heading">
           <span class="stat_card_img"><div class="game-picture stat_btn-total"></div></span>
           <span class="stat_card_title">Итого по словам</span>
