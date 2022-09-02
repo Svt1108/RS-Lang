@@ -4,6 +4,7 @@ import { Route } from '../types/appRoutes';
 import { LoginData } from '../types/loginTypes';
 import { Card } from './helpers/CardView';
 import { createElement } from './helpers/renderHelpers';
+import { statsModel } from '../model/StatsModel';
 
 const LAST_PAGE = 29;
 const WORD_ON_PAGE = 20;
@@ -274,7 +275,7 @@ export class BookView {
     }
 
     for (let i = 0; i < res.length; i += 1) {
-       const card = new Card(<HTMLElement>this.cards, res[i], this.levelNumber);
+      const card = new Card(<HTMLElement>this.cards, res[i], this.levelNumber);
 
       const { audio, audioMeaning, audioExample } = card;
       this.audioElems.push(audio, audioMeaning, audioExample);
@@ -307,6 +308,7 @@ export class BookView {
       };
 
       card.onDifficult = async () => {
+        await statsModel.handleOnDifficult(res[i]);
         if (!res[i].difficulty) {
           res[i].difficulty = 'difficult';
           res[i].optional = {
@@ -358,6 +360,7 @@ export class BookView {
       };
 
       card.onLearn = async () => {
+        await statsModel.handleOnLearn(res[i]);
         if (!res[i].optional) {
           res[i].difficulty = 'easy';
           res[i].optional = {
@@ -409,7 +412,7 @@ export class BookView {
       };
 
       card.onLearnDifficultLevel = async () => {
-      //  const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+        //  const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
         (<Optional>res[i].optional).learned = 'yes';
         (<Optional>res[i].optional).learnDate = Date.now();
         card.learnDifficultLevel.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
@@ -423,7 +426,7 @@ export class BookView {
       };
 
       card.onDiffDifficultLevel = async () => {
-      //  const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
+        //  const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
         card.diffDifficultLevel.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
         await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
           difficulty: 'normal',
