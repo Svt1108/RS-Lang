@@ -119,27 +119,27 @@ export class BookView {
     const levelsTitle = createElement('h6', 'levels-title center', 'Разделы');
     levels.appendChild(levelsTitle);
 
-    const level0 = createElement('div', 'level-btn z-depth-2 waves-effect waves-purple violet-border', 'Level 0');
+    const level0 = createElement('div', 'level-btn z-depth-2 waves-effect waves-purple violet-border', 'A1');
     levels.appendChild(level0);
     level0.onclick = () => this.switchLevel(0);
 
-    const level1 = createElement('div', 'level-btn z-depth-2 waves-effect waves-yellow yellow-border', 'Level 1');
+    const level1 = createElement('div', 'level-btn z-depth-2 waves-effect waves-yellow yellow-border', 'A2');
     levels.appendChild(level1);
     level1.onclick = () => this.switchLevel(1);
 
-    const level2 = createElement('div', 'level-btn z-depth-2 waves-effect waves-green green-border', 'Level 2');
+    const level2 = createElement('div', 'level-btn z-depth-2 waves-effect waves-green green-border', 'B1');
     levels.appendChild(level2);
     level2.onclick = () => this.switchLevel(2);
 
-    const level3 = createElement('div', 'level-btn z-depth-2 waves-effect waves-teal blue-border', 'Level 3');
+    const level3 = createElement('div', 'level-btn z-depth-2 waves-effect waves-teal blue-border', 'B2');
     levels.appendChild(level3);
     level3.onclick = () => this.switchLevel(3);
 
-    const level4 = createElement('div', 'level-btn z-depth-2 waves-effect waves-orange orange-border', 'Level 4');
+    const level4 = createElement('div', 'level-btn z-depth-2 waves-effect waves-orange orange-border', 'C1');
     levels.appendChild(level4);
     level4.onclick = () => this.switchLevel(4);
 
-    const level5 = createElement('div', 'level-btn z-depth-2 waves-effect waves-red red-border', 'Level 5');
+    const level5 = createElement('div', 'level-btn z-depth-2 waves-effect waves-red red-border', 'C2');
     levels.appendChild(level5);
     level5.onclick = () => this.switchLevel(5);
 

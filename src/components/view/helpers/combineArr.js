@@ -14,12 +14,10 @@ export const combineWords = (res, userWords) => {
                 ...resToObj[wordId],
                 difficulty,
                 optional,
-                // wordExists: true,
             };
         }
     });
 
-    console.log(num);
     // 3 превращаем п.1 опять в массив :)
     const combinedArr = Object.values(resToObj);
     return { combinedArr, num };
