@@ -322,7 +322,7 @@ export class PhraseGameView {
     const unlearnWords = createElement('ul', 'sprint_list-words');
     const headerBlock = createElement('div', 'sprint_header-result');
     const allWords = createElement('ul', 'sprint_all-words');
-    const headerListLerned = createElement('div', 'phrase_header-learn', `Изученные слова - ${rightDataPhrase.length}`);
+    const headerListLerned = createElement('div', 'phrase_header-learn', `Угаданные слова - ${rightDataPhrase.length}`);
     const headerListUnlerned = createElement(
       'div',
       'phrase_header-unlearn',
@@ -382,7 +382,9 @@ export class PhraseGameView {
     // }
 
     endGame.onclick = () => {
-      window.location.hash = 'book';
+      const hashArr = window.location.hash.slice(1).split('#');
+      if (hashArr[1] !== undefined) window.location.hash = `book#${hashArr[1]}#${hashArr[2]}`;
+      else window.location.hash = `book`;
       this.stopGame();
     };
 
@@ -496,7 +498,7 @@ export class PhraseGameView {
   }
 
   stopGame() {
-    this.sound = false;
+    this.sound = true;
     this.fullscreen = false;
     this.points = 10;
     this.pointsTotal = 0;
