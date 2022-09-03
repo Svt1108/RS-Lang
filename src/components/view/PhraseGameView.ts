@@ -428,7 +428,6 @@ export class PhraseGameView {
             optional: item1.optional,
           });
         }
-        console.log('WORD: ', item.word, 'PHRASE Optional:', (<Optional>item1.optional).games.phrase);
         if (item1.difficulty === 'difficult' && ((<Optional>item1.optional).games.phrase.wins + 1) % 5 === 0) {
           item1.difficulty = 'easy';
           (<Optional>item1.optional).learned = 'yes';

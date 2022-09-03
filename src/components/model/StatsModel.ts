@@ -72,7 +72,10 @@ class StatsModel {
           stats.optional.long[dateToday].learnedWords += 1;
           // console.log('СТАТ: learned+1 обычное  from correct');
         }
-        if (total === 0) {
+
+        const { audio, sprint } = games;
+        const sumTotal = total + audio.total + sprint.total;
+        if (sumTotal === 0) {
           stats.optional.today.phrase.newWords += 1;
           stats.optional.long[dateToday].newWords += 1;
           // console.log('СТАТ: NEW+1 from correct');
@@ -102,7 +105,10 @@ class StatsModel {
           const oldDate = this.createDateStr(learnDate);
           stats.optional.long[oldDate].learnedWords -= 1;
         }
-        if (total === 0) {
+
+        const { audio, sprint } = games;
+        const sumTotal = total + audio.total + sprint.total;
+        if (sumTotal === 0) {
           stats.optional.today.phrase.newWords += 1;
           stats.optional.long[dateToday].newWords += 1;
           // console.log('СТАТ: NEW+1 from wrongArr');
@@ -139,12 +145,14 @@ class StatsModel {
     }
 
     const game = window.location.hash.slice(1).split('#')[0] as 'sprint' | 'audio' | 'phrase';
-    const { total } = games[game];
+    // const { total } = games[game];
+    const [a, b, c] = Object.values(games);
+    const total = a.total + b.total + c.total;
 
-    let wordIsNew = true;
-    if (total > 0) wordIsNew = false;
+    // let wordIsNew = true;
+    // if (total > 0) wordIsNew = false;
 
-    if (wordIsNew) {
+    if (total === 0) {
       const dateToday = this.createDateStr(); // today
       newStats.optional.today[game].newWords += 1;
       newStats.optional.long[dateToday].newWords += 1;
@@ -160,12 +168,11 @@ class StatsModel {
     const oldWord = word as UserWordPlus;
     const { optional, difficulty } = oldWord;
     const { games, learned } = optional;
-
     const dateToday = this.createDateStr(); // today
     const newStats = await this.getOrCreateUserStats();
 
     const game = window.location.hash.slice(1).split('#')[0] as 'sprint' | 'audio' | 'phrase';
-    const { total, wins } = games[game];
+    const { wins } = games[game];
 
     if ((wins + 1) % 5 === 0 && difficulty === 'difficult' && learned === 'no') {
       newStats.optional.long[dateToday].learnedWords += 1; // Learned
@@ -176,10 +183,13 @@ class StatsModel {
       // console.log('СТАТ: ИЗУЧЕНО обычное');
     }
 
-    let wordIsNew = true;
-    if (total > 0) wordIsNew = false;
+    const [a, b, c] = Object.values(games);
+    const total = a.total + b.total + c.total;
 
-    if (wordIsNew) {
+    // let wordIsNew = true;
+    // if (total > 0) wordIsNew = false;
+
+    if (total === 0) {
       newStats.optional.today[game].newWords += 1;
       newStats.optional.long[dateToday].newWords += 1;
     }
