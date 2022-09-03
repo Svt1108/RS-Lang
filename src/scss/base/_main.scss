@@ -41,7 +41,8 @@ p {
 
 .main-text-lang {
     font-size: 1.5rem;
-    padding: 2rem 0;
+    padding: 2rem 0 0 0;
+    line-height: 150%;
 }
 
 .team-info {
@@ -136,4 +137,23 @@ footer.page-footer {
 .avatar-wrap-alla {
     margin-top: 0.9rem;
     margin-bottom: 0;
+}
+
+.about-app-title-lang {
+    font-size: 1.9rem;
+    font-weight: 400;
+    // height: 2.5rem;
+    padding: 2rem 0;
+}
+
+.list-lang {
+    font-size: 1.3rem;
+}
+
+.main-games {
+    //  margin: 0 auto;
+    justify-content: center;
+    display: flex;
+    gap: 3rem;
+    padding: 2rem 0;
 }

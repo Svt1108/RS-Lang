@@ -280,8 +280,12 @@ export class PhraseGameView {
           const wrongItemArr = itemArr.filter((value, index) => value !== index);
           const rightDataPhrase = mixDataPhrase.filter((_value, index) => rightItemArr.includes(index));
           const wrongDataPhrase = mixDataPhrase.filter((_value, index) => wrongItemArr.includes(index));
+          console.log('1: ');
+          console.log(rightDataPhrase, wrongDataPhrase);
           if (user) this.sendInfoToServer(rightDataPhrase, wrongDataPhrase, user);
           this.endGame(rightDataPhrase, wrongDataPhrase);
+          console.log('2: ');
+          console.log(rightDataPhrase);
         }
       };
 
