@@ -102,30 +102,34 @@ export class SprintGameView {
       this.mainDiv.append(this.startGameFromBook(data, user));
       this.againGame.onclick = () => {
         this.startGameFromBook(data, user)
+        this.sound = true
       }       
     } 
     else if (data && !user) {
       this.mainDiv.append(this.startGameFromBook(data));
       this.againGame.onclick = () => {
         this.startGameFromBook(data)
+        this.sound = true
       }  
     }
     else if (!data && user) {
       this.mainDiv.append(this.startGameFromMenu(user));
       this.againGame.onclick = () => {
         this.startGameFromMenu(user)
+        this.sound = true
       } 
     }    
     else if (!data && !user){
       this.mainDiv.append(this.startGameFromMenu());
       this.againGame.onclick = () => {
         this.startGameFromMenu()
+        this.sound = true
       } 
     }
   }
 
   private startGameFromMenu(user?: LoginData): HTMLElement {
-    this.sound = true;
+   
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
@@ -197,7 +201,7 @@ export class SprintGameView {
   }
 
   private startGameFromBook(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
-    this.sound = true;
+    
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
@@ -275,6 +279,7 @@ export class SprintGameView {
       seconds.innerHTML = `:${this.timeleft}`;
       if (this.timeleft <= 0) {
         clearInterval(downloadTimer);
+        this.endGame()
       }
       this.timeleft -= 1;
     }, 1000);
@@ -373,9 +378,8 @@ export class SprintGameView {
      }
     if (index === mixData.length - 1) {
       setTimeout(() => {
-        this.endGame()
         this.timeleft = 0;
-      }, 700);
+      }, 500);
     } 
     wordName.appendChild(audioBlock);
   }
@@ -421,9 +425,8 @@ export class SprintGameView {
      }
     if (index === mixData.length - 1) {
       setTimeout(() => {
-        this.endGame()
         this.timeleft = 0;
-      }, 700);
+      }, 500);
     } 
     wordName.appendChild(audioBlock);
   }
@@ -503,7 +506,7 @@ export class SprintGameView {
     const winBlock = createElement('div', 'sprint_over card');
     const showTotalRes = createElement('div', 'sprint_result');
     const showExperience = createElement('div', 'sprint_show-resultexperience');
-    const gameOver = <HTMLAudioElement>new Audio('../../assets/images/audio/over.mp3');
+    const gameOver = <HTMLAudioElement>new Audio('../../assets/audio/over.mp3');
     const learnWords = createElement('ul', 'sprint_list-words');
     const unlearnWords = createElement('ul', 'sprint_list-words');
     const headerBlock = createElement('div', 'sprint_header-result');
@@ -511,7 +514,7 @@ export class SprintGameView {
     const headerListLerned = createElement(
       'div',
       'sprint_header-learn',
-      `Изученные слова - ${this.learnedWords.length}`,
+      `Угаданные слова - ${this.learnedWords.length}`,
     );
     const headerListUnlerned = createElement(
       'div',
@@ -559,11 +562,14 @@ export class SprintGameView {
     }
     
     endGame.onclick = () => {
-      window.location.hash = 'book';
+      const hashArr = window.location.hash.slice(1).split('#');
+      if (hashArr[1] !== undefined) window.location.hash = `book#${hashArr[1]}#${hashArr[2]}`;
+      else window.location.hash = `book`;
       this.stopGame();
-    };
+    }; 
 
     if (this.sound) gameOver.play();
+    this.sound = false
     blockBtn.append(endGame);
     blockBtn.append(this.againGame);
     headerBlock.append(showTotalRes);
@@ -595,8 +601,8 @@ export class SprintGameView {
   }
 
   private createSounds(sound: boolean, flag?: string): void {
-    const rightAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/cool.mp3');
-    const wrongAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/bug.mp3');
+    const rightAnswer: HTMLAudioElement = new Audio('../../assets/audio/cool.mp3');
+    const wrongAnswer: HTMLAudioElement = new Audio('../../assets/audio/bug.mp3');
     if (!sound) {
       rightAnswer.pause();
       wrongAnswer.pause();
@@ -637,7 +643,7 @@ export class SprintGameView {
   }
 
   stopGame() {
-    this.sound = false;
+    this.sound = true;
     this.fullscreen = false;
     this.bestResult = [0]
     this.countBestRes = 0
