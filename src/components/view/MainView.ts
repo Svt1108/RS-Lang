@@ -36,7 +36,7 @@ export class MainView {
         <span class = "about-app-phrase3">Преимущества - с нами быстро, легко, весело<br></span>
         <span class = "about-app-phrase4">Всего 15 минут в день и ты заговоришь, как носитель</span></p>
 
-      <div class = "card z-depth-2 about-app-wrap">
+      <div class = " about-app-wrap">
         <div class="about-app-wrap__small">
           <div class = "card about-app-book">
            <div class="about-app-title-btn">
@@ -124,7 +124,9 @@ export class MainView {
             <div class="main-github__image"></div>
             </a>
             </h5>
-            <p class="light team-info">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+            <p class="light team-info">Разработчик. Обеспечила команду данными: полностью настроила бэк-энд и победила API. 
+            Разработала две игры с анимацией и звуковым оформлением: "Спринт" для тех, кто хочет попробовать себя 
+            в скорости угадывания слов и "Аудиовызов" для тренировки звукового восприятия. </p>
             </div>
         </div>
 
@@ -136,7 +138,9 @@ export class MainView {
             <div class="main-github__image"></div>
             </a>
             </h5>
-            <p class="light team-info">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+            <p class="light team-info">Разработчик и по совместительству дизайнер проекта. Сделала главную страницу, 
+            учебник со всеми 3600 словами и разноцветными страничками и бонусную игру "Фразы", 
+            в которой можно потренироваться подбирать слова к нужному контексту.</p>
             </div>
         </div>
       </div>

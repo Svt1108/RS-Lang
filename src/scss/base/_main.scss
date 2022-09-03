@@ -168,12 +168,13 @@ footer.page-footer {
     flex-direction: column;
     padding: 1rem;
     align-items: center;
-    //  border: 1px solid red;
+    // border: 1px solid rgba(0, 0, 0, 0.4);
 }
 
 .about-app-wrap__small {
     display: flex;
     justify-content: space-between;
+    width: 100%;
     //   flex-direction: column;
 }
 
@@ -186,11 +187,11 @@ footer.page-footer {
 }
 
 .about-app-book {
-    width: 59%;
+    width: 49%;
 }
 
 .about-app-stat {
-    width: 39%;
+    width: 49%;
 }
 
 .about-app-games {
@@ -213,7 +214,7 @@ footer.page-footer {
 }
 
 .about-app-phrase1 {
-    color: #148505;
+    color: #107a02;
 }
 
 .about-app-phrase4 {
