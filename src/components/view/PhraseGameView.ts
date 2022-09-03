@@ -6,6 +6,7 @@ import { getMixWordForDrag, getMixWordsForPhrase } from './helpers/appMixWords';
 import { combineWords } from './helpers/combineArr';
 import { Phrase } from './helpers/PhraseView';
 import { createElement } from './helpers/renderHelpers';
+import { statsModel } from '../model/StatsModel';
 
 const WORDS_FOR_PHRASE = 10;
 
@@ -260,7 +261,7 @@ export class PhraseGameView {
       phrase.onDragenter = () => phrase.back.classList.add('hovered');
 
       phrase.onDragleave = () => phrase.back.classList.remove('hovered');
-      phrase.onDrop = () => {
+      phrase.onDrop = async () => {
         if (this.itemT) {
           const numbBack = Number(phrase.back.getAttribute('data-numb'));
           const numbItem = Number(this.itemT.getAttribute('data-numb'));
@@ -280,7 +281,7 @@ export class PhraseGameView {
           const wrongItemArr = itemArr.filter((value, index) => value !== index);
           const rightDataPhrase = mixDataPhrase.filter((_value, index) => rightItemArr.includes(index));
           const wrongDataPhrase = mixDataPhrase.filter((_value, index) => wrongItemArr.includes(index));
-          if (user) this.sendInfoToServer(rightDataPhrase, wrongDataPhrase, user);
+          if (user) await this.sendInfoToServer(rightDataPhrase, wrongDataPhrase, user);
           this.endGame(rightDataPhrase, wrongDataPhrase);
         }
       };
@@ -406,6 +407,7 @@ export class PhraseGameView {
     wrongDataPhrase: WordPlusUserWord[],
     user: LoginData,
   ) => {
+    await statsModel.postPhraseResults(rightDataPhrase, wrongDataPhrase);
     await Promise.all(
       rightDataPhrase.map((item) => {
         const item1 = item;

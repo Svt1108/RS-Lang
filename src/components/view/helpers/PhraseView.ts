@@ -8,7 +8,7 @@ export class Phrase {
   public onDragenter?: () => void;
   // public onDragover?: () => void;
   public onDragleave?: () => void;
-  public onDrop?: () => void;
+  public onDrop?: () => Promise<void>;
 
   public onDragenterS?: () => void;
   public onDragoverS?: () => void;
@@ -81,7 +81,7 @@ export class Phrase {
     this.back.ondragenter = () => this.onDragenter?.();
     // this.back.ondragover = () => this.onDragover?.();
     this.back.ondragleave = () => this.onDragleave?.();
-    this.back.ondrop = () => this.onDrop?.();
+    this.back.ondrop = async () => this.onDrop?.();
     this.back.addEventListener('dragover', (event) => event.preventDefault());
 
     this.backStart.ondragenter = () => this.onDragenterS?.();
