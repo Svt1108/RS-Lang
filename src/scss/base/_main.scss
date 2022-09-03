@@ -41,7 +41,7 @@ p {
 
 .main-text-lang {
     font-size: 1.5rem;
-    padding: 2rem 0 0 0;
+    padding: 1.5rem 0 2rem 0;
     line-height: 150%;
 }
 
@@ -139,15 +139,19 @@ footer.page-footer {
     margin-bottom: 0;
 }
 
-.about-app-title-lang {
-    font-size: 1.9rem;
+.about-app-title {
+    font-size: 1.7rem;
     font-weight: 400;
     // height: 2.5rem;
     padding: 2rem 0;
 }
 
+.about-app-title_games {
+    padding: 0;
+}
+
 .list-lang {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 .main-games {
@@ -155,5 +159,80 @@ footer.page-footer {
     justify-content: center;
     display: flex;
     gap: 3rem;
-    padding: 2rem 0;
+    padding: 1rem 0 0 0;
 }
+
+.about-app-wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    align-items: center;
+    //  border: 1px solid red;
+}
+
+.about-app-wrap__small {
+    display: flex;
+    justify-content: space-between;
+    //   flex-direction: column;
+}
+
+.about-app-book,
+.about-app-stat,
+.about-app-games {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem 2rem 3rem;
+}
+
+.about-app-book {
+    width: 59%;
+}
+
+.about-app-stat {
+    width: 39%;
+}
+
+.about-app-games {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 0.7rem;
+    padding-top: 1.8rem;
+}
+
+.about-app-title-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.about-app-btn {
+    height: fit-content;
+}
+
+.about-app-phrase1 {
+    color: #148505;
+}
+
+.about-app-phrase4 {
+    color: #08703c;
+}
+
+.about-app-phrase2 {
+    color: #840b0b;
+}
+
+.about-app-wrap ul:not(.browser-default)>li::marker {
+    content: '\2713 \A0 \A0';
+    // color: hotpink;
+}
+
+// .about-app-wrap ul:not(.browser-default)>li {
+//     list-style-type: '\2713';
+// }
+// .ul-main li {
+//     color: red;
+//     list-style-type: '\2713';
+// }

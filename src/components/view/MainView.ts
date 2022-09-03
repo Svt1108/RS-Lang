@@ -28,50 +28,62 @@ export class MainView {
   <div class="container">
     <div class="section">
      <div class="row">
-      <div class="col s12 center">
-          <h4>О приложении</h4>
-        <p class="main-text-lang">
-        Выучи Английский играючи ;) <br> 
-        Осторожно! Вызывает привыкание<br>
-        Преимущества - с нами быстро, легко, весело.<br>
-        Всего 15 минут в день и ты заговоришь, как носитель</p>
+      <div class="col s12">
+        <h4 class = "center">О приложении</h4>
+        <p class="center main-text-lang">
+        <span class = "about-app-phrase1">Выучи Английский играючи ;) <br></span> 
+        <span class = "about-app-phrase2">Осторожно! Вызывает привыкание<br></span>
+        <span class = "about-app-phrase3">Преимущества - с нами быстро, легко, весело<br></span>
+        <span class = "about-app-phrase4">Всего 15 минут в день и ты заговоришь, как носитель</span></p>
 
-        <div class = "about-app-wrap">
-        <div class = "book-img"></div>
-        <div class = "book-text"></div>
+      <div class = "card z-depth-2 about-app-wrap">
+        <div class="about-app-wrap__small">
+          <div class = "card about-app-book">
+           <div class="about-app-title-btn">
+             <div class="about-app-title">Учебник</div>
+             <div id = "book" ></div>
+           </div>
+
+             <ul class="ul-main">
+               <li class="grey-text text-darken-2 list-lang"> более 3,5 тысяч часто употребляемых слов</li>
+               <li class="grey-text text-darken-2 list-lang"> разделы по уровню сложности</li>
+               <li class="grey-text text-darken-2 list-lang"> удобная навигация</li>
+               <li class="grey-text text-darken-2 list-lang"> озвучка, картинка-ассоциация, примеры</li>
+               <li class="grey-text text-darken-2 list-lang"> персональный раздел для сложных слов</li>
+             </ul>
+          
+          </div>
+
+          <div class = "card about-app-stat">
+           <div class="about-app-title-btn">
+             <div class="about-app-title">Статистика</div>
+             <div id = "stat" ></div>
+           </div>
+             <ul class="">
+               <li class="grey-text text-darken-2 list-lang"> даёт возможность оценить прогресс в учёбе</li>
+               <li class="grey-text text-darken-2 list-lang"> мотивирует тебя идти вперед и не останавливаться</li>
+             </ul>
+           </div>
         </div>
-        <p class="about-app-title-lang">Учебник</p>
-        <ul class="">
-        <li class="light list-lang"><i class="material-icons">check</i> более 3,5 тысяч часто употребляемых слов</li>
-        <li class="light list-lang"><i class="material-icons">check</i> разделы по уровню сложности</li>
-        <li class="light list-lang"><i class="material-icons">check</i> удобная навигация</li>
-        <li class="light list-lang"><i class="material-icons">check</i> озвучка, картинка-ассоциация, примеры</li>
-        <li class="light list-lang"><i class="material-icons">check</i> персональный раздел для сложных слов (нужна регистрация)</li>
-        </ul>
 
-        <div id = "book" class = "main-games"></div>
+        <div class = "card about-app-games">
+        <div class="about-app-title-btn">
+          <div class="about-app-title about-app-title_games">Игры</div>
+        </div>
+          <ul class="">
+            <li class="grey-text text-darken-2 list-lang"> Спринт - поможет запомнить слова, научит мгновенно переводить</li>
+            <li class="grey-text text-darken-2 list-lang"> Аудиовызов - разовьет твои навыки аудирования</li>
+            <li class="grey-text text-darken-2 list-lang"> Фразы - научит использовать слова в контексте предложения</li>
+          </ul>
+        <div id = "games" class = "main-games"></div>           
+       </div>
 
-        <ul class="">
-        <li class="about-app-title-lang">3 увлекательных игры для закрепления материала</li>
-        <li class="light list-lang"><i class="material-icons">check</i> Спринт - поможет запомнить, научит мгновенно переводить</li>
-        <li class="light list-lang"><i class="material-icons">check</i> Аудиовызов - разовьет твои навыки аудирования</li>
-        <li class="light list-lang"><i class="material-icons">check</i> Фразы - научит использовать слова в контексте предложения</li>
-        </ul>  
-        
-        <div id = "games" class = "main-games"></div>
-  
-        <ul class="">
-        <li class="about-app-title-lang">Статистика</li>
-        <li class="light list-lang"><i class="material-icons">check</i> мотивирует тебя идти вперед и не останавливаться</li>
-        </ul> 
-        
-        <div id = "stat" class = "main-games"></div>
 
-      </p>
       </div>
-    </div>
-    </div>
-  </div>
+      </div>
+      </div>
+      </div>
+      </div>
 
   <div class="parallax-container valign-wrapper">
     <div class="section no-pad-bot">
@@ -97,7 +109,10 @@ export class MainView {
             <div class="main-github__image"></div>
             </a>
             </h5>
-            <p class="light team-info">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+            <p class="light team-info">Разработчик. Создал архитектуру приложения с 0 до MVC. 
+            Разработал авторизацию пользователей, роутинг, страницы входа и регистрации. 
+            Сделал часть методов API.
+            Собрал статистику со всего проекта и объединил её на странице статистики.</p>
             </div>
         </div>
 
@@ -143,7 +158,7 @@ export class MainView {
 
     const games = document.getElementById('games') as HTMLElement;
 
-    const game0 = createElement('a', 'games-btn main-btn z-depth-2 waves-effect') as HTMLAnchorElement;
+    const game0 = createElement('a', 'games-btn main-btn z-depth-2 waves-effect waves-teal') as HTMLAnchorElement;
     game0.href = `#sprint`;
     games.appendChild(game0);
     const game0Title = createElement('div', 'game-title', ' ');
@@ -151,7 +166,7 @@ export class MainView {
     const game0Picture = createElement('div', 'game-picture btn-sprint');
     game0.appendChild(game0Picture);
 
-    const game1 = createElement('a', 'games-btn main-btn z-depth-2 waves-effect') as HTMLAnchorElement;
+    const game1 = createElement('a', 'games-btn main-btn z-depth-2 waves-effect waves-teal') as HTMLAnchorElement;
     game1.href = `#audio`;
     games.appendChild(game1);
     const game1Title = createElement('div', 'game-title', ' ');
@@ -159,7 +174,7 @@ export class MainView {
     const game1Picture = createElement('div', 'game-picture btn-audio');
     game1.appendChild(game1Picture);
 
-    const game2 = createElement('a', 'games-btn main-btn z-depth-2 waves-effect') as HTMLAnchorElement;
+    const game2 = createElement('a', 'games-btn main-btn z-depth-2 waves-effect waves-teal') as HTMLAnchorElement;
     game2.href = `#phrase`;
     games.appendChild(game2);
     const game2Title = createElement('div', 'game-title', ' ');
@@ -169,7 +184,7 @@ export class MainView {
 
     const book = document.getElementById('book') as HTMLElement;
 
-    const book0 = createElement('a', 'games-btn main-btn z-depth-2 waves-effect') as HTMLAnchorElement;
+    const book0 = createElement('a', 'games-btn main-btn z-depth-2 waves-effect waves-teal') as HTMLAnchorElement;
     book0.href = `#book`;
     book.appendChild(book0);
     const book0Title = createElement('div', 'game-title', ' ');
@@ -179,8 +194,8 @@ export class MainView {
 
     const stat = document.getElementById('stat') as HTMLElement;
 
-    const stat0 = createElement('a', 'games-btn main-btn z-depth-2 waves-effect') as HTMLAnchorElement;
-    stat0.href = `#stat`;
+    const stat0 = createElement('a', 'games-btn main-btn z-depth-2 waves-effect waves-teal') as HTMLAnchorElement;
+    stat0.href = `#stats`;
     stat.appendChild(stat0);
     const stat0Title = createElement('div', 'game-title', ' ');
     stat0.appendChild(stat0Title);
