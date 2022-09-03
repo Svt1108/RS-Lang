@@ -103,35 +103,42 @@ export class AudioGameView {
     if (data && user) {
       this.mainDiv.append(this.startGameFromBook(data, user));
       this.againGame.onclick = () => {
-      this.startGameFromBook(data, user)
+        this.stopGame()
+        this.startGameFromBook(data, user)
+        this.sound = true
       }       
     } 
     else if (data && !user) {
       this.mainDiv.append(this.startGameFromBook(data));
       this.againGame.onclick = () => {
+        this.stopGame()
         this.startGameFromBook(data)
         this.audio.remove()
+        this.sound = true
       }  
     }
     else if (!data && user) {
       this.mainDiv.append(this.startGameFromMenu(user));
       this.againGame.onclick = () => {
+        this.stopGame()
         this.startGameFromMenu(user)
         this.audio.remove()
+        this.sound = true
       } 
     }    
     else if (!data && !user){
       this.mainDiv.append(this.startGameFromMenu());
       this.againGame.onclick = () => {
+        this.stopGame()
         this.startGameFromMenu()
         this.audio.remove()
+        this.sound = true
       } 
     }
   }
 
   private startGameFromMenu(user?: LoginData): HTMLElement {
     
-    this.sound = true;
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
@@ -203,7 +210,6 @@ export class AudioGameView {
 
   private startGameFromBook(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
 
-    this.sound = true;
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
@@ -252,8 +258,10 @@ export class AudioGameView {
   }
 
   private showGame(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
-
+    
     const mixData = getMixWordsForAudio(data);
+    console.log(mixData);
+    const contentGame = createElement('div', 'audio_game-container');
     const word = createElement('div', 'audio_word card');
     const wordName = createElement('div', 'audio_word-name');
     const audioBlock = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up audio_game-audio', 'volume_up');
@@ -270,6 +278,7 @@ export class AudioGameView {
     audioBlock.onclick = () => {this.audio.play()}
     volumeBtn.onclick = () => {this.audio.play()}
     this.audio.play()
+    setTimeout(() => { contentGame.classList.add('stop') }, 200);
     wordName.innerHTML = `${mixData[index].en}  ${mixData[index].tr}`;
     let flag = true;
     let flagRes = true;
@@ -368,6 +377,7 @@ export class AudioGameView {
               mixData, mainBlock, imgDiv, wordName, audioBlock, word, blockWodsArr)
             flag = false
           } else {
+            this.addAnimation(contentGame)
             int = setTimeout(() => {window.addEventListener('keyup', this.handleKeypress)}, 400)
             index += 1
             flag = true;
@@ -391,11 +401,7 @@ export class AudioGameView {
     setTimeout(() => { mainBtn.disabled = false}, 500);
     mainBtn.disabled = true
     mainBtn.onclick = async () => {
-      // window.removeEventListener('keyup', handleMainKeypress)
-      // const interval =  setTimeout(() => {
-      //   window.addEventListener('keyup', handleMainKeypress)
-      //   mainBtn.disabled = false
-      // }, 2000);
+
       mainBtn.disabled = true
       setTimeout(() => { 
         mainBtn.disabled = false
@@ -414,6 +420,7 @@ export class AudioGameView {
             mixData, mainBlock, imgDiv, wordName, audioBlock, word, blockWodsArr)
           flag = false
         } else {
+          this.addAnimation(contentGame)
           window.addEventListener('keyup', this.handleKeypress)
           index += 1
           flag = true;
@@ -491,10 +498,35 @@ export class AudioGameView {
     word.append(imgDiv);
     word.append(wordName);
     mainBlock.append(volumeBtn)
-    this.stateGame.append(mainBlock);
-    this.stateGame.append(blockBtn);
-    this.stateGame.append(mainBtn)
+    contentGame.append(mainBlock);
+    contentGame.append(blockBtn);
+    contentGame.append(mainBtn)
+    this.stateGame.append(contentGame)
     return this.stateGame;
+  }
+
+  addAnimation(contentGameDiv: HTMLElement) {
+    const contentGame = contentGameDiv
+    contentGame.classList.remove('stop')
+    contentGame.classList.add('move')
+    setTimeout(() => {
+      contentGame.style.display = 'none'
+      contentGame.classList.remove('move')
+      window.removeEventListener('keyup', this.handleMainKeypress)
+      window.removeEventListener('keyup', this.handleKeypress)
+      window.removeEventListener('keyup', this.handleVolumepress)
+    }, 500);
+    setTimeout(() => {
+      contentGame.style.display = 'flex'
+    }, 700);
+    setTimeout(() => {
+      contentGame.classList.add('stop')
+    }, 1000);
+    setTimeout(() => {
+      window.addEventListener('keyup', this.handleMainKeypress)
+      window.addEventListener('keyup', this.handleKeypress)
+      window.addEventListener('keyup', this.handleVolumepress)
+    }, 1500);
   }
 
   private pressMainButtonAnswer = (mainBtnDiv: HTMLButtonElement, data: WordPlusUserWord[], index: number,
@@ -639,31 +671,34 @@ export class AudioGameView {
     const winBlock = createElement('div', 'sprint_over card');
     const showTotalRes = createElement('div', 'sprint_result');
     const showExperience = createElement('div', 'sprint_show-resultexperience');
-    const gameOver = <HTMLAudioElement>new Audio('../../assets/images/audio/over.mp3');
+    const gameOver = <HTMLAudioElement>new Audio('../../assets/audio/over.mp3');
     const learnWords = createElement('ul', 'sprint_list-words');
     const unlearnWords = createElement('ul', 'sprint_list-words');
     const headerBlock = createElement('div', 'sprint_header-result');
     const allWords = createElement('ul', 'sprint_all-words');
+    const arrStr1 = this.learnedWords.map(a => JSON.stringify(a));
+    const learnedWords = [...new Set(arrStr1)].map((e)=> JSON.parse(e));
+    const arrStr2 = this.unlearnedWords.map(a => JSON.stringify(a));
+    const unlearnedWords = [...new Set(arrStr2)].map((e)=> JSON.parse(e));
     const headerListLerned = createElement(
       'div',
       'sprint_header-learn',
-      `Изученные слова - ${this.learnedWords.length}`,
+      `Угаданные слова - ${learnedWords.length}`,
     );
     const headerListUnlerned = createElement(
       'div',
       'sprint_header-unlearn',
-      `Слова с ошибками - ${this.unlearnedWords.length}`,
+      `Слова с ошибками - ${unlearnedWords.length}`,
     );
     showTotalRes.innerHTML = `Набрано ${this.pointsTotal} очков`;
-    showExperience.innerHTML = `Получено +${this.learnedWords.length + this.unlearnedWords.length} опыта`;
+    showExperience.innerHTML = `Получено +${learnedWords.length + unlearnedWords.length} опыта`;
     const blockBtn = createElement('div', 'sprint_btn-block-over');
     const endGame = createElement('button', 'waves-effect waves-light btn left-sptint-btn end', 'перейти в учебник');
     gameOver.pause();
     endGame.tabIndex = 0
     
-    
-    if (this.learnedWords.length) {
-      Promise.all(this.learnedWords).then((res) => {
+    if (learnedWords.length) {
+      Promise.all(learnedWords).then((res) => {
         for (let i = 0; i < res.length; i += 1) {
           const audio = new Audio()
           const audioBlock = createElement('i', 
@@ -678,8 +713,8 @@ export class AudioGameView {
       })
     } 
     
-    if(this.unlearnedWords.length) {
-      Promise.all(this.unlearnedWords).then(res => {
+    if(unlearnedWords.length) {
+      Promise.all(unlearnedWords).then(res => {
         for (let i = 0; i < res.length; i += 1) {
           const audio = new Audio()
           const audioBlock = createElement('i', 
@@ -695,11 +730,14 @@ export class AudioGameView {
     }
     
     endGame.onclick = () => {
-      window.location.hash = 'book';
+      const hashArr = window.location.hash.slice(1).split('#');
+      if (hashArr[1] !== undefined) window.location.hash = `book#${hashArr[1]}#${hashArr[2]}`;
+      else window.location.hash = `book`;
       this.stopGame();
-    };
+    }; 
 
     if (this.sound) gameOver.play();
+    this.sound = false
     blockBtn.append(endGame);
     blockBtn.append(this.againGame);
     headerBlock.append(showTotalRes);
@@ -731,8 +769,8 @@ export class AudioGameView {
   }
 
   private createSounds(sound: boolean, flag?: string): void {
-    const rightAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/cool.mp3');
-    const wrongAnswer: HTMLAudioElement = new Audio('../../assets/images/audio/bug.mp3');
+    const rightAnswer: HTMLAudioElement = new Audio('../../assets/audio/cool.mp3');
+    const wrongAnswer: HTMLAudioElement = new Audio('../../assets/audio/bug.mp3');
     if (!sound) {
       rightAnswer.pause();
       wrongAnswer.pause();
@@ -743,7 +781,7 @@ export class AudioGameView {
   }
 
   stopGame() {
-    this.sound = false;
+    this.sound = true;
     this.audio.remove()
     this.fullscreen = false;
     this.countBestRes = 0;
