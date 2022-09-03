@@ -4,11 +4,11 @@ import { createElement } from './renderHelpers';
 export class Phrase {
   // data: WordPlusUserWord;
 
- // public onLearn?: () => void;
+  // public onLearn?: () => void;
   public onDragenter?: () => void;
- // public onDragover?: () => void;
+  // public onDragover?: () => void;
   public onDragleave?: () => void;
-  public onDrop?: () => void;
+  public onDrop?: () => Promise<void>;
 
   public onDragenterS?: () => void;
   public onDragoverS?: () => void;
@@ -46,7 +46,7 @@ export class Phrase {
     this.textExampleWrap = createElement('div', 'text-example-wrap');
     this.phraseWrap.appendChild(this.textExampleWrap);
 
-    this.numPart = createElement('div', '', `${ii+1}.`);
+    this.numPart = createElement('div', '', `${ii + 1}.`);
     this.textExampleWrap.appendChild(this.numPart);
 
     this.firstPart = createElement('div', '', `${textExampleArr[0]}`);
@@ -54,8 +54,8 @@ export class Phrase {
 
     this.back = createElement('div', 'back');
     this.textExampleWrap.appendChild(this.back);
-    this.back.setAttribute("data-numb", `${ii}`);
-    // this.back.setAttribute("data-occupate", `no`); 
+    this.back.setAttribute('data-numb', `${ii}`);
+    // this.back.setAttribute("data-occupate", `no`);
 
     this.secondPart = createElement('div', '', `${textExampleArr[2]}`);
     this.textExampleWrap.appendChild(this.secondPart);
@@ -65,34 +65,33 @@ export class Phrase {
 
     this.backStart = createElement('div', 'back back-start');
     this.wordWrap.appendChild(this.backStart);
-    // this.backStart.setAttribute("data-occupate", `no`); 
+    // this.backStart.setAttribute("data-occupate", `no`);
 
     this.item = createElement('div', 'item z-depth-3', `${word.word}`);
     this.backStart.append(this.item);
     this.item.draggable = true;
-    this.item.setAttribute("data-numb", `${word.numb}`); 
+    this.item.setAttribute('data-numb', `${word.numb}`);
 
     this.setListeners();
   }
 
   private setListeners() {
-   // this.phraseWrap.onclick = () => this.onLearn?.();
+    // this.phraseWrap.onclick = () => this.onLearn?.();
 
     this.back.ondragenter = () => this.onDragenter?.();
-   // this.back.ondragover = () => this.onDragover?.();
+    // this.back.ondragover = () => this.onDragover?.();
     this.back.ondragleave = () => this.onDragleave?.();
-    this.back.ondrop = () => this.onDrop?.();
-    this.back.addEventListener('dragover', (event) => event.preventDefault() )
+    this.back.ondrop = async () => this.onDrop?.();
+    this.back.addEventListener('dragover', (event) => event.preventDefault());
 
     this.backStart.ondragenter = () => this.onDragenterS?.();
-   // this.backStart.ondragover = () => this.onDragoverS?.();
+    // this.backStart.ondragover = () => this.onDragoverS?.();
     this.backStart.ondragleave = () => this.onDragleaveS?.();
     this.backStart.ondrop = () => this.onDropS?.();
-    this.backStart.addEventListener('dragover', (event) => event.preventDefault() )
+    this.backStart.addEventListener('dragover', (event) => event.preventDefault());
 
     this.item.ondragstart = () => this.onDragstart?.();
     this.item.ondragend = () => this.onDragend?.();
-    
 
     // this.backStart.addEventListener('dragenter', dragenter)
     // this.backStart.addEventListener('dragover', dragover)
@@ -100,4 +99,3 @@ export class Phrase {
     // this.backStart.addEventListener('drop', dragdrop)
   }
 }
-
