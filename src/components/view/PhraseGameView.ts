@@ -46,7 +46,6 @@ export class PhraseGameView {
     this.mainDiv.innerHTML = '';
     const adioGame = createElement('div', 'phrase-game');
     const mainImg = createElement('div', 'img-phrase');
-    // const soundImg = createElement('button', 'phrase_sound');
     const fullscreenImg = createElement('button', 'phrase_fullscreen');
     const crossImg = createElement('button', 'phrase_cross');
     this.sound = true;
