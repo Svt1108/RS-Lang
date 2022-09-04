@@ -15,6 +15,7 @@ export class SprintGameView {
   timeleft: number;
   points: number;
   pointsTotal: number;
+  soundImg: HTMLElement;
   controlBlock: HTMLElement;
   pointsResult: number[];
   countBestRes: number;
@@ -30,6 +31,7 @@ export class SprintGameView {
     this.controlBlock = createElement('div', 'sprint_controll');
     this.againGame = createElement('button', 
       'waves-effect waves-light btn right-sptint-btn end', 'сыграть еще раз');
+    this.soundImg = createElement('button', 'sprint_sound');
     this.sound = true;
     this.fullscreen = false;
     this.timeleft = 60;
@@ -50,7 +52,6 @@ export class SprintGameView {
     this.mainDiv.innerHTML = '';
     const sprint = createElement('div', 'sprint');
     const mainImg = <HTMLImageElement>createElement('img', 'img-sprint');
-    const soundImg = createElement('button', 'sprint_sound');
     const fullscreenImg = createElement('button', 'sprint_fullscreen');
     const crossImg = createElement('button', 'sprint_cross');
 
@@ -64,13 +65,13 @@ export class SprintGameView {
       }
     };
 
-    soundImg.onclick = () => {
+    this.soundImg.onclick = () => {
       if (this.sound) {
         this.sound = false;
-        soundImg.classList.add('sprint_not-sound');
+        this.soundImg.classList.add('sprint_not-sound');
       } else {
         this.sound = true;
-        soundImg.classList.remove('sprint_not-sound');
+        this.soundImg.classList.remove('sprint_not-sound');
       }
       this.createSounds(this.sound);
     };
@@ -80,8 +81,8 @@ export class SprintGameView {
       this.stopGame();
     };
      
-    soundImg.onmouseout = () => {
-      soundImg.blur()
+    this.soundImg.onmouseout = () => {
+      this.soundImg.blur()
     }
 
     fullscreenImg.onmouseout = () => {
@@ -90,10 +91,10 @@ export class SprintGameView {
 
     this.againGame.tabIndex = 0
     crossImg.tabIndex = 0
-    soundImg.tabIndex = 0
+    this.soundImg.tabIndex = 0
     fullscreenImg.tabIndex = 0
     sprint.append(mainImg);
-    this.controlBlock.appendChild(soundImg);
+    this.controlBlock.appendChild(this.soundImg);
     this.controlBlock.append(fullscreenImg);
     this.controlBlock.appendChild(crossImg);
     this.mainDiv.append(this.controlBlock);
@@ -129,7 +130,7 @@ export class SprintGameView {
   }
 
   private startGameFromMenu(user?: LoginData): HTMLElement {
-   
+    
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
@@ -645,6 +646,7 @@ export class SprintGameView {
   stopGame() {
     this.sound = true;
     this.fullscreen = false;
+    this.soundImg.classList.remove('audio_not-sound');
     this.bestResult = [0]
     this.countBestRes = 0
     this.timeleft = 60;
