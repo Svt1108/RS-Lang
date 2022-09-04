@@ -412,7 +412,6 @@ export class BookView {
       };
 
       card.onLearnDifficultLevel = async () => {
-        //  const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
         (<Optional>res[i].optional).learned = 'yes';
         (<Optional>res[i].optional).learnDate = Date.now();
         card.learnDifficultLevel.style.backgroundImage = `url(../assets/svg/learn-colored.svg)`;
@@ -426,7 +425,6 @@ export class BookView {
       };
 
       card.onDiffDifficultLevel = async () => {
-        //  const wordInfo: UserWordPlus = await getUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token);
         card.diffDifficultLevel.style.backgroundImage = `url(../assets/svg/difficult.svg)`;
         await updateUserWord((<LoginData>user).id, res[i].id, (<LoginData>user).token, {
           difficulty: 'normal',
