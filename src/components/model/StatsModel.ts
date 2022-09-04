@@ -14,14 +14,11 @@ class StatsModel {
       if (learned === 'yes') {
         const oldDate = this.createDateStr(learnDate);
         stats.optional.long[oldDate].learnedWords -= 1;
-        // console.log('-1 из Изученных');
       } else {
         stats.optional.long[dateToday].learnedWords += 1;
-        // console.log('+1 к Изученным, есть OPTIONAL');
       }
     } else {
       stats.optional.long[dateToday].learnedWords += 1;
-      // console.log('+1 к Изученным, не было OPTIONAL');
     }
 
     const { id, token } = this.getStorageUserData();
@@ -36,18 +33,11 @@ class StatsModel {
         const oldDate = this.createDateStr(learnDate);
 
         stats.optional.long[oldDate].learnedWords -= 1;
-        // console.log('обработчик сложных - было Изученным -> -1');
 
         const { id, token } = this.getStorageUserData();
         await postUserStats(id, token, stats);
       }
-      // else {
-      //   console.log('без изменений - не было Изученным');
-      // }
     }
-    // else {
-    //   console.log('без изменений - не было OPTIONAL');
-    // }
   }
 
   // GAME_Phrases__________________________________
@@ -56,7 +46,7 @@ class StatsModel {
     if (!user) return;
 
     const stats = await this.getOrCreateUserStats();
-    const dateToday = this.createDateStr(); // today
+    const dateToday = this.createDateStr();
 
     correctArr.forEach((word) => {
       const { optional, difficulty } = word;
@@ -66,11 +56,9 @@ class StatsModel {
 
         if ((wins + 1) % 5 === 0 && difficulty === 'difficult' && learned === 'no') {
           stats.optional.long[dateToday].learnedWords += 1;
-          // console.log('СТАТ: learned+1 СЛОЖНОЕ from correct');
         }
         if ((wins + 1) % 3 === 0 && difficulty !== 'difficult' && learned === 'no') {
           stats.optional.long[dateToday].learnedWords += 1;
-          // console.log('СТАТ: learned+1 обычное  from correct');
         }
 
         const { audio, sprint } = games;
@@ -78,19 +66,16 @@ class StatsModel {
         if (sumTotal === 0) {
           stats.optional.today.phrase.newWords += 1;
           stats.optional.long[dateToday].newWords += 1;
-          // console.log('СТАТ: NEW+1 from correct');
         }
 
         stats.optional.today.phrase.wins += 1;
         stats.optional.today.phrase.total += 1;
-        // console.log('СТАТ: wins+1, total+1 from correct');
       } else {
         stats.optional.today.phrase.newWords += 1;
         stats.optional.long[dateToday].newWords += 1;
 
         stats.optional.today.phrase.wins += 1;
         stats.optional.today.phrase.total += 1;
-        // console.log('СТАТ: Correct - не было OPTIONAL : wins+1, total+1, NEW+1');
       }
     });
 
@@ -101,7 +86,6 @@ class StatsModel {
         const { total } = games.phrase;
 
         if (learned === 'yes') {
-          // console.log('СТАТ: learned -1 ИЗУЧЕННОЕ from wrongArr');
           const oldDate = this.createDateStr(learnDate);
           stats.optional.long[oldDate].learnedWords -= 1;
         }
@@ -111,16 +95,13 @@ class StatsModel {
         if (sumTotal === 0) {
           stats.optional.today.phrase.newWords += 1;
           stats.optional.long[dateToday].newWords += 1;
-          // console.log('СТАТ: NEW+1 from wrongArr');
         }
         stats.optional.today.phrase.total += 1; // wins += 0
-        // console.log('СТАТ: total+1 from wrongArr');
       } else {
         stats.optional.today.phrase.newWords += 1;
         stats.optional.long[dateToday].newWords += 1;
 
         stats.optional.today.phrase.total += 1; // wins += 0
-        // console.log('СТАТ: Wrong - не было OPTIONAL : total+1, NEW+1');
       }
     });
     const max = Math.max(correctArr.length, stats.optional.today.phrase.bestSeries);
@@ -139,21 +120,16 @@ class StatsModel {
     const newStats = await this.getOrCreateUserStats();
 
     if (learned === 'yes') {
-      // console.log('СТАТ: МИНУС ИЗУЧЕННОЕ');
       const dateStr = this.createDateStr(learnDate); // oldDate
       newStats.optional.long[dateStr].learnedWords -= 1;
     }
 
     const game = window.location.hash.slice(1).split('#')[0] as 'sprint' | 'audio' | 'phrase';
-    // const { total } = games[game];
     const [a, b, c] = Object.values(games);
     const total = a.total + b.total + c.total;
 
-    // let wordIsNew = true;
-    // if (total > 0) wordIsNew = false;
-
     if (total === 0) {
-      const dateToday = this.createDateStr(); // today
+      const dateToday = this.createDateStr();
       newStats.optional.today[game].newWords += 1;
       newStats.optional.long[dateToday].newWords += 1;
     }
@@ -168,26 +144,21 @@ class StatsModel {
     const oldWord = word as UserWordPlus;
     const { optional, difficulty } = oldWord;
     const { games, learned } = optional;
-    const dateToday = this.createDateStr(); // today
+    const dateToday = this.createDateStr();
     const newStats = await this.getOrCreateUserStats();
 
     const game = window.location.hash.slice(1).split('#')[0] as 'sprint' | 'audio' | 'phrase';
     const { wins } = games[game];
 
     if ((wins + 1) % 5 === 0 && difficulty === 'difficult' && learned === 'no') {
-      newStats.optional.long[dateToday].learnedWords += 1; // Learned
-      // console.log('СТАТ: ИЗУЧЕНО СЛОЖНОЕ');
+      newStats.optional.long[dateToday].learnedWords += 1;
     }
     if ((wins + 1) % 3 === 0 && difficulty !== 'difficult' && learned === 'no') {
-      newStats.optional.long[dateToday].learnedWords += 1; // Learned
-      // console.log('СТАТ: ИЗУЧЕНО обычное');
+      newStats.optional.long[dateToday].learnedWords += 1;
     }
 
     const [a, b, c] = Object.values(games);
     const total = a.total + b.total + c.total;
-
-    // let wordIsNew = true;
-    // if (total > 0) wordIsNew = false;
 
     if (total === 0) {
       newStats.optional.today[game].newWords += 1;
@@ -214,7 +185,6 @@ class StatsModel {
     stats.optional.today[game].bestSeries = max;
 
     const { id, token } = this.getStorageUserData();
-    // console.log('лучшая серия', num);
 
     await postUserStats(id, token, stats);
   }
@@ -287,6 +257,7 @@ class StatsModel {
       stats.optional.dateToday = today;
     }
   }
+
   // StatsView_______________________________________
   public async getStats() {
     const stats = await this.getOrCreateUserStats();
