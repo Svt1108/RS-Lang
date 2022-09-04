@@ -130,7 +130,7 @@ export class SprintGameView {
   }
 
   private startGameFromMenu(user?: LoginData): HTMLElement {
-    
+   
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
@@ -646,7 +646,7 @@ export class SprintGameView {
   stopGame() {
     this.sound = true;
     this.fullscreen = false;
-    this.soundImg.classList.remove('audio_not-sound');
+    this.soundImg.classList.remove('sprint_not-sound');
     this.bestResult = [0]
     this.countBestRes = 0
     this.timeleft = 60;
