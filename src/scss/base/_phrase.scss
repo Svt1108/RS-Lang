@@ -22,7 +22,6 @@
     margin: auto;
     height: 75vh;
     background: rgba(0, 0, 0, 0.4);
-    //  background: rgba(201, 201, 201, 0.4);
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
     margin-top: 8rem;
     padding-bottom: 1rem;
@@ -35,11 +34,9 @@
     align-items: center;
     justify-content: space-between;
     height: 69vh;
-    // gap: 0.5rem;
 }
 
 .phrase-all-title {
-    // height: 4vh;
     margin-bottom: 2vh;
     padding: 0.5rem;
 }
@@ -57,9 +54,6 @@
     border-radius: 3px;
     border-right: none;
     border-bottom: none;
-    // отключение-включение границ кнопки
-    // border-top: none;
-    // border-left: none;
     display: flex;
     color: #302f2f;
     font-weight: 600;
@@ -251,12 +245,10 @@
 .phrase_header-learn {
     margin-left: 20px;
     color: #018b80;
-    // color: rgb(82, 82, 82);
     font-size: 18px;
     font-weight: 700;
     padding-bottom: 10px;
     padding-top: 10px;
-    //  border-top: 2px solid #beb0b0;
 }
 
 .phrase_header-unlearn {
@@ -369,7 +361,7 @@
     }
 }
 
-.phrase_sound.phrase_not-sound {
+.phrase_not-sound {
     background-image: url(../assets/svg/not-sound.svg);
 }
 
@@ -395,12 +387,10 @@
 }
 
 .phrase-sptint-btn {
-    // background-color: #B0E8DE!important;
     background-color: #84e2d1 !important;
 }
 
 .phrase-sptint-btn {
-    // background-color: #FFE2D9!important;
     background-color: #fcc2b0 !important;
 }
 

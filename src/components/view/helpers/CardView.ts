@@ -1,6 +1,5 @@
 import { HOST } from '../../model/helpers/apiHelpers';
 import { WordPlusUserWord } from '../../types';
-// import { LoginData } from '../../types/loginTypes';
 import { createElement } from './renderHelpers';
 
 export class Card {
@@ -22,10 +21,7 @@ export class Card {
   learnDifficultLevel: HTMLElement;
   diffDifficultLevel: HTMLElement;
 
-  //   public onRemove?: () => void;
-
   constructor(content: HTMLElement, data: WordPlusUserWord, level: number) {
-    //  const HOST = 'https://rslang-english-learnwords.herokuapp.com';
     const userJSON = localStorage.getItem('user');
     this.data = data;
 
@@ -74,9 +70,6 @@ export class Card {
     const wordWrap = createElement('div', 'words-wrap');
     wordImgWrap.appendChild(wordWrap);
 
-    // const wordWrap = createElement('div', 'word-wrap');
-    // cardContent.appendChild(wordWrap);
-
     this.word = createElement('p', 'grey-text text-darken-2 word', `${this.data.word}`);
     wordWrap.appendChild(this.word);
 
@@ -106,13 +99,8 @@ export class Card {
     cardImage.style.backgroundImage = `url(${HOST}/${this.data.image})`;
     wordImgWrap.appendChild(cardImage);
 
-    // audio.play();
-
     const cardContent = createElement('div', 'card-content');
     this.card.appendChild(cardContent);
-
-    // const divider = createElement('div', 'divider divider-lang');
-    // cardContent.appendChild(divider);
 
     const meaning = createElement('p', 'grey-text text-darken-2 meaning p-lang', `Значение:`);
     cardContent.appendChild(meaning);

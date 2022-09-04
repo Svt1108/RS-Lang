@@ -1,6 +1,6 @@
-import { createUserWord, getAllUserWords, getRandomWords, HOST, updateUserWord} from '../model/helpers/apiHelpers';
+import { createUserWord, getAllUserWords, getRandomWords, HOST, updateUserWord } from '../model/helpers/apiHelpers';
 import { statsModel } from '../model/StatsModel';
-import {  MixWordsSprint, Optional, UserWordPlus, Word, WordPlusUserWord } from '../types';
+import { MixWordsSprint, Optional, UserWordPlus, Word, WordPlusUserWord } from '../types';
 import { LoginData } from '../types/loginTypes';
 import { getMixWordsForSprint } from './helpers/appMixWords';
 import { combineWords } from './helpers/combineArr';
@@ -29,8 +29,7 @@ export class SprintGameView {
     this.mainDiv = mainDiv;
     this.stateGame = createElement('div', 'sprint_game-content');
     this.controlBlock = createElement('div', 'sprint_controll');
-    this.againGame = createElement('button', 
-      'waves-effect waves-light btn right-sptint-btn end', 'сыграть еще раз');
+    this.againGame = createElement('button', 'waves-effect waves-light btn right-sptint-btn end', 'сыграть еще раз');
     this.soundImg = createElement('button', 'sprint_sound');
     this.sound = true;
     this.fullscreen = false;
@@ -46,8 +45,7 @@ export class SprintGameView {
     this.handleKeypress = () => {};
   }
 
-  public render(data?: Word[], user?: LoginData): void { 
-
+  public render(data?: Word[], user?: LoginData): void {
     this.controlBlock.innerHTML = '';
     this.mainDiv.innerHTML = '';
     const sprint = createElement('div', 'sprint');
@@ -80,19 +78,19 @@ export class SprintGameView {
       window.location.hash = 'main';
       this.stopGame();
     };
-     
+
     this.soundImg.onmouseout = () => {
-      this.soundImg.blur()
-    }
+      this.soundImg.blur();
+    };
 
     fullscreenImg.onmouseout = () => {
-      fullscreenImg.blur()
-    }
+      fullscreenImg.blur();
+    };
 
-    this.againGame.tabIndex = 0
-    crossImg.tabIndex = 0
-    this.soundImg.tabIndex = 0
-    fullscreenImg.tabIndex = 0
+    this.againGame.tabIndex = 0;
+    crossImg.tabIndex = 0;
+    this.soundImg.tabIndex = 0;
+    fullscreenImg.tabIndex = 0;
     sprint.append(mainImg);
     this.controlBlock.appendChild(this.soundImg);
     this.controlBlock.append(fullscreenImg);
@@ -102,35 +100,35 @@ export class SprintGameView {
     if (data && user) {
       this.mainDiv.append(this.startGameFromBook(data, user));
       this.againGame.onclick = () => {
-        this.startGameFromBook(data, user)
-        this.sound = true
-      }       
-    } 
-    else if (data && !user) {
+        this.stopGame();
+        this.startGameFromBook(data, user);
+        this.sound = true;
+      };
+    } else if (data && !user) {
       this.mainDiv.append(this.startGameFromBook(data));
       this.againGame.onclick = () => {
-        this.startGameFromBook(data)
-        this.sound = true
-      }  
-    }
-    else if (!data && user) {
+        this.stopGame();
+        this.startGameFromBook(data);
+        this.sound = true;
+      };
+    } else if (!data && user) {
       this.mainDiv.append(this.startGameFromMenu(user));
       this.againGame.onclick = () => {
-        this.startGameFromMenu(user)
-        this.sound = true
-      } 
-    }    
-    else if (!data && !user){
+        this.stopGame();
+        this.startGameFromMenu(user);
+        this.sound = true;
+      };
+    } else if (!data && !user) {
       this.mainDiv.append(this.startGameFromMenu());
       this.againGame.onclick = () => {
-        this.startGameFromMenu()
-        this.sound = true
-      } 
+        this.stopGame();
+        this.startGameFromMenu();
+        this.sound = true;
+      };
     }
   }
 
   private startGameFromMenu(user?: LoginData): HTMLElement {
-    
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
@@ -145,10 +143,12 @@ export class SprintGameView {
       'Попробуй угадать как можно больше слов за минуту',
     );
 
-    const navHeader: HTMLElement = createElement('ul', 'nav-sprint h6-lang',
-    'Инструкция для игры на клавиатуре:');
-    const navList: HTMLElement = createElement('li', 'nav_list-sprint ul-lang', 
-    ' - клавиши влево и вправо для выбора ответа');
+    const navHeader: HTMLElement = createElement('ul', 'nav-sprint h6-lang', 'Инструкция для игры на клавиатуре:');
+    const navList: HTMLElement = createElement(
+      'li',
+      'nav_list-sprint ul-lang',
+      ' - клавиши влево и вправо для выбора ответа',
+    );
 
     const levelBlock: HTMLElement = createElement('div', 'level-sprint');
 
@@ -169,7 +169,7 @@ export class SprintGameView {
       'waves-orange orange-border',
       'waves-red red-border',
     ];
-  
+
     for (let i = 0; i <= 5; i += 1) {
       const btnLevel = createElement(
         'button',
@@ -181,19 +181,18 @@ export class SprintGameView {
         const words = await getRandomWords(randomPageArr, i);
         this.stateGame.innerHTML = '';
         this.stateGame.innerHTML = '';
-        if(user){
+        if (user) {
           const userWords: UserWordPlus[] = await getAllUserWords(user.id, user.token);
           const tempObj = combineWords(words, userWords);
           const userRes: WordPlusUserWord[] = tempObj.combinedArr;
           this.mainDiv.append(this.showGame(userRes, user));
-        }
-        else this.mainDiv.append(this.showGame(words));
+        } else this.mainDiv.append(this.showGame(words));
       };
 
       levelBlock.append(btnLevel);
     }
 
-    navHeader.append(navList)
+    navHeader.append(navList);
     this.stateGame.append(title);
     this.stateGame.append(subTitle);
     this.stateGame.append(navHeader);
@@ -202,7 +201,6 @@ export class SprintGameView {
   }
 
   private startGameFromBook(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
-    
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
@@ -215,42 +213,46 @@ export class SprintGameView {
       'subtitle-sprint h5-lang',
       'Попробуй угадать как можно больше слов за минуту',
     );
-    
-    const navHeader: HTMLElement = createElement('ul', 'nav-sprint h6-lang',
-      'Инструкция для игры на клавиатуре:');
-    const navList: HTMLElement = createElement('li', 'nav_list-sprint ul-lang', 
-      ' - клавиши влево и вправо для выбора ответа');
 
-    const btnStart = createElement('button', `sprint-start-btn z-depth-1 waves-effect`, 
-                       'НАЧАТЬ');
-    btnStart.tabIndex = 0        
+    const navHeader: HTMLElement = createElement('ul', 'nav-sprint h6-lang', 'Инструкция для игры на клавиатуре:');
+    const navList: HTMLElement = createElement(
+      'li',
+      'nav_list-sprint ul-lang',
+      ' - клавиши влево и вправо для выбора ответа',
+    );
+
+    const btnStart = createElement('button', `sprint-start-btn z-depth-1 waves-effect`, 'НАЧАТЬ');
+    btnStart.tabIndex = 0;
 
     const data1 = data.filter(
       (item) => !(<Optional>item.optional) || (<Optional>item.optional && <Optional>item.optional).learned === 'no',
-    ); 
+    );
 
     btnStart.onclick = () => {
       this.stateGame.innerHTML = '';
-      if(!data1.length) window.location.hash = 'book'
-      if(data1.length && user)this.showGame(data1, user)
-      if(data1.length && !user) this.showGame(data1)
-    }   
-    
-    navHeader.append(navList)
+      if (!data1.length) window.location.hash = 'book';
+      if (data1.length && user) this.showGame(data1, user);
+      if (data1.length && !user) this.showGame(data1);
+    };
+
+    navHeader.append(navList);
     this.stateGame.append(title);
     this.stateGame.append(subTitle);
     this.stateGame.append(navHeader);
     this.stateGame.append(btnStart);
     return this.stateGame;
   }
-  
+
   private showGame(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
-    
     this.timeleft = 60;
     const mixData = getMixWordsForSprint(data);
     const word = createElement('div', 'sprint_word card');
     const wordName = createElement('div', 'sprint_word-name');
-    const audioBlock = createElement('i', 'tiny grey-text text-darken-2 material-icons volume-up sprint-audio', 'volume_up');
+    const audioBlock = createElement(
+      'i',
+      'tiny grey-text text-darken-2 material-icons volume-up sprint-audio',
+      'volume_up',
+    );
     const crowsBlock = createElement('div', 'sprint_crows');
     const points = createElement('div', 'sprint_points', `+${this.points} очков за слово`);
     const totalPoints = createElement('div', 'sprint_total-points', `${0}`);
@@ -267,57 +269,102 @@ export class SprintGameView {
     const crow1 = createElement('div', `sprint_crow`);
     const crow2 = createElement('div', `sprint_crow`);
     const crow3 = createElement('div', `sprint_crow`);
-    const audio = new Audio()
+    const audio = new Audio();
     let index = 0;
- 
-    audio.src = `${HOST}/${mixData[0].audio}`
-    audioBlock.onclick = () => {audio.play()}
-    
+
+    audio.src = `${HOST}/${mixData[0].audio}`;
+    audioBlock.onclick = () => {
+      audio.play();
+    };
+
     wordName.innerHTML = `${mixData[0].en}   -   ${mixData[0].ru}`;
-    wordName.appendChild(audioBlock)
-    
+    wordName.appendChild(audioBlock);
+
     const downloadTimer = setInterval(() => {
       seconds.innerHTML = `:${this.timeleft}`;
       if (this.timeleft <= 0) {
         clearInterval(downloadTimer);
-        this.endGame()
+        this.endGame();
       }
       this.timeleft -= 1;
     }, 1000);
 
-    this.handleKeypress = async (el: KeyboardEvent)  => {
-
-      if(index < mixData.length) {
-        if(el.code === 'ArrowRight') {
-          await this.rightChoice (index, mixData, data, crow1, 
-            crow2, crow3, points, totalPoints, 
-            wordName, audio, audioBlock, user)     
-        }  
-        
-        if(el.code === 'ArrowLeft') {
-          await this.wrongChoice (index, mixData, data, crow1, 
-            crow2, crow3, points, totalPoints, 
-            wordName, audio, audioBlock, user)
+    this.handleKeypress = async (el: KeyboardEvent) => {
+      if (index < mixData.length) {
+        if (el.code === 'ArrowRight') {
+          await this.rightChoice(
+            index,
+            mixData,
+            data,
+            crow1,
+            crow2,
+            crow3,
+            points,
+            totalPoints,
+            wordName,
+            audio,
+            audioBlock,
+            user,
+          );
         }
-        index += 1; 
-      } else {
-      window.removeEventListener('keydown', this.handleKeypress)
-    }
-  }
 
-  window.addEventListener('keydown', this.handleKeypress)
-    
-  btnRight.onclick = async () => { 
-    await this.rightChoice (index, mixData, data, crow1, 
-        crow2, crow3, points, totalPoints, 
-        wordName, audio, audioBlock, user)
-    index += 1;
-  };
+        if (el.code === 'ArrowLeft') {
+          await this.wrongChoice(
+            index,
+            mixData,
+            data,
+            crow1,
+            crow2,
+            crow3,
+            points,
+            totalPoints,
+            wordName,
+            audio,
+            audioBlock,
+            user,
+          );
+        }
+        index += 1;
+      } else {
+        window.removeEventListener('keydown', this.handleKeypress);
+      }
+    };
+
+    window.addEventListener('keydown', this.handleKeypress);
+
+    btnRight.onclick = async () => {
+      await this.rightChoice(
+        index,
+        mixData,
+        data,
+        crow1,
+        crow2,
+        crow3,
+        points,
+        totalPoints,
+        wordName,
+        audio,
+        audioBlock,
+        user,
+      );
+      index += 1;
+    };
 
     btnWrong.onclick = async () => {
-      await this.wrongChoice (index, mixData, data, crow1, 
-        crow2, crow3, points, totalPoints, 
-        wordName, audio, audioBlock, user)
+      await this.wrongChoice(
+        index,
+        mixData,
+        data,
+        crow1,
+        crow2,
+        crow3,
+        points,
+        totalPoints,
+        wordName,
+        audio,
+        audioBlock,
+        user,
+      );
       index += 1;
     };
 
@@ -337,23 +384,34 @@ export class SprintGameView {
     this.stateGame.append(blockBtn);
     return this.stateGame;
   }
-  
-  async rightChoice (index: number, mixData: MixWordsSprint[], data: WordPlusUserWord[], crow1: HTMLElement, 
-    crow2: HTMLElement, crow3: HTMLElement, pointsDiv: HTMLElement, totalPointsDiv: HTMLElement, 
-    wordNameDiv: HTMLElement, audioTag: HTMLAudioElement, audioBlock: HTMLElement, user?: LoginData) {
-    const points = pointsDiv
-    const totalPoints = totalPointsDiv
-    const wordName = wordNameDiv
-    const audio = audioTag
 
-    if(index < mixData.length) { 
+  async rightChoice(
+    index: number,
+    mixData: MixWordsSprint[],
+    data: WordPlusUserWord[],
+    crow1: HTMLElement,
+    crow2: HTMLElement,
+    crow3: HTMLElement,
+    pointsDiv: HTMLElement,
+    totalPointsDiv: HTMLElement,
+    wordNameDiv: HTMLElement,
+    audioTag: HTMLAudioElement,
+    audioBlock: HTMLElement,
+    user?: LoginData,
+  ) {
+    const points = pointsDiv;
+    const totalPoints = totalPointsDiv;
+    const wordName = wordNameDiv;
+    const audio = audioTag;
+
+    if (index < mixData.length) {
       const userWord = this.findWord(data, mixData[index].en);
-      if (userWord && user) await this.createNewUserWord(userWord, user)
-      if(!mixData[index].match) {
+      if (userWord && user) await this.createNewUserWord(userWord, user);
+      if (!mixData[index].match) {
         if (userWord && user) {
-          this.bestResult.push(this.countBestRes)
+          this.bestResult.push(this.countBestRes);
           this.countBestRes = 0;
-          await this.incorrectUserWord(userWord, user)
+          await this.incorrectUserWord(userWord, user);
         }
         this.createSounds(this.sound, 'false');
         this.createWrongResult(data, mixData[index].en);
@@ -364,43 +422,54 @@ export class SprintGameView {
       } else {
         if (userWord && user) {
           this.countBestRes += 1;
-          this.bestResult.push(this.countBestRes)
-          await this.correctUserWord(userWord, user)
+          this.bestResult.push(this.countBestRes);
+          await this.correctUserWord(userWord, user);
         }
         this.createSounds(this.sound, 'true');
         this.createCorrectResult(data, mixData[index].en);
         this.countResult(totalPoints, points);
         this.styleCrow([crow1, crow2, crow3]);
       }
-    } 
-    if(index < mixData.length - 1 ) {
+    }
+    if (index < mixData.length - 1) {
       wordName.innerHTML = `${mixData[index + 1].en}   -   ${mixData[index + 1].ru}`;
       audio.src = `${HOST}/${mixData[index + 1].audio}`;
-     }
+    }
     if (index === mixData.length - 1) {
       setTimeout(() => {
         this.timeleft = 0;
       }, 500);
-    } 
+    }
     wordName.appendChild(audioBlock);
   }
 
-  async wrongChoice (index: number, mixData: MixWordsSprint[], data: WordPlusUserWord[], crow1: HTMLElement, 
-    crow2: HTMLElement, crow3: HTMLElement, pointsDiv: HTMLElement, totalPointsDiv: HTMLElement, 
-    wordNameDiv: HTMLElement, audioTag: HTMLAudioElement, audioBlock: HTMLElement, user?: LoginData) {
-    const points = pointsDiv
-    const totalPoints = totalPointsDiv
-    const wordName = wordNameDiv
-    const audio = audioTag
+  async wrongChoice(
+    index: number,
+    mixData: MixWordsSprint[],
+    data: WordPlusUserWord[],
+    crow1: HTMLElement,
+    crow2: HTMLElement,
+    crow3: HTMLElement,
+    pointsDiv: HTMLElement,
+    totalPointsDiv: HTMLElement,
+    wordNameDiv: HTMLElement,
+    audioTag: HTMLAudioElement,
+    audioBlock: HTMLElement,
+    user?: LoginData,
+  ) {
+    const points = pointsDiv;
+    const totalPoints = totalPointsDiv;
+    const wordName = wordNameDiv;
+    const audio = audioTag;
 
-    if(index < mixData.length) {
+    if (index < mixData.length) {
       const userWord = this.findWord(data, mixData[index].en);
-      if (userWord && user) await this.createNewUserWord(userWord, user)
-      if(!mixData[index].match) {
+      if (userWord && user) await this.createNewUserWord(userWord, user);
+      if (!mixData[index].match) {
         if (userWord && user) {
           this.countBestRes += 1;
-          this.bestResult.push(this.countBestRes)
-          await this.correctUserWord(userWord, user)
+          this.bestResult.push(this.countBestRes);
+          await this.correctUserWord(userWord, user);
         }
         this.createSounds(this.sound, 'true');
         this.createCorrectResult(data, mixData[index].en);
@@ -408,9 +477,9 @@ export class SprintGameView {
         this.styleCrow([crow1, crow2, crow3]);
       } else {
         if (userWord && user) {
-          this.bestResult.push(this.countBestRes)
+          this.bestResult.push(this.countBestRes);
           this.countBestRes = 0;
-          await this.incorrectUserWord(userWord, user)
+          await this.incorrectUserWord(userWord, user);
         }
         this.createSounds(this.sound, 'false');
         this.createWrongResult(data, mixData[index].en);
@@ -419,22 +488,22 @@ export class SprintGameView {
         points.innerHTML = `+${this.points} очков за слово`;
         this.styleCrow([crow1, crow2, crow3], true);
       }
-    } 
-    if(index < mixData.length - 1 ) {
+    }
+    if (index < mixData.length - 1) {
       wordName.innerHTML = `${mixData[index + 1].en}   -   ${mixData[index + 1].ru}`;
       audio.src = `${HOST}/${mixData[index + 1].audio}`;
-     }
+    }
     if (index === mixData.length - 1) {
       setTimeout(() => {
         this.timeleft = 0;
       }, 500);
-    } 
+    }
     wordName.appendChild(audioBlock);
   }
 
   private async createNewUserWord(word: Word | UserWordPlus, user: LoginData) {
-    const userWord = word
-    if((<UserWordPlus>userWord).optional?.markedAsNew === undefined) {
+    const userWord = word;
+    if ((<UserWordPlus>userWord).optional?.markedAsNew === undefined) {
       (<UserWordPlus>userWord).difficulty = 'normal';
       (<UserWordPlus>userWord).optional = {
         learned: 'no',
@@ -451,7 +520,7 @@ export class SprintGameView {
         optional: (<UserWordPlus>userWord).optional,
       });
     }
-    if((<UserWordPlus>userWord).optional?.markedAsNew === false) {
+    if ((<UserWordPlus>userWord).optional?.markedAsNew === false) {
       (<UserWordPlus>userWord).optional.markedAsNew = true;
       await updateUserWord((<LoginData>user).id, (<UserWordPlus>userWord).id, (<LoginData>user).token, {
         difficulty: (<UserWordPlus>userWord).difficulty as string,
@@ -466,19 +535,22 @@ export class SprintGameView {
     (<UserWordPlus>userWord).optional.games.audio.wins += 1;
     (<UserWordPlus>userWord).optional.games.audio.total += 1;
 
-    if((<UserWordPlus>userWord).difficulty !== 'difficult' && 
-      ((<UserWordPlus>userWord).optional.games.audio.wins) % 3 === 0) {
+    if (
+      (<UserWordPlus>userWord).difficulty !== 'difficult' &&
+      (<UserWordPlus>userWord).optional.games.audio.wins % 3 === 0
+    ) {
+      (<UserWordPlus>userWord).difficulty = 'easy';
+      (<UserWordPlus>userWord).optional.learned = 'yes';
+      (<UserWordPlus>userWord).optional.learnDate = Date.now();
+    } else if (
+      (<UserWordPlus>userWord).difficulty === 'difficult' &&
+      (<UserWordPlus>userWord).optional.games.audio.wins % 5 === 0
+    ) {
       (<UserWordPlus>userWord).difficulty = 'easy';
       (<UserWordPlus>userWord).optional.learned = 'yes';
       (<UserWordPlus>userWord).optional.learnDate = Date.now();
     }
-    else if((<UserWordPlus>userWord).difficulty === 'difficult' && 
-      ((<UserWordPlus>userWord).optional.games.audio.wins) % 5 === 0) {
-      (<UserWordPlus>userWord).difficulty = 'easy';
-      (<UserWordPlus>userWord).optional.learned = 'yes';
-      (<UserWordPlus>userWord).optional.learnDate = Date.now();
-    }
-    
+
     await updateUserWord((<LoginData>user).id, (<UserWordPlus>userWord).id, (<LoginData>user).token, {
       difficulty: (<UserWordPlus>userWord).difficulty as string,
       optional: (<UserWordPlus>userWord).optional,
@@ -494,15 +566,15 @@ export class SprintGameView {
       (<UserWordPlus>userWord).optional.learned = 'no';
       (<UserWordPlus>userWord).optional.learnDate = Date.now();
     }
-    
+
     await updateUserWord((<LoginData>user).id, (<UserWordPlus>userWord).id, (<LoginData>user).token, {
       difficulty: (<UserWordPlus>userWord).difficulty as string,
       optional: (<UserWordPlus>userWord).optional,
-    }); 
+    });
   }
 
   private endGame(): void {
-    statsModel.postBestSeries(Math.max(...this.bestResult))
+    statsModel.postBestSeries(Math.max(...this.bestResult));
     this.stateGame.innerHTML = '';
     const winBlock = createElement('div', 'sprint_over card');
     const showTotalRes = createElement('div', 'sprint_result');
@@ -527,50 +599,57 @@ export class SprintGameView {
     const blockBtn = createElement('div', 'sprint_btn-block-over');
     const endGame = createElement('button', 'waves-effect waves-light btn left-sptint-btn end', 'перейти в учебник');
     gameOver.pause();
-    endGame.tabIndex = 0
-    
+    endGame.tabIndex = 0;
 
     if (this.learnedWords.length) {
       Promise.all(this.learnedWords).then((res) => {
         for (let i = 0; i < res.length; i += 1) {
-          const audio = new Audio()
-          const audioBlock = createElement('i', 
-            'tiny grey-text text-darken-2 material-icons volume-up sprint-audio', 'volume_up');
-          audioBlock.onclick = () => {audio.play()}
-          const list = createElement('li', 'sprint_list', 
-            `${res[i][0]} ${res[i][1]} - ${res[i][2]}`)       
-          audio.src = `${HOST}/${res[i][3]}`
-          list.append(audioBlock)    
-          learnWords.append(list)
+          const audio = new Audio();
+          const audioBlock = createElement(
+            'i',
+            'tiny grey-text text-darken-2 material-icons volume-up sprint-audio',
+            'volume_up',
+          );
+          audioBlock.onclick = () => {
+            audio.play();
+          };
+          const list = createElement('li', 'sprint_list', `${res[i][0]} ${res[i][1]} - ${res[i][2]}`);
+          audio.src = `${HOST}/${res[i][3]}`;
+          list.append(audioBlock);
+          learnWords.append(list);
         }
-      })
-    } 
-    
-    if(this.unlearnedWords.length) {
-      Promise.all(this.unlearnedWords).then(res => {
-        for (let i = 0; i < res.length; i += 1) {
-          const audio = new Audio()
-          const audioBlock = createElement('i', 
-            'tiny grey-text text-darken-2 material-icons volume-up sprint-audio', 'volume_up');
-          audioBlock.onclick = () => {audio.play()}
-          const list = createElement('li', 'sprint_list', 
-            `${res[i][0]} ${res[i][1]} - ${res[i][2]}`)
-          audio.src = `${HOST}/${res[i][3]}`  
-          list.append(audioBlock) 
-          unlearnWords.append(list)
-        }
-      })
+      });
     }
-    
+
+    if (this.unlearnedWords.length) {
+      Promise.all(this.unlearnedWords).then((res) => {
+        for (let i = 0; i < res.length; i += 1) {
+          const audio = new Audio();
+          const audioBlock = createElement(
+            'i',
+            'tiny grey-text text-darken-2 material-icons volume-up sprint-audio',
+            'volume_up',
+          );
+          audioBlock.onclick = () => {
+            audio.play();
+          };
+          const list = createElement('li', 'sprint_list', `${res[i][0]} ${res[i][1]} - ${res[i][2]}`);
+          audio.src = `${HOST}/${res[i][3]}`;
+          list.append(audioBlock);
+          unlearnWords.append(list);
+        }
+      });
+    }
+
     endGame.onclick = () => {
       const hashArr = window.location.hash.slice(1).split('#');
       if (hashArr[1] !== undefined) window.location.hash = `book#${hashArr[1]}#${hashArr[2]}`;
       else window.location.hash = `book`;
       this.stopGame();
-    }; 
+    };
 
     if (this.sound) gameOver.play();
-    this.sound = false
+    this.sound = false;
     blockBtn.append(endGame);
     blockBtn.append(this.againGame);
     headerBlock.append(showTotalRes);
@@ -646,9 +725,9 @@ export class SprintGameView {
   stopGame() {
     this.sound = true;
     this.fullscreen = false;
-    this.soundImg.classList.remove('audio_not-sound');
-    this.bestResult = [0]
-    this.countBestRes = 0
+    this.soundImg.classList.remove('sprint_not-sound');
+    this.bestResult = [0];
+    this.countBestRes = 0;
     this.timeleft = 60;
     this.points = 10;
     this.pointsTotal = 0;
@@ -656,7 +735,7 @@ export class SprintGameView {
     this.pointsResult = [];
     this.learnedWords = [];
     this.unlearnedWords = [];
-    window.removeEventListener('keydown', this.handleKeypress)
-    if(document.fullscreenElement) document.exitFullscreen();
+    window.removeEventListener('keydown', this.handleKeypress);
+    if (document.fullscreenElement) document.exitFullscreen();
   }
 }
