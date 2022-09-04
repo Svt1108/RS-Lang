@@ -5,8 +5,7 @@ export type Stats = {
   optional: {
     dateToday: string; // '29.8.22'
     today: {
-      // games sprint | audio | phrase
-      [game: string]: { newWords: number; bestSeries: number; wins: number; total: number };
+      [game: string]: { newWords: number; bestSeries: number; wins: number; total: number }; // games: sprint | audio | phrase
     };
     long: {
       [date: string]: { newWords: number; learnedWords: number }; // date ex. '1.9.22'
