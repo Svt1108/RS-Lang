@@ -6,7 +6,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  //  padding: 0.5rem;
 }
 
 .text-example-wrap {
@@ -19,26 +18,23 @@
 }
 
 .back {
-    /* width: 10rem; */
     width: 10rem;
     height: 2rem;
     border: 1px dashed;
     border-radius: 5px;
     background: none;
-   // margin: 0.8rem 0;
-    color: #a474fc;   
-  }
+    color: #a474fc;
+}
 
-  .back-start {
-    color:#ff85e4;
+.back-start {
+    color: #ff85e4;
     background-color: rgba(255, 255, 255, 0.7);
-  }
+}
 
-  .item {
-    width: 10em; 
+.item {
+    width: 10em;
     height: 2rem;
     border: 1px solid #f7f6f7;
- //   box-shadow: 4px 4px 4px rgba(37, 37, 37, 0.36);
     border-radius: 5px;
     background: #ffffff;
     color: black;
@@ -46,32 +42,30 @@
     text-align: center;
     cursor: grab;
     &:hover {
-        border:#fce9fd;
+        border: #fce9fd;
         background: #fce9fd;
-      }
-  }
+    }
+}
 
-  .word-wrap {
+.word-wrap {
     display: flex;
     justify-content: center;
     width: fit-content;
     padding: 0.5rem;
-  }
+}
 
-  .hold {
+.hold {
     border: 1px dashed black;
-    border:#fce9fd;
+    border: #fce9fd;
     background: #fce9fd;
-  }
-  
+}
 
-  .hide {
+.hide {
     display: none;
-  }
-  
-  .hovered {
+}
+
+.hovered {
     border: #ff85e4 solid;
     background-image: linear-gradient(rgba(41, 1, 65, 0.5) 1px, transparent 1px);
     background-size: 100% 0.7rem;
-    
-  }
+}

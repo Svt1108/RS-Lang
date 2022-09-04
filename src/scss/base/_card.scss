@@ -1,9 +1,3 @@
-// .vertical-card {
-//     display: flex;
-//     flex-direction: row;
-//     width: 100%;
-//     align-items: center;
-// }
 .word-img-wrap {
     display: flex;
     flex-wrap: nowrap;
@@ -25,7 +19,6 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
-    //  z-index: 5;
     border-bottom-left-radius: 3px;
     flex-shrink: 2;
 }
@@ -33,9 +26,6 @@
 .card .card-content {
     padding: 1rem;
     width: 27rem;
-    // display: flex;
-    // flex-direction: column;
-    // align-items: flex-end;
 }
 
 .p-lang {
@@ -133,9 +123,3 @@
     padding: 1rem;
     font-size: 0.9rem;
 }
-
-// .word-wrap {
-//     display: flex;
-//     align-items: center;
-//     padding-bottom: 0.5rem;
-// }
