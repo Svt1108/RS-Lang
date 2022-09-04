@@ -579,7 +579,7 @@ export class SprintGameView {
     const winBlock = createElement('div', 'sprint_over card');
     const showTotalRes = createElement('div', 'sprint_result');
     const showExperience = createElement('div', 'sprint_show-resultexperience');
-    const gameOver = <HTMLAudioElement>new Audio('../../assets/audio/over.mp3');
+    const gameOver = <HTMLAudioElement>new Audio('./assets/audio/over.mp3');
     const learnWords = createElement('ul', 'sprint_list-words');
     const unlearnWords = createElement('ul', 'sprint_list-words');
     const headerBlock = createElement('div', 'sprint_header-result');
@@ -681,8 +681,8 @@ export class SprintGameView {
   }
 
   private createSounds(sound: boolean, flag?: string): void {
-    const rightAnswer: HTMLAudioElement = new Audio('../../assets/audio/cool.mp3');
-    const wrongAnswer: HTMLAudioElement = new Audio('../../assets/audio/bug.mp3');
+    const rightAnswer: HTMLAudioElement = new Audio('./assets/audio/cool.mp3');
+    const wrongAnswer: HTMLAudioElement = new Audio('./assets/audio/bug.mp3');
     if (!sound) {
       rightAnswer.pause();
       wrongAnswer.pause();
