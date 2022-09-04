@@ -150,6 +150,14 @@ footer.page-footer {
     padding: 0;
 }
 
+.about-app-title_stats {
+    padding: 2.5rem 0 1rem 0;
+}
+
+.about-app-title_book {
+    padding: 0 0 1rem 0;
+}
+
 .list-lang {
     font-size: 1.2rem;
 }
@@ -222,18 +230,25 @@ footer.page-footer {
 }
 
 .about-app-phrase2 {
+    display: inline-block;
+    padding-top: 0.8rem;
     color: #840b0b;
+    font-size: 1.2rem;
 }
 
 .about-app-wrap ul:not(.browser-default)>li::marker {
     content: '\2713 \A0 \A0';
-    // color: hotpink;
 }
 
-// .about-app-wrap ul:not(.browser-default)>li {
-//     list-style-type: '\2713';
-// }
-// .ul-main li {
-//     color: red;
-//     list-style-type: '\2713';
-// }
+.btn-lang-main {
+    width: 10rem;
+    margin-top: 1.2rem;
+    color: black;
+    font-weight: 500;
+    background-color: white;
+}
+
+.test1 {
+    align-items: center;
+    justify-content: center;
+}

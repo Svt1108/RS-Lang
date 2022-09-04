@@ -1,6 +1,3 @@
-// import { createElement } from './helpers/renderHelpers';
-
-// import { Route } from '../types/appRoutes';
 import { createElement } from './helpers/renderHelpers';
 
 export class MainView {
@@ -31,10 +28,11 @@ export class MainView {
       <div class="col s12">
         <h4 class = "center">О приложении</h4>
         <p class="center main-text-lang">
-        <span class = "about-app-phrase1">Выучи Английский играючи ;) <br></span> 
+        <span class = "about-app-phrase1">Можно ли выучить английский, играя? Да, легко! <br></span>
+        <span class = "about-app-phrase3">Преимущества - с нами быстро, просто, весело<br></span>
+        <span class = "about-app-phrase4">Всего 15 минут в день и ты заговоришь, как носитель<br></span>
         <span class = "about-app-phrase2">Осторожно! Вызывает привыкание<br></span>
-        <span class = "about-app-phrase3">Преимущества - с нами быстро, легко, весело<br></span>
-        <span class = "about-app-phrase4">Всего 15 минут в день и ты заговоришь, как носитель</span></p>
+        </p>
 
       <div class = " about-app-wrap">
         <div class="about-app-wrap__small">
@@ -51,7 +49,7 @@ export class MainView {
                <li class="grey-text text-darken-2 list-lang"> озвучка, картинка-ассоциация, примеры</li>
                <li class="grey-text text-darken-2 list-lang"> персональный раздел для сложных слов</li>
              </ul>
-          
+
           </div>
 
           <div class = "card about-app-stat">
@@ -75,9 +73,8 @@ export class MainView {
             <li class="grey-text text-darken-2 list-lang"> Аудиовызов - разовьет твои навыки аудирования</li>
             <li class="grey-text text-darken-2 list-lang"> Фразы - научит использовать слова в контексте предложения</li>
           </ul>
-        <div id = "games" class = "main-games"></div>           
+        <div id = "games" class = "main-games"></div>
        </div>
-
 
       </div>
       </div>
@@ -109,8 +106,8 @@ export class MainView {
             <div class="main-github__image"></div>
             </a>
             </h5>
-            <p class="light team-info">Разработчик. Создал архитектуру приложения с 0 до MVC. 
-            Разработал авторизацию пользователей, роутинг, страницы входа и регистрации. 
+            <p class="light team-info">Разработчик. Создал архитектуру приложения с 0 до MVC.
+            Разработал авторизацию пользователей, роутинг, страницы входа и регистрации.
             Сделал часть методов API.
             Собрал статистику со всего проекта и объединил её на странице статистики.</p>
             </div>
@@ -124,8 +121,8 @@ export class MainView {
             <div class="main-github__image"></div>
             </a>
             </h5>
-            <p class="light team-info">Разработчик. Обеспечила команду данными: полностью настроила бэк-энд и победила API. 
-            Разработала две игры с анимацией и звуковым оформлением: "Спринт" для тех, кто хочет попробовать себя 
+            <p class="light team-info">Разработчик. Обеспечила команду данными: полностью настроила бэк-энд и победила API.
+            Разработала две игры с анимацией и звуковым оформлением: "Спринт" для тех, кто хочет попробовать себя
             в скорости угадывания слов и "Аудиовызов" для тренировки звукового восприятия. </p>
             </div>
         </div>
@@ -138,8 +135,8 @@ export class MainView {
             <div class="main-github__image"></div>
             </a>
             </h5>
-            <p class="light team-info">Разработчик и по совместительству дизайнер проекта. Сделала главную страницу, 
-            учебник со всеми 3600 словами и разноцветными страничками и бонусную игру "Фразы", 
+            <p class="light team-info">Разработчик и по совместительству дизайнер проекта. Сделала главную страницу,
+            панель навигации, учебник со всеми 3600 словами и разноцветными страничками и бонусную игру "Фразы",
             в которой можно потренироваться подбирать слова к нужному контексту.</p>
             </div>
         </div>
@@ -147,7 +144,6 @@ export class MainView {
 
     </div>
   </div>
-
 
   <div class="parallax-container valign-wrapper">
     <div class="section no-pad-bot">

@@ -40,7 +40,6 @@ export class BookController {
         const tempObj = combineWords(res, userWords);
         const userRes: WordPlusUserWord[] = tempObj.combinedArr;
         const learnAndDifficult: number = tempObj.num;
-        //    console.log(userRes);
         this.view.render(userRes, level, page, user, learnAndDifficult);
       }
     } else {
