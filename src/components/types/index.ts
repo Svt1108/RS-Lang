@@ -1,6 +1,4 @@
 export interface Word {
-  // optional: { learned: boolean; learnDate: Date; };
-  // difficulty: string;
   id: string;
   group: number;
   page: number;
@@ -51,11 +49,6 @@ export enum Method {
   delete = 'DELETE',
   updatePatch = 'PATCH',
 }
-
-// export interface UserWord {
-//   difficulty: string;
-//   optional: { learned: string; learnDate: number };
-// }
 
 export interface UserWord {
   difficulty: string;
@@ -142,32 +135,6 @@ export interface Optional {
   markedAsNew: boolean;
 }
 
-// export interface UserWordPlus {
-//   difficulty: string;
-//   id: string;
-//   optional: { learned: string; learnDate: number };
-//   wordId: string;
-// }
-
-// export interface WordPlusUserWord {
-//   id: string;
-//   group: number;
-//   page: number;
-//   word: string;
-//   image: string;
-//   audio: string;
-//   audioMeaning: string;
-//   audioExample: string;
-//   textMeaning: string;
-//   textExample: string;
-//   transcription: string;
-//   textExampleTranslate: string;
-//   textMeaningTranslate: string;
-//   wordTranslate: string;
-//   optional?: { learned: string; learnDate?: number };
-//   difficulty?: string;
-// }
-
 export enum Difficulty {
   'difficult',
   'easy',
@@ -179,7 +146,6 @@ export enum Learn {
 }
 
 export interface AggregatedWord {
-  // [x: string]: any;
   word: string;
   wordTranslate: string;
   _id?: string;

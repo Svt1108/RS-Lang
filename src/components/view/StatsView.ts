@@ -17,8 +17,6 @@ export class StatView {
   }
 
   public render(stats: Stats) {
-    // console.log('Response: ', stats);
-
     // Render_Page
     const topImg = createTopImg();
     const todayStats = createTodayStats(stats);
@@ -56,7 +54,6 @@ export class StatView {
     }
 
     entriesLong.sort((a, b) => dateToNum(a[0]) - dateToNum(b[0]));
-    // console.log('Sorted: ', entriesLong);
     return entriesLong;
   }
 
@@ -71,19 +68,16 @@ export class StatView {
     }
 
     const labels = sortedLongStats.map((e) => normalizeDate(e[0]));
-    // console.log('Labels: ', labels);
     return labels;
   }
 
   private makeBarGraphData(sortedLongStats: SortedStatsArr) {
     const newWordsArr = sortedLongStats.map((e) => e[1].newWords);
-    // console.log('NewWords: ', newWordsArr);
     return newWordsArr;
   }
 
   private makeLineGraphData(sortedLongStats: SortedStatsArr) {
     const learnedArr = sortedLongStats.map((e) => e[1].learnedWords);
-    // console.log('LearnedWords: ', learnedArr);
 
     const progressArr: number[] = [];
     learnedArr.forEach((e, i) => {
@@ -93,7 +87,6 @@ export class StatView {
         progressArr.push(e + (progressArr.at(-1) as number));
       }
     });
-    // console.log('ProgressArr: ', progressArr);
     return progressArr;
   }
 
@@ -149,7 +142,7 @@ export class StatView {
       },
     );
 
-    // Animation
+    // Line Animation
     let seq = 0;
 
     chart.on('created', () => {
