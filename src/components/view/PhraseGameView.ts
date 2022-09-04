@@ -23,11 +23,13 @@ export class PhraseGameView {
   learnedWords: string[][];
   unlearnedWords: string[][];
   itemT?: HTMLElement;
+  soundImg: HTMLElement;
 
   constructor(mainDiv: HTMLElement) {
     this.mainDiv = mainDiv;
     this.stateGame = createElement('div', 'phrase_game-content z-depth-2');
     this.controlBlock = createElement('div', 'phrase_controll');
+    this.soundImg = createElement('button', 'phrase_sound');
     this.againGame = createElement('button', 'waves-effect waves-light btn right-phrase-btn end', 'сыграть еще раз');
     this.sound = true;
     this.fullscreen = false;
@@ -44,9 +46,11 @@ export class PhraseGameView {
     this.mainDiv.innerHTML = '';
     const adioGame = createElement('div', 'phrase-game');
     const mainImg = createElement('div', 'img-phrase');
-    const soundImg = createElement('button', 'phrase_sound');
+    // const soundImg = createElement('button', 'phrase_sound');
     const fullscreenImg = createElement('button', 'phrase_fullscreen');
     const crossImg = createElement('button', 'phrase_cross');
+    this.sound = true;
+    this.soundImg.classList.remove('phrase_not-sound');
 
     fullscreenImg.onclick = () => {
       if (!this.fullscreen) {
@@ -58,13 +62,13 @@ export class PhraseGameView {
       }
     };
 
-    soundImg.onclick = () => {
+    this.soundImg.onclick = () => {
       if (this.sound) {
         this.sound = false;
-        soundImg.classList.add('phrase_not-sound');
+        this.soundImg.classList.add('phrase_not-sound');
       } else {
         this.sound = true;
-        soundImg.classList.remove('phrase_not-sound');
+        this.soundImg.classList.remove('phrase_not-sound');
       }
     };
 
@@ -73,8 +77,8 @@ export class PhraseGameView {
       this.stopGame();
     };
 
-    soundImg.onmouseout = () => {
-      soundImg.blur();
+    this.soundImg.onmouseout = () => {
+      this.soundImg.blur();
     };
     fullscreenImg.onmouseout = () => {
       fullscreenImg.blur();
@@ -82,10 +86,10 @@ export class PhraseGameView {
 
     this.againGame.tabIndex = 0;
     crossImg.tabIndex = 0;
-    soundImg.tabIndex = 0;
+    this.soundImg.tabIndex = 0;
     fullscreenImg.tabIndex = 0;
     adioGame.append(mainImg);
-    this.controlBlock.appendChild(soundImg);
+    this.controlBlock.appendChild(this.soundImg);
     this.controlBlock.append(fullscreenImg);
     this.controlBlock.appendChild(crossImg);
     this.mainDiv.append(this.controlBlock);
@@ -168,7 +172,6 @@ export class PhraseGameView {
   }
 
   private startGameFromBook(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
-    this.sound = true;
     this.stateGame.innerHTML = '';
     this.pointsResult = [];
     this.points = 10;
@@ -479,6 +482,7 @@ export class PhraseGameView {
 
   stopGame() {
     this.sound = true;
+    this.soundImg.classList.remove('phrase_not-sound');
     this.fullscreen = false;
     this.points = 10;
     this.pointsTotal = 0;
