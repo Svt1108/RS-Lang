@@ -2,9 +2,7 @@
     width: 100%;
     height: 100%;
     min-height: 100vh;
-    // background-color: aqua;
     position: relative;
-    // z-index: -2;
     background-image: url(../assets/images/violet-2.jpg);
     background-size: 100%;
     background-position: center;
@@ -24,7 +22,6 @@
 }
 
 .cards {
-    // height: 2000px;
     background-color: rgba(255, 255, 255, 0.6);
     border-radius: 3px;
     display: flex;
@@ -113,7 +110,6 @@
 
 .non-acceptable .games-btn {
     background-color: rgba(0, 0, 0, 0.14);
-    // background-color: rgba(243, 252, 64, 0.4);
 }
 
 .game-picture {
@@ -145,33 +141,7 @@
     background-image: url(../assets/svg/game1.svg);
 }
 
-// .learned-message {
-//     background-color: rgba(255, 255, 255, 0.7);
-//     // background-image: url(../assets/svg/message-1.svg);
-//    // background-size: contain;
-//    // background-repeat: no-repeat;
-//    // background-position: center;
-//     font-size: 1.1rem;
-//     font-style: italic;
-//     font-weight: 600;
-//     width: fit-content;
-//     //  width: 20rem;
-//     //  height: 10rem;
-//     margin-left: auto;
-//     margin-right: auto;
-//     padding: 0.5rem 1rem;
-//     border: 1px solid black;
-//     border-radius: 3px;
-//     position: fixed;
-//     top: 60px;
-//     left: 20px;
-//     color: rgba(1, 37, 19, 0.9);
-//     transform: rotate(-20deg);
-//     opacity: 0;
-//     z-index: 1001;
-// }
 .learned-message {
-    // background-color: rgba(255, 255, 255, 0.7);
     background-image: url(../assets/svg/message-4.svg);
     background-size: contain;
     background-repeat: no-repeat;
@@ -179,19 +149,16 @@
     font-size: 1.1rem;
     font-style: italic;
     font-weight: 600;
-    //   width: fit-content;
     width: 3.8rem;
     height: 17rem;
     margin-left: auto;
     margin-right: auto;
     padding: 0.5rem 1rem;
-    // border: 1px solid black;
     border-radius: 3px;
     position: fixed;
     top: 0;
     left: 15%;
     color: transparent;
-    // transform: rotate(-20deg);
     transition: 0.5s;
     opacity: 0;
     z-index: 1001;

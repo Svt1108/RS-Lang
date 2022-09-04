@@ -1,6 +1,5 @@
 import { createUserWord, getAllUserWords, getWordsFromBook, HOST, updateUserWord } from '../model/helpers/apiHelpers';
 import { Optional, UserWordPlus, WordPlusUserWord } from '../types';
-// import { Route } from '../types/appRoutes';
 import { LoginData } from '../types/loginTypes';
 import { getMixWordForDrag, getMixWordsForPhrase } from './helpers/appMixWords';
 import { combineWords } from './helpers/combineArr';
@@ -41,9 +40,6 @@ export class PhraseGameView {
   }
 
   public render(data?: WordPlusUserWord[], user?: LoginData): void {
-    // console.log('user');
-    // console.log(user);
-
     this.controlBlock.innerHTML = '';
     this.mainDiv.innerHTML = '';
     const adioGame = createElement('div', 'phrase-game');
@@ -51,7 +47,6 @@ export class PhraseGameView {
     const soundImg = createElement('button', 'phrase_sound');
     const fullscreenImg = createElement('button', 'phrase_fullscreen');
     const crossImg = createElement('button', 'phrase_cross');
-    //  mainImg.src = './assets/images/tower.jpg';
 
     fullscreenImg.onclick = () => {
       if (!this.fullscreen) {
@@ -71,7 +66,6 @@ export class PhraseGameView {
         this.sound = true;
         soundImg.classList.remove('phrase_not-sound');
       }
-      // this.createSounds(this.sound);
     };
 
     crossImg.onclick = () => {
@@ -155,13 +149,9 @@ export class PhraseGameView {
       btnLevel.onclick = async () => {
         const randomPage = Math.floor(Math.random() * 29);
         const words = await getWordsFromBook(randomPage, i);
-        // console.log('words');
-        // console.log(words);
         this.stateGame.innerHTML = '';
         if (user) {
           const userWords: UserWordPlus[] = await getAllUserWords(user.id, user.token);
-          // console.log('userWords')
-          // console.log(userWords)
           const tempObj = combineWords(words, userWords);
           const userRes: WordPlusUserWord[] = tempObj.combinedArr;
           this.mainDiv.append(this.showGame(userRes, user));
@@ -212,12 +202,7 @@ export class PhraseGameView {
   }
 
   private showGame(data: WordPlusUserWord[], user?: LoginData): HTMLElement {
-    // console.log(1111111111111);
-    console.log(user);
-    console.log(data);
-
     if (data.length < 10) {
-      // console.log('Недостаточно слов для игры!');
       const noDifficultCard = createElement(
         'p',
         'no-words-card',
@@ -228,8 +213,7 @@ export class PhraseGameView {
         'a',
         'btn-large waves-effect waves-light grey lighten-3 z-depth-3 btn-lang',
         'Назад',
-      ); // as HTMLAnchorElement;
-      // backBtn.href = `#${Route.book}`;
+      );
       backBtn.onclick = () => window.history.back();
       this.stateGame.appendChild(backBtn);
       return this.stateGame;
@@ -276,7 +260,6 @@ export class PhraseGameView {
         }
         phrase.back.classList.remove('hovered');
         if (itemArr.filter((value) => value !== undefined).length === WORDS_FOR_PHRASE) {
-          // console.log(itemArr);
           const rightItemArr = itemArr.filter((value, index) => value === index);
           const wrongItemArr = itemArr.filter((value, index) => value !== index);
           const rightDataPhrase = mixDataPhrase.filter((_value, index) => rightItemArr.includes(index));
@@ -338,8 +321,6 @@ export class PhraseGameView {
     gameOver.pause();
     endGame.tabIndex = 0;
 
-    // if (this.learnedWords.length) {
-    // Promise.all(mixDataPhrase).then((res) => {
     for (let i = 0; i < rightDataPhrase.length; i += 1) {
       const audio = new Audio();
       const audioBlock = createElement(
@@ -379,8 +360,6 @@ export class PhraseGameView {
       list.append(audioBlock);
       unlearnWords.append(list);
     }
-    // });
-    // }
 
     endGame.onclick = () => {
       const hashArr = window.location.hash.slice(1).split('#');
@@ -480,7 +459,6 @@ export class PhraseGameView {
 
         (<Optional>item1.optional).markedAsNew = true;
         (<Optional>item1.optional).games.phrase.total += 1;
-        // (<Optional>item1.optional).games.phrase.wins += 1;
 
         return updateUserWord((<LoginData>user).id, item1.id, (<LoginData>user).token, {
           difficulty: item1.difficulty as string,
