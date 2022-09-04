@@ -5,10 +5,8 @@ import { Stats } from '../../types/statsTypes';
 export const getUserStats = async (userId: string, token: string) => {
   const url = `${HOST}${Path.users}/${userId}${Path.statistics}`;
   const res = await fetch(url, {
-    // method: Method.get,
     headers: {
       Authorization: `Bearer ${token}`,
-      // Accept: 'application/json',
     },
   });
 
