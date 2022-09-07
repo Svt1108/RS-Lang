@@ -304,8 +304,8 @@ export class PhraseGameView {
     const showTotalRes = createElement('div', 'sprint_result');
     const showExperience = createElement('div', 'sprint_show-resultexperience');
     const gameOver = <HTMLAudioElement>new Audio('./assets/audio/over.mp3');
-    const learnWords = createElement('ul', 'sprint_list-words');
-    const unlearnWords = createElement('ul', 'sprint_list-words');
+    const learnWords = createElement('ul', 'phrase_list-words');
+    const unlearnWords = createElement('ul', 'phrase_list-words');
     const headerBlock = createElement('div', 'sprint_header-result');
     const allWords = createElement('ul', 'sprint_all-words');
     const headerListLerned = createElement('div', 'phrase_header-learn', `Угаданные слова - ${rightDataPhrase.length}`);
@@ -317,7 +317,7 @@ export class PhraseGameView {
     learnWords.append(headerListLerned);
     unlearnWords.append(headerListUnlerned);
     showTotalRes.innerHTML = `Набрано ${rightDataPhrase.length * 10} очков`;
-    showExperience.innerHTML = `Получено +100 опыта`;
+    showExperience.innerHTML = `Получено +10 опыта`;
     const blockBtn = createElement('div', 'sprint_btn-block-over');
     const endGame = createElement('button', 'waves-effect waves-light btn left-sptint-btn end', 'перейти в учебник');
     gameOver.pause();
@@ -415,7 +415,7 @@ export class PhraseGameView {
           (<Optional>item1.optional).learnDate = Date.now();
         }
 
-        if (item1.difficulty !== 'difficult' && ((<Optional>item1.optional).games.phrase.wins + 1) % 3 === 0) {
+        if (item1.difficulty === 'normal' && ((<Optional>item1.optional).games.phrase.wins + 1) % 3 === 0) {
           item1.difficulty = 'easy';
           (<Optional>item1.optional).learned = 'yes';
           (<Optional>item1.optional).learnDate = Date.now();

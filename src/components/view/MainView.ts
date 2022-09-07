@@ -101,26 +101,35 @@ export class MainView {
         <div class="col s12 m4">
           <div class="icon-block">
             <h2 class="center avatar-wrap"><div class="alexander"></div></h2>
-            <h5 class="center main-github">Александр
-            <a href="https://github.com/AlexanderKrasovskiy" class = "main-github__link">
-            <div class="main-github__image"></div>
-            </a>
+            <h5 class="center main-github">Саша
+              <a href="https://github.com/AlexanderKrasovskiy" class = "main-github__link">
+                <div class="main-github__image"></div>
+              </a>
             </h5>
-            <p class="light team-info">Разработчик. Создал архитектуру приложения с 0 до MVC.
-            Разработал авторизацию пользователей, роутинг, страницы входа и регистрации.
-            Сделал часть методов API.
-            Собрал статистику со всего проекта и объединил её на странице статистики.</p>
+            <div class="lang_team_tags">
+              <div class="chip">Teamlead</div>
+              <div class="chip">Frontend</div>
             </div>
+            <p class="light team-info">Разработчик. Создал архитектуру приложения.
+            Разработал роутинг, страницы входа и регистрации, авторизацию пользователей с автопродлением.
+            Собрал статистику со всего проекта и объединил её на странице статистики.
+            Сделал часть методов API.
+            </p>
+          </div>
         </div>
 
         <div class="col s12 m4">
           <div class="icon-block">
             <h2 class="center avatar-wrap avatar-wrap-alla"><div class="alla"></div></h2>
             <h5 class="center main-github">Алла
-            <a href="https://github.com/ALLaTk" class = "main-github__link">
-            <div class="main-github__image"></div>
-            </a>
+              <a href="https://github.com/ALLaTk" class = "main-github__link">
+                <div class="main-github__image"></div>
+              </a>
             </h5>
+            <div class="lang_team_tags">
+              <div class="chip">Backend</div>
+              <div class="chip">Frontend</div>
+            </div>
             <p class="light team-info">Разработчик. Обеспечила команду данными: полностью настроила бэк-энд и победила API.
             Разработала две игры с анимацией и звуковым оформлением: "Спринт" для тех, кто хочет попробовать себя
             в скорости угадывания слов и "Аудиовызов" для тренировки звукового восприятия. </p>
@@ -131,12 +140,16 @@ export class MainView {
           <div class="icon-block">
             <h2 class="center avatar-wrap"><div class="svetlana"></div></h2>
             <h5 class="center main-github">Светлана
-            <a href="https://github.com/Svt1108" class = "main-github__link">
-            <div class="main-github__image"></div>
-            </a>
+              <a href="https://github.com/Svt1108" class = "main-github__link">
+                <div class="main-github__image"></div>
+              </a>
             </h5>
+            <div class="lang_team_tags">
+              <div class="chip">Design</div>
+              <div class="chip">Frontend</div>
+            </div>
             <p class="light team-info">Разработчик и по совместительству дизайнер проекта. Сделала главную страницу,
-            панель навигации, учебник со всеми 3600 словами и разноцветными страничками и бонусную игру "Фразы",
+            панель навигации, учебник со всеми 3600 словами и разноцветными страничками, а также бонусную игру "Фразы",
             в которой можно потренироваться подбирать слова к нужному контексту.</p>
             </div>
         </div>
