@@ -52,8 +52,8 @@ export class BookView {
     const bookWrap = createElement('div', 'book-wrap', '', 'book-wrap');
     this.mainDiv.appendChild(bookWrap);
     const title = createElement('div', 'parallax-container valign-wrapper title-lang');
-    title.innerHTML = `    <div class="section no-pad-bot">
-    <div class="container">
+    title.innerHTML = `    <div class="section no-pad-bot title-lang-mobile">
+      <div class="container">
         <h6 class="header center white-text h6-lang">Учебник. Multilevel coursebook</h6>
       </div>
     </div>

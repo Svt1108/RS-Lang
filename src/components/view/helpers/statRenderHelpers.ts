@@ -2,7 +2,7 @@ import { createElement } from './renderHelpers';
 import { Stats } from '../../types/statsTypes';
 
 export const createTopImg = () => {
-  const div = createElement('div', 'parallax-container valign-wrapper top-img-stat', '', 'index-banner');
+  const div = createElement('div', 'parallax-container valign-wrapper top-img-stat', '', 'index-banner-stat');
 
   div.innerHTML = `
   <div class="section no-pad-bot ">
@@ -136,13 +136,7 @@ export const createBottomImg = () => {
   const div = createElement('div', 'parallax-container valign-wrapper');
 
   div.innerHTML = `
-  <div class="section no-pad-bot">
-    <div class="container">
-      <div class="row center">
         <h5 class="header light h5-lang">А теперь на тренировку :)</h5>
-      </div>
-    </div>
-  </div>
   <div class="parallax">
     <img src="assets/images/stat/hogwards.jpg" alt="castle" class = "img-parallax">
   </div>
